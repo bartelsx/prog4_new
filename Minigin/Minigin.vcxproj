@@ -176,6 +176,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="EllipticalMoveComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCalcComponent.h" />
     <ClInclude Include="GameObject.h" />
@@ -193,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="EllipticalMoveComponent.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCalcComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />

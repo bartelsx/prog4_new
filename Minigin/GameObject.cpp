@@ -67,7 +67,8 @@ dae::Transform dae::GameObject::GetTransform() const
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
-	m_localPosition = m_transform.GetPosition();
+	m_localPosition = { x,y,0 };
+	m_isDirty = true;
 }
 
 std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const
