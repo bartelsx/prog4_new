@@ -7,7 +7,9 @@
 
 using namespace dae;
 
-dae::GameObject::~GameObject() = default;
+dae::GameObject::~GameObject()
+{
+}
 
 void dae::GameObject::Update(float deltaTime)
 {
@@ -20,7 +22,8 @@ void dae::GameObject::Update(float deltaTime)
 
 void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> component)
 {
-	component->SetTransform(m_transform); //initialize the components transform with the transform of the owning gameObject
+	//component->SetTransform(m_transform); //initialize the components transform with the transform of the owning gameObject
+	//component->SetOwner(std::shared_ptr<dae::GameObject>(this), false /* don't call me */);
 	m_Components.push_back(component);
 }
 
@@ -31,6 +34,10 @@ std::shared_ptr<BaseComponent> dae::GameObject::GetComponent(int index)
 
 void dae::GameObject::RemoveComponent(int index)
 {
+	if (index >= m_Components.size())
+	{
+		return;
+	}
 	const auto lastElement{ m_Components.size() - 1 };
 	m_Components[index] = m_Components[lastElement];
 	m_Components.pop_back();
@@ -45,6 +52,7 @@ void dae::GameObject::Render() const
 {
 	for (auto component : m_Components)
 	{
+		
 		component->Render(false);
 	}
 
@@ -59,6 +67,7 @@ dae::Transform dae::GameObject::GetTransform() const
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+	m_localPosition = m_transform.GetPosition();
 }
 
 std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const
@@ -86,7 +95,8 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject> parent)
 		}
 	}
 	SetParentCore(parent);
-	parent->AddChildCore(std::shared_ptr<GameObject>(this));
+	
+	//parent->AddChildCore(std::shared_ptr<GameObject>(this));
 }
 
 void dae::GameObject::AddChildCore(const std::shared_ptr<dae::GameObject> child)
@@ -109,7 +119,7 @@ void dae::GameObject::AddChild(const std::shared_ptr<GameObject> child)
 			}
 		}
 	}
-	child->SetParentCore(std::shared_ptr<GameObject>(this));
+	//child->SetParentCore(std::shared_ptr<GameObject>(this));
 	AddChildCore(child);
 }
 
@@ -135,4 +145,22 @@ bool dae::GameObject::RemoveChild(size_t index)
  	}
 
 	return false;
+}
+
+const glm::vec3& GameObject::GetWorldPosition() 
+{
+	if (m_isDirty)
+		UpdateWorldPosition();
+	return m_worldPosition;
+}
+void GameObject::UpdateWorldPosition()
+{
+	if (m_isDirty)
+	{
+		if (m_parent == nullptr)
+			m_worldPosition = m_localPosition;
+		else
+			m_worldPosition = m_parent->GetWorldPosition() + m_localPosition;
+	}
+	m_isDirty = false;
 }

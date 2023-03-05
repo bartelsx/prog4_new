@@ -10,21 +10,20 @@ void BaseComponent::Render(bool )
 {
 }
 
-void BaseComponent::SetTransform(const dae::Transform& transform)
-{
-	m_Transform = transform;
-}
+//void BaseComponent::SetTransform(const dae::Transform& transform)
+//{
+//	m_Transform = transform;
+//}
+//
+//void BaseComponent::SetPosition(const glm::vec3& pos)
+//{
+//
+//	m_Transform.SetPosition(pos.x, pos.y, pos.z);
+//}
 
-void BaseComponent::SetPosition(const glm::vec3& pos)
+void BaseComponent::SetOwner(const std::shared_ptr<dae::GameObject> pOwner, bool doAddComponent)
 {
-
-	m_Transform.SetPosition(pos.x, pos.y, pos.z);
-}
-
-void BaseComponent::SetOwner(std::shared_ptr<dae::GameObject> pOwner)
-{
-	assert(pOwner);
-	if ( ! pOwner)
+	if (pOwner == m_pOwner)
 	{
 		return;
 	}
@@ -33,5 +32,9 @@ void BaseComponent::SetOwner(std::shared_ptr<dae::GameObject> pOwner)
 		m_pOwner->RemoveComponent(this);
 	}
 	m_pOwner = pOwner;
-	m_pOwner->AddComponent(std::shared_ptr<BaseComponent>(this));
+
+	if (doAddComponent)
+	{
+		//m_pOwner->AddComponent(std::shared_ptr<BaseComponent>(this));
+	}
 }

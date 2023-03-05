@@ -18,10 +18,10 @@ namespace dae
 
 		virtual void Update(float deltaTime);
 		virtual void Render(bool isDirty);
-		void SetTransform(const dae::Transform& transform);
-		void SetPosition(const glm::vec3& pos);
+		//void SetTransform(const dae::Transform& transform);
+		//void SetPosition(const glm::vec3& pos);
 
-		void SetOwner(std::shared_ptr<dae::GameObject> pOwner);
+		void SetOwner(const std::shared_ptr<dae::GameObject> pOwner, bool doAddComponent = true);
 		std::shared_ptr<dae::GameObject> GetOwner() { return m_pOwner; };
 
 	protected:

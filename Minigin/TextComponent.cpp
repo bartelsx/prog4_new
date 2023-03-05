@@ -52,7 +52,7 @@ void dae::TextComponent::Render(bool isDirty)
 
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_Transform.GetPosition();
+		const auto& pos =m_pOwner->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }

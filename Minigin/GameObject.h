@@ -24,6 +24,7 @@ namespace dae
 		dae::Transform GetTransform() const;
 
 		void AddComponent(std::shared_ptr<BaseComponent> component);
+		size_t GetComponentCount() const { return m_Components.size(); }
 		std::shared_ptr<BaseComponent> GetComponent(int index);
 		void RemoveComponent(int index);
 		void RemoveComponent(BaseComponent* pComponent);
@@ -38,6 +39,9 @@ namespace dae
 		bool RemoveChild(size_t index);
 		void AddChild(const std::shared_ptr<GameObject> child);
 
+		void UpdateWorldPosition();
+		const glm::vec3& GetWorldPosition() ;
+
 	private:
 		void AddChildCore(std::shared_ptr<dae::GameObject> child);
 		bool RemoveChildCore(size_t index);
@@ -45,10 +49,12 @@ namespace dae
 
 		Transform m_transform{};
 
-		std::vector<std::shared_ptr<BaseComponent>> m_Components;
+		std::vector<std::shared_ptr<BaseComponent>> m_Components {};
 		std::shared_ptr<GameObject> m_parent{};
 		std::vector<std::shared_ptr<GameObject>> m_children{};
-		bool m_isDirty{};
+		bool m_isDirty{true};
+		glm::vec3 m_worldPosition{};
+		glm::vec3 m_localPosition{};
 	};
 
 }
