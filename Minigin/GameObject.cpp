@@ -36,6 +36,11 @@ void dae::GameObject::RemoveComponent(int index)
 	m_Components.pop_back();
 }
 
+void GameObject::RemoveComponent(BaseComponent* pComponent)
+{
+	std::_Erase_remove_if(m_Components, [pComponent](const std::shared_ptr<BaseComponent>& cmp) {return cmp.get() == pComponent; });
+}
+
 void dae::GameObject::Render() const
 {
 	for (auto component : m_Components)

@@ -21,13 +21,13 @@ namespace dae
 		void SetTransform(const dae::Transform& transform);
 		void SetPosition(const glm::vec3& pos);
 
-		//void SetOwner(std::shared_ptr<dae::GameObject> pOwner);
-		//std::shared_ptr<dae::GameObject> GetOwner() { return m_pOwner; };
+		void SetOwner(std::shared_ptr<dae::GameObject> pOwner);
+		std::shared_ptr<dae::GameObject> GetOwner() { return m_pOwner; };
 
 	protected:
 		dae::Transform m_Transform{};
 		bool m_NeedsUpdate{ true };
-		//std::shared_ptr<dae::GameObject> m_pOwner;
+		std::shared_ptr<dae::GameObject> m_pOwner;
 	};
 }
 

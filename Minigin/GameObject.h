@@ -26,6 +26,7 @@ namespace dae
 		void AddComponent(std::shared_ptr<BaseComponent> component);
 		std::shared_ptr<BaseComponent> GetComponent(int index);
 		void RemoveComponent(int index);
+		void RemoveComponent(BaseComponent* pComponent);
 
 		void SetPosition(float x, float y);
 
