@@ -9,7 +9,7 @@ namespace dae
 	class Texture2D;
 	class BaseComponent;
 	
-	class GameObject final
+	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		GameObject() = default;
@@ -18,6 +18,8 @@ namespace dae
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
+
+		static std::shared_ptr<GameObject> Create();
 
 		void Update(float deltaTime);
 		void Render() const;

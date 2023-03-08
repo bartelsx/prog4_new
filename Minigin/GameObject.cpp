@@ -11,6 +11,11 @@ dae::GameObject::~GameObject()
 {
 }
 
+std::shared_ptr<GameObject> GameObject::Create()
+{
+	return std::shared_ptr<GameObject>(new GameObject());
+}
+
 void dae::GameObject::Update(float deltaTime)
 {
 	for (auto component : m_Components)
@@ -24,6 +29,7 @@ void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> component)
 {
 	//component->SetTransform(m_transform); //initialize the components transform with the transform of the owning gameObject
 	//component->SetOwner(std::shared_ptr<dae::GameObject>(this), false /* don't call me */);
+	component->SetOwner(shared_from_this(), false);
 	m_Components.push_back(component);
 }
 
