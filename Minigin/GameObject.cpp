@@ -68,7 +68,7 @@ void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 	m_localPosition = { x,y,0 };
-	m_isDirty = true;
+	m_isDirty = true; // need to put al the kids dirty
 }
 
 std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const
