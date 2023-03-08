@@ -7,10 +7,6 @@
 
 using namespace dae;
 
-dae::GameObject::~GameObject()
-{
-}
-
 std::shared_ptr<GameObject> GameObject::Create()
 {
 	return std::shared_ptr<GameObject>(new GameObject());
