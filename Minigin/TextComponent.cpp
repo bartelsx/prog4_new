@@ -50,9 +50,11 @@ void dae::TextComponent::Render(bool isDirty)
 		m_isDirty = false;
 	}
 
-	if (m_textTexture != nullptr)
+	auto pOwner = GetOwner();
+
+	if (m_textTexture != nullptr && pOwner)
 	{
-		const auto& pos =m_pOwner->GetWorldPosition();
+		const auto& pos =pOwner->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }

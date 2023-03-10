@@ -24,16 +24,16 @@ namespace dae
 		void Render() const;
 		dae::Transform GetTransform() const;
 
-		void AddComponent(std::shared_ptr<BaseComponent> component);
+		void AddComponent(const std::shared_ptr<BaseComponent>& component, bool doSetOwner = true);
 		size_t GetComponentCount() const { return m_Components.size(); }
 		std::shared_ptr<BaseComponent> GetComponent(int index);
 		void RemoveComponent(int index);
-		void RemoveComponent(BaseComponent* pComponent);
+		void RemoveComponent(std::shared_ptr<BaseComponent> pComponent);
 
 		void SetPosition(float x, float y);
 
 		std::shared_ptr<GameObject> GetChildAt(int idx) const;
-		void SetParent(std::shared_ptr<GameObject> parent);
+		void SetParent(std::shared_ptr<GameObject>& pParent);
 		std::shared_ptr<GameObject> GetParent() const;
 
 		size_t GetChildCount() const { return m_children.size(); };
@@ -53,7 +53,7 @@ namespace dae
 		Transform m_transform{};
 
 		std::vector<std::shared_ptr<BaseComponent>> m_Components {};
-		std::shared_ptr<GameObject> m_parent{};//weak pointer
+		std::weak_ptr<GameObject> m_wpParent{};
 		std::vector<std::shared_ptr<GameObject>> m_children{};// can be unique pointers
 		bool m_isDirty{true};
 		glm::vec3 m_worldPosition{};

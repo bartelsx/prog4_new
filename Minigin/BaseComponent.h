@@ -6,7 +6,7 @@
 
 namespace dae
 {
-	class BaseComponent
+	class BaseComponent : std::enable_shared_from_this<BaseComponent>
 	{
 	public:
 		BaseComponent() {  }
@@ -21,13 +21,13 @@ namespace dae
 		//void SetTransform(const dae::Transform& transform);
 		//void SetPosition(const glm::vec3& pos);
 
-		void SetOwner(const std::shared_ptr<dae::GameObject> pOwner, bool doAddComponent = true);
-		std::shared_ptr<dae::GameObject> GetOwner() { return m_pOwner; };
+		void SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent = true);
+		std::shared_ptr<dae::GameObject> GetOwner() const;
 
 	protected:
 		dae::Transform m_Transform{};
 		bool m_NeedsUpdate{ true };
-		std::shared_ptr<dae::GameObject> m_pOwner;
+		std::weak_ptr<dae::GameObject> m_wpOwner;
 	};
 }
 

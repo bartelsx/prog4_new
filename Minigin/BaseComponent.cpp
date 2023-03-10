@@ -21,20 +21,25 @@ void BaseComponent::Render(bool )
 //	m_Transform.SetPosition(pos.x, pos.y, pos.z);
 //}
 
-void BaseComponent::SetOwner(const std::shared_ptr<dae::GameObject> pOwner, bool doAddComponent)
+void BaseComponent::SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent)
 {
-	if (pOwner == m_pOwner)
+	const auto current = GetOwner();
+	if (current == pOwner)
 	{
 		return;
 	}
-	if (m_pOwner)
+	if (current)
 	{
-		m_pOwner->RemoveComponent(this);
+		current->RemoveComponent(shared_from_this());
 	}
-	m_pOwner = pOwner;
-
+	m_wpOwner = pOwner;
 	if (doAddComponent)
 	{
-		//m_pOwner->AddComponent(std::shared_ptr<BaseComponent>(this));
+		pOwner->AddComponent(shared_from_this(), false);
 	}
+}
+
+std::shared_ptr<dae::GameObject> BaseComponent::GetOwner() const
+{
+	return m_wpOwner.lock();
 }

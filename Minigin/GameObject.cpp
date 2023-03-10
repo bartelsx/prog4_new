@@ -2,7 +2,6 @@
 #include "GameObject.h"
 
 #include "BaseComponent.h"
-#include "ResourceManager.h"
 #include "Renderer.h"
 
 using namespace dae;
@@ -21,11 +20,13 @@ void dae::GameObject::Update(float deltaTime)
 }
 
 
-void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> component)
+void dae::GameObject::AddComponent(const std::shared_ptr<BaseComponent>& component, bool doSetOwner)
 {
 	//component->SetTransform(m_transform); //initialize the components transform with the transform of the owning gameObject
-	//component->SetOwner(std::shared_ptr<dae::GameObject>(this), false /* don't call me */);
-	component->SetOwner(shared_from_this(), false);
+	if (doSetOwner)
+	{
+		component->SetOwner(shared_from_this(), false);
+	}
 	m_Components.push_back(component);
 }
 
@@ -45,9 +46,9 @@ void dae::GameObject::RemoveComponent(int index)
 	m_Components.pop_back();
 }
 
-void GameObject::RemoveComponent(BaseComponent* pComponent)
+void GameObject::RemoveComponent(std::shared_ptr<BaseComponent> pComponent)
 {
-	std::_Erase_remove_if(m_Components, [pComponent](const std::shared_ptr<BaseComponent>& cmp) {return cmp.get() == pComponent; });
+	std::_Erase_remove_if(m_Components, [pComponent](const std::shared_ptr<BaseComponent>& cmp) {return cmp == pComponent; });
 }
 
 void dae::GameObject::Render() const
@@ -57,8 +58,6 @@ void dae::GameObject::Render() const
 		
 		component->Render(false);
 	}
-
-	
 }
 
 dae::Transform dae::GameObject::GetTransform() const
@@ -80,26 +79,32 @@ std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const
 
 void dae::GameObject::SetParentCore(const std::shared_ptr<dae::GameObject>& parent)
 {
-	m_parent = parent;
+	m_wpParent = parent;
 	m_isDirty = true;
 }
 
-void dae::GameObject::SetParent(std::shared_ptr<GameObject> parent)
+void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 {
-	if (m_parent != nullptr)
+	auto current = m_wpParent.lock();
+	if (current == pParent)
 	{
-		for (int idx=0; idx<m_parent->GetChildCount(); ++idx)
+		//already parent
+		return;
+	}
+	if (current)
+	{
+		for (int idx=0; idx<current->GetChildCount(); ++idx)
 		{
-			if (m_parent->GetChildAt(idx).get() == this)
+			if (current->GetChildAt(idx).get() == this)
 			{
-				m_parent->RemoveChildCore(idx);
+				current->RemoveChildCore(idx);
 				break;
 			}
 		}
 	}
-	SetParentCore(parent);
+	SetParentCore(pParent);
 	
-	//parent->AddChildCore(std::shared_ptr<GameObject>(this));
+	pParent->AddChildCore(shared_from_this());
 }
 
 void dae::GameObject::AddChildCore(const std::shared_ptr<dae::GameObject> child)
@@ -122,13 +127,13 @@ void dae::GameObject::AddChild(const std::shared_ptr<GameObject> child)
 			}
 		}
 	}
-	//child->SetParentCore(std::shared_ptr<GameObject>(this));
+	child->SetParentCore(shared_from_this());
 	AddChildCore(child);
 }
 
 std::shared_ptr<dae::GameObject> dae::GameObject::GetParent() const
 {
-	return m_parent;
+	return m_wpParent.lock();
 }
 
 
@@ -156,14 +161,16 @@ const glm::vec3& GameObject::GetWorldPosition()
 		UpdateWorldPosition();
 	return m_worldPosition;
 }
+
 void GameObject::UpdateWorldPosition()
 {
 	if (m_isDirty)
 	{
-		if (m_parent == nullptr)
+		auto pParent = m_wpParent.lock();
+		if (pParent == nullptr)
 			m_worldPosition = m_localPosition;
 		else
-			m_worldPosition = m_parent->GetWorldPosition() + m_localPosition;
+			m_worldPosition = pParent->GetWorldPosition() + m_localPosition;
 	}
 	m_isDirty = false;
 }
