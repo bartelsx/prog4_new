@@ -4,7 +4,7 @@
 
 using namespace dae;
 
-void TextureComponent::Render(bool) 
+void TextureComponent::Render() 
 {
 	if (auto pOwner = GetOwner())
 	{

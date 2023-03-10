@@ -42,7 +42,10 @@ namespace dae
 		void UpdateWorldPosition();
 		const glm::vec3& GetWorldPosition() ;
 
+
 	private:
+		void SetDirty(const bool newValue);
+
 		bool RemoveChild(size_t index);
 		GameObject() = default;
 

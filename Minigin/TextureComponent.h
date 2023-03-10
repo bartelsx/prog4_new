@@ -6,7 +6,7 @@ class TextureComponent :   public dae::BaseComponent
 {
 public:
 	//virtual void Update(float deltaTime) override;
-	virtual void Render(bool isDirty) override;
+	virtual void Render() override;
 
 
 	void SetTexture(const std::string& filename);

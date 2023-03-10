@@ -6,7 +6,7 @@ void BaseComponent::Update(float )
 {
 }
 
-void BaseComponent::Render(bool ) 
+void BaseComponent::Render() 
 {
 }
 

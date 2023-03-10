@@ -40,14 +40,13 @@ namespace dae
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 		void Update(float deltaTime) override;
-		void Render(bool isDirty) override;
+		void Render() override;
 
 		void SetText(const std::string& text);
 		void SetTextProvider(const  std::shared_ptr<TextProvider> textProvider);
 		void SetColor( SDL_Color color);
 
 	private:
-		bool m_isDirty;
 		std::string m_text;
 		std::shared_ptr<TextProvider> m_textProvider{nullptr};
 		std::shared_ptr<Font> m_font;

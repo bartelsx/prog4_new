@@ -56,7 +56,7 @@ void dae::GameObject::Render() const
 	for (auto component : m_Components)
 	{
 		
-		component->Render(false);
+		component->Render();
 	}
 }
 
@@ -69,7 +69,7 @@ void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 	m_localPosition = { x,y,0 };
-	m_isDirty = true; // need to put al the kids dirty
+	SetDirty(true);
 }
 
 std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const
@@ -80,7 +80,7 @@ std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const
 void dae::GameObject::SetParentCore(const std::shared_ptr<dae::GameObject>& parent)
 {
 	m_wpParent = parent;
-	m_isDirty = true;
+	SetDirty(true);
 }
 
 void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
@@ -110,7 +110,7 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 void dae::GameObject::AddChildCore(const std::shared_ptr<dae::GameObject> child)
 {
 	m_children.push_back(child);
-	m_isDirty = true;
+	SetDirty(true);
 }
 
 void dae::GameObject::AddChild(const std::shared_ptr<GameObject> child)
@@ -140,7 +140,7 @@ std::shared_ptr<dae::GameObject> dae::GameObject::GetParent() const
 bool dae::GameObject::RemoveChildCore(size_t index)
 {
 	m_children.erase(m_children.begin() + index);
-	m_isDirty = true;
+	SetDirty(true);
 	return true;
 }
 
@@ -158,8 +158,27 @@ bool dae::GameObject::RemoveChild(size_t index)
 const glm::vec3& GameObject::GetWorldPosition() 
 {
 	if (m_isDirty)
+	{
 		UpdateWorldPosition();
+	}
 	return m_worldPosition;
+}
+
+void GameObject::SetDirty(const bool newValue)
+{
+	if (newValue == m_isDirty)
+	{
+		return;
+	}
+	m_isDirty = newValue;
+	if (newValue)
+	{
+		//when m_isDirty is set to true, it should ripple through to all children
+		for(const auto& child : m_children)
+		{
+			child->SetDirty(newValue);
+		}
+	}
 }
 
 void GameObject::UpdateWorldPosition()
@@ -172,5 +191,5 @@ void GameObject::UpdateWorldPosition()
 		else
 			m_worldPosition = pParent->GetWorldPosition() + m_localPosition;
 	}
-	m_isDirty = false;
+	SetDirty(false);
 }

@@ -17,7 +17,7 @@ namespace dae
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 		virtual void Update(float deltaTime);
-		virtual void Render(bool isDirty);
+		virtual void Render();
 		//void SetTransform(const dae::Transform& transform);
 		//void SetPosition(const glm::vec3& pos);
 
