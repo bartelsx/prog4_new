@@ -17,6 +17,10 @@ void dae::GameObject::Update(float deltaTime)
 	{
 		component->Update(deltaTime);
 	}
+	for (auto child : m_children)
+	{
+		child->Update(deltaTime);
+	}
 }
 
 
@@ -55,8 +59,11 @@ void dae::GameObject::Render() const
 {
 	for (auto component : m_Components)
 	{
-		
 		component->Render();
+	}
+	for (auto child : m_children)
+	{
+		child->Render();
 	}
 }
 
@@ -91,6 +98,8 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 		//already parent
 		return;
 	}
+
+	//remove itself from the previous parent (if any)
 	if (current)
 	{
 		for (int idx=0; idx<current->GetChildCount(); ++idx)
@@ -102,9 +111,14 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 			}
 		}
 	}
+
+	//Set the given parent on itself
 	SetParentCore(pParent);
-	
+
+	//Add itself as child to the given parent 
 	pParent->AddChildCore(shared_from_this());
+
+	//Set position, rotation and scale
 }
 
 void dae::GameObject::AddChildCore(const std::shared_ptr<dae::GameObject> child)
@@ -164,6 +178,19 @@ const glm::vec3& GameObject::GetWorldPosition()
 	return m_worldPosition;
 }
 
+void GameObject::UpdateWorldPosition()
+{
+	if (m_isDirty)
+	{
+		auto pParent = m_wpParent.lock();
+		if (pParent == nullptr)
+			m_worldPosition = m_localPosition;
+		else
+			m_worldPosition = pParent->GetWorldPosition() + m_localPosition;
+	}
+	SetDirty(false);
+}
+
 void GameObject::SetDirty(const bool newValue)
 {
 	if (newValue == m_isDirty)
@@ -181,15 +208,3 @@ void GameObject::SetDirty(const bool newValue)
 	}
 }
 
-void GameObject::UpdateWorldPosition()
-{
-	if (m_isDirty)
-	{
-		auto pParent = m_wpParent.lock();
-		if (pParent == nullptr)
-			m_worldPosition = m_localPosition;
-		else
-			m_worldPosition = pParent->GetWorldPosition() + m_localPosition;
-	}
-	SetDirty(false);
-}
