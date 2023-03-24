@@ -90,7 +90,7 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 	{
 		//already parent
 		return;
-	}
+	}  
 	if (current)
 	{
 		for (int idx=0; idx<current->GetChildCount(); ++idx)

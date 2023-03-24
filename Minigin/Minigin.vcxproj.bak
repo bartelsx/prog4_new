@@ -166,6 +166,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -180,7 +181,6 @@
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="command.h" />
-    <ClInclude Include="controller.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCalcComponent.h" />
@@ -197,7 +197,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="moveCommand.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -210,7 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp" />
-    <ClCompile Include="controller.cpp" />
     <ClCompile Include="EllipticalMoveComponent.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCalcComponent.cpp" />
@@ -227,7 +225,6 @@
     <ClCompile Include="JumpCommand.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="moveCommand.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
