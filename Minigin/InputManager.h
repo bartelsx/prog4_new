@@ -48,21 +48,15 @@ namespace dae
 
 		bool ProcessInput();
 
-		void AddCommand(const std::map<ControllerButton, std::shared_ptr<Command>>& inputCommands, unsigned int id);
-		void AddCommand(const std::map<SDL_Scancode, std::shared_ptr<Command>>& inputCommands, unsigned int id);
-		void RemoveCommand(const ControllerButton& button, unsigned int id);
-		void ResetCommands();
+		void AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command);
+		void RemoveCommand(const SDL_Scancode key);
+
 		InputManager(){}
 
 	private:
-
-		using KeyBoardKey = std::pair<unsigned, SDL_Scancode>;
-		using KeyBoardCommandsMap = std::map<KeyBoardKey, std::shared_ptr<Command>>;
+		void DoCommandForKey(SDL_Scancode key, bool keyPressed);
+		using KeyBoardCommandsMap = std::map<SDL_Scancode, std::shared_ptr<Command>>;
 		KeyBoardCommandsMap m_KeyboardCommands{};
-
-		using ControllerBoardKey = std::pair<unsigned, ControllerButton>;
-		using ControllerCommandsMap = std::map<ControllerBoardKey, std::shared_ptr<Command>>;
-		ControllerCommandsMap m_ControllerCommands{};
 	};
 
 }

@@ -65,7 +65,7 @@ public:
 		m_Acceleration = nullptr;
 	}
 
-	void ReadThumb(unsigned int controllerId,XINPUT_STATE& state)
+	void ReadThumb(unsigned int controllerId, XINPUT_STATE& state)
 	{
 		//std::cout << state.dwPacketNumber << std::endl;
 		short LX = state.Gamepad.sThumbLX;
