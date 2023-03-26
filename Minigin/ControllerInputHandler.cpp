@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "command.h"
-#include "InputManager.h"
+#include "KeyboardInputHandler.h"
 
 
 class ControllerInputHandler::ControllerInputHandlerImpl

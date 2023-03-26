@@ -8,7 +8,8 @@
 
 #include <chrono>
 
-#include "InputManager.h"
+#include "ControllerInputHandler.h"
+#include "KeyboardInputHandler.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -87,7 +88,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
+	auto& keyboard = KeyboardInputHandler::GetInstance();
+	auto& controllers = ControllerInputHandler::GetInstance();
 
 	const float fixedTimeStep{ 0.02f };
 
@@ -100,12 +102,16 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
 		lag += deltaTime;
-		doContinue = input.ProcessInput();
+
+		doContinue = keyboard.ProcessInput();
+		controllers.ProcessInput();
+
 		while (lag >= fixedTimeStep)
 		{
 			sceneManager.Update(fixedTimeStep);
 			lag -= fixedTimeStep;
 		}
+
 		sceneManager.Update(deltaTime);
 		lag = 0;
 		renderer.Render();

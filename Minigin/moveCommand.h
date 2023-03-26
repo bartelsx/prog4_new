@@ -12,10 +12,10 @@ public:
 	float Acceleration;
 };
 
-class moveCommand : public CommandWithOwner<dae::MoveComponent> 
+class MoveCommand : public CommandWithOwner<dae::MoveComponent> 
 {
 public:
-	moveCommand(std::shared_ptr<dae::MoveComponent> pOwner, MoveParameters (*pValueFunc)() )
+	MoveCommand(std::shared_ptr<dae::MoveComponent> pOwner, MoveParameters (*pValueFunc)() )
 	: CommandWithOwner(pOwner)
 		, m_pValueFunc(pValueFunc){}
 

@@ -37,6 +37,4 @@ public:
 private:
 	class ControllerInputHandlerImpl;
 	ControllerInputHandlerImpl* pControllerImpl;
-
-
 }; 

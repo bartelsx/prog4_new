@@ -2,13 +2,9 @@
 #include "Singleton.h"
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <XInput.h>
 
-#include <map>
 #include <memory>
 #include <SDL.h>
-#include <vector>
 
 
 class Command;
@@ -42,21 +38,24 @@ enum class ControllerButton
 
 namespace dae
 {
-	class InputManager final : public Singleton<InputManager>
+	class KeyboardInputHandler final : public Singleton<KeyboardInputHandler>
 	{
 	public:
+		KeyboardInputHandler();
+		~KeyboardInputHandler() override;
+		KeyboardInputHandler(const KeyboardInputHandler& other) = delete;
+		KeyboardInputHandler(KeyboardInputHandler&& other) = delete;
+		KeyboardInputHandler& operator=(const KeyboardInputHandler& other) = delete;
+		KeyboardInputHandler& operator=(KeyboardInputHandler&& other) = delete;
 
 		bool ProcessInput();
 
 		void AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command);
 		void RemoveCommand(const SDL_Scancode key);
 
-		InputManager(){}
-
 	private:
-		void DoCommandForKey(SDL_Scancode key, bool keyPressed);
-		using KeyBoardCommandsMap = std::map<SDL_Scancode, std::shared_ptr<Command>>;
-		KeyBoardCommandsMap m_KeyboardCommands{};
+		class KeyboardInputHandlerImpl;
+		KeyboardInputHandlerImpl* pKeyboardInputHandlerImpl;
 	};
 
 }

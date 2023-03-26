@@ -179,7 +179,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
-    <ClInclude Include="command.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="ControllerInputHandler.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
     <ClInclude Include="Font.h" />
@@ -194,10 +194,10 @@
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
-    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="KeyboardInputHandler.h" />
     <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="moveCommand.h" />
+    <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -224,11 +224,9 @@
     <ClCompile Include="imgui_plot.cpp" />
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="JumpCommand.cpp" />
+    <ClCompile Include="KeyboardInputHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="moveCommand.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

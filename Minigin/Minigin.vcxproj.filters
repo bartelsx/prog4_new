@@ -28,9 +28,6 @@
     <Filter Include="Header Files\command">
       <UniqueIdentifier>{534a41ac-38cd-40d7-b593-9bcbe31cd1ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\command">
-      <UniqueIdentifier>{3744f4af-1639-4380-a6ee-b2f37ca8d9c3}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -45,7 +42,7 @@
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
+    <ClInclude Include="KeyboardInputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
@@ -108,7 +105,7 @@
     <ClInclude Include="imconfig.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="command.h">
+    <ClInclude Include="Command.h">
       <Filter>Header Files\command</Filter>
     </ClInclude>
     <ClInclude Include="JumpCommand.h">
@@ -117,7 +114,7 @@
     <ClInclude Include="ControllerInputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="moveCommand.h">
+    <ClInclude Include="MoveCommand.h">
       <Filter>Header Files\command</Filter>
     </ClInclude>
     <ClInclude Include="MoveComponent.h">
@@ -134,7 +131,7 @@
     <ClCompile Include="Texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
+    <ClCompile Include="KeyboardInputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -199,12 +196,6 @@
     </ClCompile>
     <ClCompile Include="ControllerInputHandler.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="moveCommand.cpp">
-      <Filter>Source Files\command</Filter>
-    </ClCompile>
-    <ClCompile Include="JumpCommand.cpp">
-      <Filter>Source Files\command</Filter>
     </ClCompile>
     <ClCompile Include="MoveComponent.cpp">
       <Filter>Source Files\Components</Filter>
