@@ -2,14 +2,7 @@
 #include "GameObject.h"
 
 #include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
-#include "BaseComponent.h"
+
 #include "Renderer.h"
 
 using namespace dae;
@@ -45,7 +38,7 @@ std::shared_ptr<BaseComponent> dae::GameObject::GetComponent(int index)
 
 void dae::GameObject::RemoveComponent(int index)
 {
-	if (index >= m_Components.size())
+	if (index >= int(m_Components.size()))
 	{
 		return;
 	}
@@ -111,7 +104,7 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 	}  
 	if (current)
 	{
-		for (int idx=0; idx<current->GetChildCount(); ++idx)
+		for (int idx=0; idx<int(current->GetChildCount()); ++idx)
 		{
 			if (current->GetChildAt(idx).get() == this)
 			{
@@ -136,7 +129,7 @@ void dae::GameObject::AddChild(const std::shared_ptr<GameObject> child)
 	auto oldParent = child->GetParent();
 	if (oldParent != nullptr)
 	{
-		for (int idx = 0; idx < oldParent->GetChildCount(); ++idx)
+		for (int idx = 0; idx < int(oldParent->GetChildCount()); ++idx)
 		{
 			if (oldParent->GetChildAt(idx).get() == child.get())
 			{

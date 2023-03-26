@@ -48,10 +48,10 @@ namespace dae
 		KeyboardInputHandler& operator=(const KeyboardInputHandler& other) = delete;
 		KeyboardInputHandler& operator=(KeyboardInputHandler&& other) = delete;
 
-		bool ProcessInput();
+		bool ProcessInput() const;
 
-		void AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command);
-		void RemoveCommand(const SDL_Scancode key);
+		void AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command) const;
+		void RemoveCommand(const SDL_Scancode key) const;
 
 	private:
 		class KeyboardInputHandlerImpl;

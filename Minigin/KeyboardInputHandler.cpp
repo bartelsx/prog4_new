@@ -51,7 +51,7 @@ public:
     }
 
 
-    void AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command)
+    void AddCommand(const SDL_Scancode key, const std::shared_ptr<Command>& command)
     {
         m_KeyboardCommands[key] = command;
     }
@@ -78,17 +78,17 @@ dae::KeyboardInputHandler::~KeyboardInputHandler()
     pKeyboardInputHandlerImpl = nullptr;
 }
 
-bool dae::KeyboardInputHandler::ProcessInput()
+bool dae::KeyboardInputHandler::ProcessInput() const
 {
     return pKeyboardInputHandlerImpl->ProcessInput();
 }
 
-void dae::KeyboardInputHandler::AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command)
+void dae::KeyboardInputHandler::AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command) const
 {
     pKeyboardInputHandlerImpl->AddCommand(key, command);
 }
 
-void dae::KeyboardInputHandler::RemoveCommand(const SDL_Scancode key)
+void dae::KeyboardInputHandler::RemoveCommand(const SDL_Scancode key) const
 {
     pKeyboardInputHandlerImpl->RemoveCommand(key);
 }

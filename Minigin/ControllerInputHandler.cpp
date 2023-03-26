@@ -264,17 +264,17 @@ bool ControllerInputHandler::IsUpThisFrame(const unsigned controllerId, const Co
 	return pControllerImpl->IsUpThisFrame(controllerId, button);
 }
 
-void ControllerInputHandler::AddCommand(unsigned id, ControllerButton controllerButton, std::shared_ptr<Command> command)
+void ControllerInputHandler::AddCommand(unsigned id, ControllerButton controllerButton, std::shared_ptr<Command> command) const
 {
 	pControllerImpl->AddCommand(id, controllerButton, command);
 }
 
-void ControllerInputHandler::RemoveCommand(unsigned int id, const ControllerButton& button)
+void ControllerInputHandler::RemoveCommand(unsigned int id, const ControllerButton& button) const
 {
 	pControllerImpl->RemoveCommand(id, button);
 }
 
-void ControllerInputHandler::RemoveAllCommands()
+void ControllerInputHandler::RemoveAllCommands() const
 {
 	pControllerImpl->RemoveCommands();
 }

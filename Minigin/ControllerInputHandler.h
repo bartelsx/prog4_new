@@ -22,9 +22,9 @@ public:
 	bool IsDownThisFrame(const unsigned controllerId, const ControllerButton button) const;
 	bool IsUpThisFrame(const unsigned controllerId, const ControllerButton button) const;
 
-	void AddCommand(unsigned id, ControllerButton controllerButton, std::shared_ptr<Command> command);
-	void RemoveCommand(unsigned int id, const ControllerButton& button);
-	void RemoveAllCommands();
+	void AddCommand(unsigned id, ControllerButton controllerButton, std::shared_ptr<Command> command) const;
+	void RemoveCommand(unsigned int id, const ControllerButton& button) const;
+	void RemoveAllCommands() const;
 
 	glm::vec2 GetDirection(const unsigned int controllerId) const;
 	float GetSpeed(const unsigned int controllerId) const;
