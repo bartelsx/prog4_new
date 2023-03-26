@@ -5,7 +5,7 @@
 class JumpCommand : public Command
 {
 public:
-	virtual void execute() { jump(); }
+	virtual void Execute() { jump(); }
 	void jump() {};
 };
 

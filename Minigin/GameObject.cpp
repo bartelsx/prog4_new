@@ -2,6 +2,14 @@
 #include "GameObject.h"
 
 #include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
+#include "BaseComponent.h"
 #include "Renderer.h"
 
 using namespace dae;
@@ -70,6 +78,16 @@ void dae::GameObject::SetPosition(float x, float y)
 	m_transform.SetPosition(x, y, 0.0f);
 	m_localPosition = { x,y,0 };
 	m_isDirty = true; // need to put al the kids dirty
+}
+
+void dae::GameObject::SetPosition(glm::vec2 localPosition)
+{
+	SetPosition(localPosition.x, localPosition.y);
+}
+
+glm::vec2 GameObject::GetPosition() const
+{
+	return glm::vec2{ m_localPosition.x, m_localPosition.y };
 }
 
 std::shared_ptr<dae::GameObject> dae::GameObject::GetChildAt(int idx) const

@@ -31,6 +31,8 @@ namespace dae
 		void RemoveComponent(std::shared_ptr<BaseComponent> pComponent);
 
 		void SetPosition(float x, float y);
+		void SetPosition(glm::vec2 localPosition);
+		glm::vec2 GetPosition() const;
 
 		std::shared_ptr<GameObject> GetChildAt(int idx) const;
 		void SetParent(std::shared_ptr<GameObject>& pParent);
