@@ -36,5 +36,5 @@ public:
 
 private:
 	class ControllerInputHandlerImpl;
-	ControllerInputHandlerImpl* pControllerImpl;
+	std::unique_ptr<ControllerInputHandlerImpl> pControllerImpl;
 }; 

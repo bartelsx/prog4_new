@@ -94,6 +94,7 @@ void dae::GameObject::SetParentCore(const std::shared_ptr<dae::GameObject>& pare
 	m_isDirty = true;
 }
 
+
 void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 {
 	auto current = m_wpParent.lock();
@@ -173,15 +174,49 @@ const glm::vec3& GameObject::GetWorldPosition()
 	return m_worldPosition;
 }
 
+void GameObject::Die()
+{
+	auto event = Event(EventType::ACTOR_DIED);
+	Notify(event);
+}
+
+void GameObject::PowerUp()
+{
+	auto event = Event(EventType::POWER_UP);
+	Notify(event);
+}
+
+void GameObject::FruitPickUp()
+{
+	auto event = Event(EventType::FRUIT_PICKUP);
+	Notify(event);
+}
+
+void GameObject::SmallPickUp()
+{
+	auto event = Event(EventType::SMALL_PICKUP);
+	Notify(event);
+}
+
+void GameObject::EnemyDead()
+{
+	auto event = Event(EventType::ENEMY_DIED);
+	Notify(event);
+}
+
 void GameObject::UpdateWorldPosition()
 {
 	if (m_isDirty)
 	{
 		auto pParent = m_wpParent.lock();
 		if (pParent == nullptr)
+		{
 			m_worldPosition = m_localPosition;
+		}
 		else
+		{
 			m_worldPosition = pParent->GetWorldPosition() + m_localPosition;
+		}
 	}
 	m_isDirty = false;
 }

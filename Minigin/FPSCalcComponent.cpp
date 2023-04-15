@@ -53,6 +53,14 @@ void FPSCalcComponent::CalcFPS(float deltaTime)
 
 }
 
+void FPSCalcComponent::Notify(Event& event, Subject*)
+{
+	if (event.m_type == EventType::ACTOR_DIED)
+	{
+		//std::cout << "dead \n";
+	}
+}
+
 std::string FPSCalcComponent::GetText()
 {
 	std::string text{ std::to_string(m_FPS) + " FPS" };

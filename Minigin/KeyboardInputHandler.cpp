@@ -29,6 +29,7 @@ public:
             {
                 DoCommandForKey(e.key.keysym.scancode, false);
             }
+
         }
         return true;
     }

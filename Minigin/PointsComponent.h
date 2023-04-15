@@ -1,6 +1,4 @@
 #pragma once
-
-
 #include <xstring>
 
 #include "BaseComponent.h"
@@ -11,22 +9,21 @@ namespace dae
 	class Font;
 	class Texture2D;
 
-	class FPSCalcComponent : public BaseComponent, public TextProvider, public Observer
+	class PointsComponent : public BaseComponent,  public Observer
 	{
 
 	public:
-		FPSCalcComponent() {  };
-		std::string GetText() override;
+		PointsComponent() {  };
 		void Update(float deltaTime) override;
 
+		std::string GetScore();
+		std::string GetLives();
 	private:
-		int m_FPS{};
-		void CalcFPS(float deltaTime);
+		int m_Points{};
+		void CalcPoints();
 		void Notify(Event& event, Subject* actor) override;
-		float m_WaitTime{};
 
 
-		const float TimeBetweenUpdates{0.5};
+		int m_lives{ 3 };
 	};
 }
-

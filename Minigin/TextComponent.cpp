@@ -9,6 +9,7 @@ dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font>
 	:m_isDirty(true), m_font(std::move(font)), m_textTexture(nullptr)
 {
 	SetText(text);
+
 }
 
 dae::TextComponent::TextComponent( const std::shared_ptr<TextProvider> textProvider, std::shared_ptr<Font> font)
@@ -68,6 +69,7 @@ void dae::TextComponent::SetText(const std::string& text)
 
 void dae::TextComponent::SetTextProvider(const std::shared_ptr<TextProvider> textProvider)
 {
+//	m_actorDiedsubject->addObserver(m_obs);
 	m_textProvider = textProvider;
 	m_isDirty = true;
 }

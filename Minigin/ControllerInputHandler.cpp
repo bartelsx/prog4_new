@@ -296,11 +296,10 @@ float ControllerInputHandler::GetAcceleration(const unsigned controllerId) const
 
 ControllerInputHandler::ControllerInputHandler()
 {
-	pControllerImpl = new ControllerInputHandlerImpl();
+	pControllerImpl = std::make_unique<ControllerInputHandlerImpl>();
 }
 
 ControllerInputHandler::~ControllerInputHandler()
 {
-	delete pControllerImpl;
-	pControllerImpl = nullptr;
+	
 }

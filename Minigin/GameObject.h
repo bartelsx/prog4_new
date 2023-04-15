@@ -3,13 +3,15 @@
 #include "Transform.h"
 #include <vector>
 
+#include "Observer.h"
+
 
 namespace dae
 {
 	class Texture2D;
 	class BaseComponent;
 	
-	class GameObject final : public std::enable_shared_from_this<GameObject>
+	class GameObject final : public std::enable_shared_from_this<GameObject>, public Subject
 	{
 	public:
 		~GameObject() = default;
@@ -44,6 +46,13 @@ namespace dae
 		void UpdateWorldPosition();
 		const glm::vec3& GetWorldPosition() ;
 
+
+		void Die();
+		void PowerUp();
+		void FruitPickUp();
+		void SmallPickUp();
+		void EnemyDead();
+
 	private:
 		bool RemoveChild(size_t index);
 		GameObject() = default;
@@ -62,4 +71,5 @@ namespace dae
 		glm::vec3 m_localPosition{};
 	};
 
+	
 }
