@@ -7,6 +7,7 @@
 #include "Minigin.h"
 
 #include <chrono>
+#include <steam_api_common.h>
 
 #include "ControllerInputHandler.h"
 #include "KeyboardInputHandler.h"
@@ -96,8 +97,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0f;
+	
 	while (doContinue)
 	{
+	SteamAPI_RunCallbacks();
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;

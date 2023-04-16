@@ -28,6 +28,9 @@
     <Filter Include="Header Files\command">
       <UniqueIdentifier>{534a41ac-38cd-40d7-b593-9bcbe31cd1ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\steam">
+      <UniqueIdentifier>{f15dbc1a-9eb3-4c77-91d0-825f2d6a2108}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -129,6 +132,39 @@
     <ClInclude Include="PointsComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamapplist.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamapps.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamappticket.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamclient.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamcontroller.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamfriends.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamgamecoordinator.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamgameserver.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamgameserverstats.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
+    <ClInclude Include="CSteamAchievements.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\steamworks_sdk_155\sdk\public\steam\isteamuserstats.h">
+      <Filter>Header Files\steam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -211,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="PointsComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CSteamAchievements.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
