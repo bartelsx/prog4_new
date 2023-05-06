@@ -173,7 +173,7 @@ const glm::vec3& GameObject::GetWorldPosition()
 		UpdateWorldPosition();
 	return m_worldPosition;
 }
-
+//meot weg
 void GameObject::Die()
 {
 	auto event = Event(EventType::ACTOR_DIED);
@@ -203,7 +203,7 @@ void GameObject::EnemyDead()
 	auto event = Event(EventType::ENEMY_DIED);
 	Notify(event);
 }
-
+// tot hier niet elke gameObj is een subject
 void GameObject::UpdateWorldPosition()
 {
 	if (m_isDirty)
