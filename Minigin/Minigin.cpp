@@ -14,6 +14,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
+
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
