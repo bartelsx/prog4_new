@@ -1,9 +1,15 @@
 #pragma once
 #include <iostream>
 #include <mutex>
+#include <queue>
 
 
 using Sound_id = unsigned short;
+struct PlayRequest
+{
+	int id{};
+	float volume{};
+};
 class SoundSystem
 {
 public:
@@ -15,6 +21,8 @@ public:
 	virtual void InitializeSoundSystem(){} ;
 	virtual void Play(const Sound_id /*id*/, const float /*volume*/) {};
 	virtual void RegisterSound(const Sound_id /*id*/, const std::string& /*path*/) {};
+
+	
 };
 
 class SDLSoundSystem final : public SoundSystem

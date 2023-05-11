@@ -30,12 +30,9 @@ public:
             {
                 DoCommandForKey(e.key.keysym.scancode, false);
 
-                ServiceLocator::RegisterSoundSystem(std::make_shared<logging_sound_system>(std::make_shared<SDLSoundSystem>()));
-                ServiceLocator::GetSoundSystem().InitializeSoundSystem();
-                ServiceLocator::GetSoundSystem().RegisterSound(0, "../Data/pacman_beginning.wav");
                if(e.key.keysym.scancode == SDL_SCANCODE_DOWN)
                {
-                   ServiceLocator::GetSoundSystem().Play(0, 1);
+                   ServiceLocator::GetSoundSystem().Play(0, 0.5);
                }
             }
 
