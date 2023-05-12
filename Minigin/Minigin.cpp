@@ -46,21 +46,21 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+dae::Minigin::Minigin(const std::string &title, const int w,const int h , const std::string& dataPath)
 {
 	PrintSDLVersion();
 	
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
-		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
+		throw std::runtime_error( std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
 	g_window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		title.c_str(),
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		w,
+		h,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
