@@ -1,4 +1,6 @@
 #include "TextureComponent.h"
+
+#include <utility>
 #include "Renderer.h"
 #include "ResourceManager.h"
 
@@ -9,12 +11,12 @@ void TextureComponent::Render(bool)
 	if (auto pOwner = GetOwner())
 	{
 		auto pos = pOwner->GetWorldPosition();
-		dae::Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+		dae::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 	}
 }
 
-void TextureComponent::SetTexture(const std::string& filename)
+void TextureComponent::SetTexture(const std::shared_ptr<dae::Texture2D>& pTexture)
 {
-	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
-	assert(m_Texture != nullptr);
+	m_pTexture = pTexture;
+	assert(m_pTexture != nullptr);
 }

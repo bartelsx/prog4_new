@@ -9,11 +9,11 @@ public:
 	virtual void Render(bool isDirty) override;
 
 
-	void SetTexture(const std::string& filename);
+	void SetTexture(const std::shared_ptr<dae::Texture2D>& pTexture);
 
 	//virtual ~TextureComponent();
 
 private:
-	std::shared_ptr<dae::Texture2D> m_Texture{};
+	std::shared_ptr<dae::Texture2D> m_pTexture{};
 };
 
