@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "rapidjson/document.h"
-using namespace rapidjson;
+
 
 class TextureManager;
 
@@ -10,8 +10,8 @@ class GameBoardComponent : public dae::BaseComponent
 public:
 	GameBoardComponent();
 	~GameBoardComponent() override = default;
-	int GetWidth() { return m_Width * m_TileSize; };
-	int GetHeight() { return m_Height * m_TileSize; };
+	int GetWidth() { return int(m_Width * m_TileSize); };
+	int GetHeight() { return int(m_Height * m_TileSize); };
 	GameBoardComponent(const GameBoardComponent& other) = delete;
 	GameBoardComponent(GameBoardComponent&& other) = delete;
 	GameBoardComponent& operator=(const GameBoardComponent& other) = delete;

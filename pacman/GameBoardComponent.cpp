@@ -85,14 +85,14 @@ void GameBoardComponent::ReadJsonFile(const std::string& filename)
 	const rapidjson::Value& grid = doc["grid"];
 
 	// Print the values
-	std::cout << "Width: " << m_Width << std::endl;
-	std::cout << "Height: " << m_Height << std::endl;
-	std::cout << "Grid:" << std::endl;
-	for (SizeType i = 0; i < grid.Size(); i++) {
-		for (SizeType j = 0; j < grid[i].Size(); j++) {
-			std::cout << grid[i][j].GetInt() << " ";
+	//std::cout << "Width: " << m_Width << std::endl;
+	//std::cout << "Height: " << m_Height << std::endl;
+	//std::cout << "Grid:" << std::endl;
+	for (rapidjson::SizeType i = 0; i < grid.Size(); i++) {
+		for (rapidjson::SizeType j = 0; j < grid[i].Size(); j++) {
+			//std::cout << grid[i][j].GetInt() << " ";
 			m_Grid.push_back(grid[i][j].GetInt());
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 }

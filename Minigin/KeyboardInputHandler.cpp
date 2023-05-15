@@ -32,7 +32,11 @@ public:
 
                if(e.key.keysym.scancode == SDL_SCANCODE_DOWN)
                {
-                   ServiceLocator::GetSoundSystem().Play(0, 0.5);
+                   ServiceLocator::GetSoundSystem().Play(0, 0.1f);
+               }
+               if (e.key.keysym.scancode == SDL_SCANCODE_UP)
+               {
+                   ServiceLocator::GetSoundSystem().Play(0, 1.f);
                }
             }
 

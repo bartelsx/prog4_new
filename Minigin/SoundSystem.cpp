@@ -96,11 +96,11 @@ void SDLSoundSystem::SDLSoundSystemImpl::Update()
 		}
 		auto request = m_playRequests.front();
 		m_playRequests.pop();
-
-		m_cv.notify_one();
 		int id = request.id;
-		float volume = request.volume;
 		auto audioclip = m_pAudioclips[id];
+		lck.unlock();
+		
+		float volume = request.volume;
 		if (!audioclip->IsLoaded())
 			audioclip->LoadSound();
 		audioclip->SetVolume((int)(volume * 100));
