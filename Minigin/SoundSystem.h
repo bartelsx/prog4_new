@@ -18,9 +18,9 @@ public:
 		
 	};
 	virtual ~SoundSystem() =default;
-	virtual void InitializeSoundSystem(){} ;
-	virtual void Play(const Sound_id /*id*/, const float /*volume*/) {};
-	virtual void RegisterSound(const Sound_id /*id*/, const std::string& /*path*/) {};
+	virtual void InitializeSoundSystem()=0 ;
+	virtual void Play(const Sound_id /*id*/, const float /*volume*/) =0;
+	virtual void RegisterSound(const Sound_id /*id*/, const std::string& /*path*/) =0;
 
 	
 };
@@ -83,11 +83,11 @@ public:
 		}
 	}
 	static void Shutdown() {
-		if (ss_Instance != std::make_shared<SoundSystem>(default_ss))
+		if (ss_Instance != std::make_shared<NullSoundSystem>(default_ss))
 		{
 			ss_Instance = nullptr;
 		}
-		ss_Instance = std::make_shared<SoundSystem>(default_ss);
+		ss_Instance = std::make_shared<NullSoundSystem>(default_ss);
 	}
 
 private:

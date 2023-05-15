@@ -31,7 +31,6 @@ void GameBoardComponent::LoadFromJsonFile(const std::string& path, TextureManage
 
 				auto object{ dae::GameObject::Create() };
 				object->SetPosition(posX, posY);
-
 				switch (m_Grid[m_Width * row + col])
 				{
 				case 1:
@@ -50,8 +49,19 @@ void GameBoardComponent::LoadFromJsonFile(const std::string& path, TextureManage
 					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Path));
 					object->AddComponent(wallTextureComp);
 					break;
+				case 6:
+					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Path));
+					object->AddComponent(wallTextureComp);
+					ghostsPos.push_back(glm::vec2(posX, posY)) ;
+					break;
+				case 7:
+					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Path));
+					object->AddComponent(wallTextureComp);
+					locPacman =  glm::vec2(posX,posY);
+					break;
 
 				default:
+				
 					break;
 				}
 
@@ -60,7 +70,23 @@ void GameBoardComponent::LoadFromJsonFile(const std::string& path, TextureManage
 		}
 	}
 }
+glm::vec2 GameBoardComponent::GetPlayerLocation()
+{
+	return  glm::vec2(GetOwner()->GetWorldPosition().x + locPacman.x, GetOwner()->GetWorldPosition().y + locPacman.y);
+}
 
+glm::vec2 GameBoardComponent::GetGhost1Location()
+{
+	return  glm::vec2(GetOwner()->GetWorldPosition().x + ghostsPos[0].x, GetOwner()->GetWorldPosition().y + ghostsPos[0].y);
+}
+glm::vec2 GameBoardComponent::GetGhost2Location()
+{
+	return  glm::vec2(GetOwner()->GetWorldPosition().x + ghostsPos[1].x, GetOwner()->GetWorldPosition().y + ghostsPos[1].y);
+}
+glm::vec2 GameBoardComponent::GetGhost3Location()
+{
+	return  glm::vec2(GetOwner()->GetWorldPosition().x + ghostsPos[2].x, GetOwner()->GetWorldPosition().y + ghostsPos[2].y);
+}
 void GameBoardComponent::ReadJsonFile(const std::string& filename)
 {
 	std::ifstream ifs(filename);
