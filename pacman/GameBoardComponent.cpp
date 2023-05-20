@@ -3,122 +3,39 @@
 #include <fstream>
 #include <rapidjson/document.h>
 
+#include "BaseComponent.h"
+#include "Renderer.h"
 #include "TextureComponent.h"
 #include "TextureManager.h"
 
-GameBoardComponent::GameBoardComponent()
+using namespace dae;
+
+
+GameBoardComponent::GameBoardComponent(const std::shared_ptr<GameBoardModel>& pModel, const std::shared_ptr<TextureManager>& pTextureManager) : m_pModel(pModel)
 {
+	m_pTextures[0] = pTextureManager->GetTexture(Textures::WallTexture);
+	m_pTextures[1] = pTextureManager->GetTexture(Textures::PillTexture);
+	m_pTextures[2] = pTextureManager->GetTexture(Textures::BoostTexture);
+	m_pTextures[3] = pTextureManager->GetTexture(Textures::PathTexture);
 }
 
-void GameBoardComponent::LoadFromJsonFile(const std::string& path, TextureManager& textureManager)
+void GameBoardComponent::Render(bool )
 {
-	ReadJsonFile(path);
-
-	for (int col = 0; col < m_Width; ++col)
+	glm::vec3 upperLeft{};
+	if (auto pOwner = GetOwner())
 	{
-		for (int row = 0; row < m_Height; ++row)
+		upperLeft = pOwner->GetWorldPosition();
+	}
+
+
+	for (int row = 0; row < m_pModel->GetRows(); ++row)
+	{
+		for (int col = 0; col < m_pModel->GetColumns(); ++col)
 		{
-
-			float posX = float(col * m_TileSize);
-			float posY = float(row * m_TileSize);
-
-
-			if (m_Grid[m_Width * row + col] != 0)
-			{
-
-
-				const auto wallTextureComp = std::make_shared<TextureComponent>();
-
-				auto object{ dae::GameObject::Create() };
-				object->SetPosition(posX, posY);
-				switch (m_Grid[m_Width * row + col])
-				{
-				case 1:
-					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Wall));
-					object->AddComponent(wallTextureComp);
-					break;
-				case 2:
-					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Pill));
-					object->AddComponent(wallTextureComp);
-					break;
-				case 3:
-					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Boost));
-					object->AddComponent(wallTextureComp);
-					break;
-				case 4:
-					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Path));
-					object->AddComponent(wallTextureComp);
-					break;
-				case 6:
-					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Path));
-					object->AddComponent(wallTextureComp);
-					ghostsPos.push_back(glm::vec2(posX, posY)) ;
-					break;
-				case 7:
-					wallTextureComp->SetTexture(textureManager.GetTexture(Textures::Path));
-					object->AddComponent(wallTextureComp);
-					locPacman =  glm::vec2(posX,posY);
-					break;
-
-				default:
-				
-					break;
-				}
-
-			 	GetOwner()->AddChild(object);
-			}
+			TileValue tileValue = m_pModel->GetTileValue(row, col);
+			glm::vec2 offset = m_pModel->GetOffset(row, col);
+			int textureIdx = (tileValue == TileValue::Gate ? 4 : static_cast<int>(tileValue)) - 1;
+			dae::Renderer::GetInstance().RenderTexture(*m_pTextures[textureIdx], upperLeft.x+offset.x, upperLeft.y+offset.y);
 		}
-	}
-}
-glm::vec2 GameBoardComponent::GetPlayerLocation()
-{
-	return  glm::vec2(GetOwner()->GetWorldPosition().x + locPacman.x, GetOwner()->GetWorldPosition().y + locPacman.y);
-}
-
-glm::vec2 GameBoardComponent::GetGhost1Location()
-{
-	return  glm::vec2(GetOwner()->GetWorldPosition().x + ghostsPos[0].x, GetOwner()->GetWorldPosition().y + ghostsPos[0].y);
-}
-glm::vec2 GameBoardComponent::GetGhost2Location()
-{
-	return  glm::vec2(GetOwner()->GetWorldPosition().x + ghostsPos[1].x, GetOwner()->GetWorldPosition().y + ghostsPos[1].y);
-}
-glm::vec2 GameBoardComponent::GetGhost3Location()
-{
-	return  glm::vec2(GetOwner()->GetWorldPosition().x + ghostsPos[2].x, GetOwner()->GetWorldPosition().y + ghostsPos[2].y);
-}
-void GameBoardComponent::ReadJsonFile(const std::string& filename)
-{
-	std::ifstream ifs(filename);
-	if (!ifs.is_open()) 
-	{
-		std::cerr << "Failed to open file: " << filename << std::endl;
-		return;
-	}
-
-	// Read the entire file into a string
-	std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-
-	rapidjson::Document doc;
-	if (doc.Parse(str.c_str()).HasParseError()) {
-		std::cerr << "Failed to parse JSON" << std::endl;
-		return;
-	}
-
-	// Get the values from the document
-	m_Width = doc["width"].GetInt();
-	m_Height = doc["height"].GetInt();
-	const rapidjson::Value& grid = doc["grid"];
-
-	// Print the values
-	//std::cout << "Width: " << m_Width << std::endl;
-	//std::cout << "Height: " << m_Height << std::endl;
-	//std::cout << "Grid:" << std::endl;
-	for (rapidjson::SizeType i = 0; i < grid.Size(); i++) {
-		for (rapidjson::SizeType j = 0; j < grid[i].Size(); j++) {
-			//std::cout << grid[i][j].GetInt() << " ";
-			m_Grid.push_back(grid[i][j].GetInt());
-		}
-		//std::cout << std::endl;
 	}
 }

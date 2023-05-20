@@ -6,6 +6,11 @@
 
 using namespace dae;
 
+TextureComponent::TextureComponent(const std::shared_ptr<dae::Texture2D>& pTexture)
+{
+	SetTexture(pTexture);
+}
+
 void TextureComponent::Render(bool) 
 {
 	if (auto pOwner = GetOwner())

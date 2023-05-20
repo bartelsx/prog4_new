@@ -46,13 +46,6 @@ namespace dae
 		void UpdateWorldPosition();
 		const glm::vec3& GetWorldPosition() ;
 
-
-		void Die();
-		void PowerUp();
-		void FruitPickUp();
-		void SmallPickUp();
-		void EnemyDead();
-
 	private:
 		bool RemoveChild(size_t index);
 		GameObject() = default;

@@ -9,8 +9,8 @@ namespace dae
 	class BaseComponent : std::enable_shared_from_this<BaseComponent>
 	{
 	public:
-		BaseComponent() {  }
-		virtual ~BaseComponent() {  }
+		BaseComponent() = default;
+		virtual ~BaseComponent() = default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
@@ -18,8 +18,6 @@ namespace dae
 
 		virtual void Update(float deltaTime);
 		virtual void Render(bool isDirty);
-		//void SetTransform(const dae::Transform& transform);
-		//void SetPosition(const glm::vec3& pos);
 
 		void SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent = true);
 		std::shared_ptr<dae::GameObject> GetOwner() const;

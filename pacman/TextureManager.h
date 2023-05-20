@@ -3,27 +3,29 @@
 
 #include "ResourceManager.h"
 
-enum Textures
+namespace dae
 {
-	Wall, Pill, Boost, Pacman, MrsPacman, Ghost1, Ghost2, Ghost3, ScaredGhost, Background, Logo, Path	
-};
 
-class TextureManager
-{
-public:
-	TextureManager();
-	~TextureManager() = default;
-	TextureManager(const TextureManager& other) = delete;
-	TextureManager(TextureManager&& other) = delete;
-	TextureManager& operator=(const TextureManager& other) = delete;
-	TextureManager& operator=(TextureManager&& other) = delete;
+	enum Textures
+	{
+		WallTexture, PillTexture, BoostTexture, PacmanTexture, MrsPacmanTexture, Ghost1Texture, Ghost2Texture, Ghost3Texture, ScaredGhostTexture, BackgroundTexture, LogoTexture, PathTexture
+	};
 
-	std::shared_ptr<dae::Texture2D> GetTexture(Textures id);
+	class TextureManager
+	{
+	public:
+		TextureManager();
+		~TextureManager() = default;
+		TextureManager(const TextureManager& other) = delete;
+		TextureManager(TextureManager&& other) = delete;
+		TextureManager& operator=(const TextureManager& other) = delete;
+		TextureManager& operator=(TextureManager&& other) = delete;
 
-private:
-	void LoadTextures();
-	std::map<Textures, std::shared_ptr<dae::Texture2D>> m_Textures;
-	
-};
+		std::shared_ptr<dae::Texture2D> GetTexture(Textures id);
 
+	private:
+		void LoadTextures();
+		std::map<Textures, std::shared_ptr<dae::Texture2D>> m_Textures;
 
+	};
+}

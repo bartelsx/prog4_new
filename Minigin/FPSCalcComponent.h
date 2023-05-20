@@ -22,7 +22,7 @@ namespace dae
 	private:
 		int m_FPS{};
 		void CalcFPS(float deltaTime);
-		void Notify(Event& event, Subject* actor) override;
+		void Notify(Event& event) override;
 		float m_WaitTime{};
 
 

@@ -1,6 +1,6 @@
 #include "PointsComponent.h"
-#include "ServiceLocator.h"
 
+#include "ServiceLocator.h"
 #include "SoundSystem.h"
 using namespace dae;
 
@@ -21,7 +21,7 @@ void PointsComponent::Notify(Event& event)
 	case EventType::ACTOR_DIED:
 		std::cout << "dead \n";
 		m_lives -= 1;
-		ServiceLocator::GetSoundSystem().Play(2, 0.5f);
+		//ServiceLocator::GetSoundSystem().Play(2, 0.5f);
 		if(m_lives <=0)
 		{
 			auto eventt = Event(EventType::GAME_OVER);

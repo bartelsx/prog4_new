@@ -1,10 +1,11 @@
 #pragma once
 #include "SceneManager.h"
 
-class TextureManager;
 
 namespace dae
 {
+	class TextureManager;
+
 	struct GridData {
 		int width;
 		int height;

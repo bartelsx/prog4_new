@@ -1,12 +1,13 @@
 #pragma once
 #include "command.h"
 
-
-class JumpCommand : public Command
+namespace dae
 {
-public:
-	virtual void Execute() { jump(); }
-	void jump() {};
-};
-
+	class JumpCommand : public Command
+	{
+	public:
+		virtual void Execute() { jump(); }
+		void jump() {};
+	};
+}
 

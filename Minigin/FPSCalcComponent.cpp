@@ -53,7 +53,7 @@ void FPSCalcComponent::CalcFPS(float deltaTime)
 
 }
 
-void FPSCalcComponent::Notify(Event& event, Subject*)
+void FPSCalcComponent::Notify(Event& event)
 {
 	if (event.m_type == EventType::ACTOR_DIED)
 	{

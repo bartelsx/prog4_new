@@ -7,8 +7,6 @@
 
 #include "AudioClip.h"
 
-std::shared_ptr<SoundSystem> ServiceLocator::ss_Instance = std::make_shared<NullSoundSystem>(default_ss);
-NullSoundSystem ServiceLocator::default_ss;
 
 class SDLSoundSystem::SDLSoundSystemImpl
 {

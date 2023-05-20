@@ -15,7 +15,7 @@
 #include "command.h"
 #include "KeyboardInputHandler.h"
 
-
+using namespace dae;
 class ControllerInputHandler::ControllerInputHandlerImpl
 {
 	using ControllerKey = std::pair<unsigned, ControllerButton>;
@@ -105,11 +105,11 @@ public:
 		}
 		else
 		{
-			m_Directions[controllerId] =glm::vec2{0,0};
+			m_Directions[controllerId] = glm::vec2{ 0,0 };
 			m_Speed[controllerId] = 0;
 			m_Acceleration[controllerId] = 0;
 		}
-		
+
 	}
 
 	void ProcessInput()
@@ -139,7 +139,7 @@ public:
 			{
 				command->Execute();
 			}
-			
+
 		}
 	}
 
@@ -151,7 +151,7 @@ public:
 		{
 			XInputGetState(i, &m_CurrentState[i]);
 			m_ButtonChanges[i] = m_CurrentState[i].Gamepad.wButtons ^ m_PreviousState[i].Gamepad.wButtons;
-			ReadThumb(i, m_CurrentState[i] );
+			ReadThumb(i, m_CurrentState[i]);
 		}
 	}
 
@@ -167,7 +167,7 @@ public:
 		int up = m_ButtonChanges[controllerId] & ~(m_CurrentState[controllerId].Gamepad.wButtons);
 		return up & static_cast<unsigned int>(button);
 	}
-	
+
 	bool IsInDeadZoneLeft(const XINPUT_STATE& state) const
 	{
 		return abs(state.Gamepad.sThumbLX) <= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && abs(state.Gamepad.sThumbLY) <= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
@@ -191,17 +191,17 @@ public:
 	bool IsLeftThumbChanged(unsigned int controllerId) const
 	{
 		return DeadZoneLeftChangedThisFrame(controllerId)
-		|| (!IsInDeadZoneLeft(m_CurrentState[controllerId])
-			&&  (m_CurrentState[controllerId].Gamepad.sThumbLX != m_PreviousState[controllerId].Gamepad.sThumbLX || m_CurrentState[controllerId].Gamepad.sThumbLY != m_PreviousState[controllerId].Gamepad.sThumbLY)
-		   );
+			|| (!IsInDeadZoneLeft(m_CurrentState[controllerId])
+				&& (m_CurrentState[controllerId].Gamepad.sThumbLX != m_PreviousState[controllerId].Gamepad.sThumbLX || m_CurrentState[controllerId].Gamepad.sThumbLY != m_PreviousState[controllerId].Gamepad.sThumbLY)
+				);
 	}
 
 	bool IsRightThumbChanged(unsigned int controllerId) const
 	{
 		return DeadZoneLeftChangedThisFrame(controllerId)
-		|| (!IsInDeadZoneRight(m_CurrentState[controllerId])
-			&& (m_CurrentState[controllerId].Gamepad.sThumbRX != m_PreviousState[controllerId].Gamepad.sThumbRX || m_CurrentState[controllerId].Gamepad.sThumbRY != m_PreviousState[controllerId].Gamepad.sThumbRY)
-		   );
+			|| (!IsInDeadZoneRight(m_CurrentState[controllerId])
+				&& (m_CurrentState[controllerId].Gamepad.sThumbRX != m_PreviousState[controllerId].Gamepad.sThumbRX || m_CurrentState[controllerId].Gamepad.sThumbRY != m_PreviousState[controllerId].Gamepad.sThumbRY)
+				);
 	}
 
 	bool IsPressed(const std::pair<unsigned, ControllerButton>& controllerButton) const
@@ -301,5 +301,5 @@ ControllerInputHandler::ControllerInputHandler()
 
 ControllerInputHandler::~ControllerInputHandler()
 {
-	
+
 }

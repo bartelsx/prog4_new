@@ -197,6 +197,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="ControllerInputHandler.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCalcComponent.h" />
     <ClInclude Include="GameObject.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="imgui_plot.h" />
+    <ClInclude Include="IMoveLimiter.h" />
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
@@ -215,7 +217,6 @@
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Observer.h" />
-    <ClInclude Include="PointsComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -232,6 +233,7 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="ControllerInputHandler.cpp" />
     <ClCompile Include="EllipticalMoveComponent.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCalcComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -246,7 +248,6 @@
     <ClCompile Include="KeyboardInputHandler.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
-    <ClCompile Include="PointsComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

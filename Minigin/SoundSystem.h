@@ -68,29 +68,3 @@ class NullSoundSystem final : public SoundSystem
 	void Play(const Sound_id, const float) override {}
 	void RegisterSound(const Sound_id, const std::string&) override {}
 };
-
-class ServiceLocator final
-{
-public:
-	ServiceLocator() { ss_Instance = std::make_shared<NullSoundSystem>(); }
-
-	static SoundSystem& GetSoundSystem() { return *ss_Instance.get(); }
-	static void RegisterSoundSystem(std::shared_ptr<SoundSystem> ss)
-	{
-		if (ss != nullptr)
-		{
-			ss_Instance = ss;
-		}
-	}
-	static void Shutdown() {
-		if (ss_Instance != std::make_shared<NullSoundSystem>(default_ss))
-		{
-			ss_Instance = nullptr;
-		}
-		ss_Instance = std::make_shared<NullSoundSystem>(default_ss);
-	}
-
-private:
-	static std::shared_ptr<SoundSystem> ss_Instance;
-	static NullSoundSystem default_ss;
-};

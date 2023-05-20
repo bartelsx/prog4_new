@@ -11,7 +11,9 @@
 #include "command.h"
 #include "SoundSystem.h"
 
-class dae::KeyboardInputHandler::KeyboardInputHandlerImpl
+using namespace dae;
+
+class KeyboardInputHandler::KeyboardInputHandlerImpl
 {
 public:
     bool ProcessInput()
@@ -29,15 +31,6 @@ public:
             if (e.type == SDL_KEYUP)
             {
                 DoCommandForKey(e.key.keysym.scancode, false);
-
-               if(e.key.keysym.scancode == SDL_SCANCODE_DOWN)
-               {
-                   ServiceLocator::GetSoundSystem().Play(0, 0.1f);
-               }
-               if (e.key.keysym.scancode == SDL_SCANCODE_UP)
-               {
-                   ServiceLocator::GetSoundSystem().Play(0, 1.f);
-               }
             }
 
         }
@@ -78,28 +71,28 @@ private:
 
 };
 
-dae::KeyboardInputHandler::KeyboardInputHandler()
+KeyboardInputHandler::KeyboardInputHandler()
 {
     pKeyboardInputHandlerImpl = new KeyboardInputHandlerImpl();
 }
 
-dae::KeyboardInputHandler::~KeyboardInputHandler()
+KeyboardInputHandler::~KeyboardInputHandler()
 {
     delete pKeyboardInputHandlerImpl;
     pKeyboardInputHandlerImpl = nullptr;
 }
 
-bool dae::KeyboardInputHandler::ProcessInput() const
+bool KeyboardInputHandler::ProcessInput() const
 {
     return pKeyboardInputHandlerImpl->ProcessInput();
 }
 
-void dae::KeyboardInputHandler::AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command) const
+void KeyboardInputHandler::AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command) const
 {
     pKeyboardInputHandlerImpl->AddCommand(key, command);
 }
 
-void dae::KeyboardInputHandler::RemoveCommand(const SDL_Scancode key) const
+void KeyboardInputHandler::RemoveCommand(const SDL_Scancode key) const
 {
     pKeyboardInputHandlerImpl->RemoveCommand(key);
 }

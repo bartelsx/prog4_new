@@ -50,6 +50,7 @@ namespace dae
 	class TextComponent final : public BaseComponent
 	{
 	public:
+		TextComponent() : m_isDirty(true){}
 		TextComponent(const std::string& text, std::shared_ptr<Font> font);
 		TextComponent(const  std::shared_ptr<TextProvider> textProvider, std::shared_ptr<Font> font);
 

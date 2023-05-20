@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 #include "BaseComponent.h"
+#include "EventManager.h"
 
 #include "Renderer.h"
 
@@ -17,6 +18,10 @@ void dae::GameObject::Update(float deltaTime)
 	for (auto component : m_Components)
 	{
 		component->Update(deltaTime);
+	}
+	for (auto child : m_children)
+	{
+		child->Update(deltaTime);
 	}
 }
 
@@ -176,37 +181,7 @@ const glm::vec3& GameObject::GetWorldPosition()
 		UpdateWorldPosition();
 	return m_worldPosition;
 }
-//meot weg
-void GameObject::Die()
-{
-	auto event = Event(EventType::ACTOR_DIED);
-	Notify(event);
-}
 
-void GameObject::PowerUp()
-{
-	auto event = Event(EventType::POWER_UP);
-	Notify(event);
-}
-
-void GameObject::FruitPickUp()
-{
-	auto event = Event(EventType::FRUIT_PICKUP);
-	Notify(event);
-}
-
-void GameObject::SmallPickUp()
-{
-	auto event = Event(EventType::SMALL_PICKUP);
-	Notify(event);
-}
-
-void GameObject::EnemyDead()
-{
-	auto event = Event(EventType::ENEMY_DIED);
-	Notify(event);
-}
-// tot hier niet elke gameObj is een subject
 void GameObject::UpdateWorldPosition()
 {
 	if (m_isDirty)

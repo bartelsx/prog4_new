@@ -1,5 +1,8 @@
 #pragma once
+#include <any>
 #include <glm/fwd.hpp>
+
+#include "Singleton.h"
 
 //#include "Achievement.h"
 
@@ -28,16 +31,26 @@ enum EventType {
 struct Event
 {
 	Event(EventType type) : m_type{ type }{}
+
+	EventType GetType() const { return m_type; }
+
+	template <typename T>
+	static Event& Create(EventType type, T& data)
+	{
+		Event ev(type);
+		ev.SetData(data);
+		return ev;
+	}
+
+	template <typename T>
+	void SetData(T& data) { m_data = data; }
+
+	template <typename T>
+	T& GetData() { return any_cast<T>(m_data); }
+
 	EventType m_type{};
 	glm::uint8_t m_numArgs{};
-};
-
-template <typename EventArg>
-struct EventWithArg : Event
-{
-	EventWithArg(EventType type, EventArg arg) : Event(type), m_arg(arg) {  }
-	EventArg m_arg{};
-	EventArg GetArg() { return m_arg; };
+	std::any m_data{};
 };
 
 
@@ -49,7 +62,7 @@ public:
 	Observer()
 	{}
 	virtual ~Observer() = default;
-	virtual void Notify(Event& event, Subject* actor) = 0;
+	virtual void Notify(Event& event) = 0;
 	// Other stuff...
 ;
 };
@@ -61,13 +74,13 @@ public:
 	std::unique_ptr<Node> m_next{};
 	std::shared_ptr<Observer> pObserver{};
 
-	void Notify(Event& event, Subject* sender)
+	void Notify(Event& event)
 	{
 		if (m_next != nullptr)
 		{
-			m_next->Notify(event, sender);
+			m_next->Notify(event);
 		}
-		pObserver->Notify(event, sender);
+		pObserver->Notify(event);
 
 	}
 };
@@ -120,9 +133,10 @@ public:
 			return;
 		}
 
-		m_head->Notify(event, this);
+		m_head->Notify(event);
 	}
 	// Methods...
 private:
 	std::unique_ptr<Node> m_head;
 };
+

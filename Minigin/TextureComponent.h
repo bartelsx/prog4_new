@@ -5,6 +5,9 @@
 class TextureComponent :   public dae::BaseComponent
 {
 public:
+	TextureComponent(){}
+	TextureComponent(const std::shared_ptr<dae::Texture2D>& pTexture);
+
 	//virtual void Update(float deltaTime) override;
 	virtual void Render(bool isDirty) override;
 
