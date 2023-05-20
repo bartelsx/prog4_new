@@ -32,7 +32,7 @@ namespace dae
 
 		virtual void Release()
 		{
-			Move(MoveParameters{});
+			//Move(MoveParameters{});
 		}
 
 		void Move(const MoveParameters& params)

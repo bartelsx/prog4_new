@@ -29,6 +29,7 @@ namespace dae
 		void ReadJsonFile(const std::string& filename);
 		int GetIdx(int row, int col) const;
 
+		int GetTileSize() const { return int(m_TileSize); }
 		int GetWidth() const { return int(m_Columns * m_TileSize); }
 		int GetHeight() const { return int(m_Rows * m_TileSize); }
 
@@ -39,7 +40,7 @@ namespace dae
 		TileValue GetTileValue(int row, int col) const;
 
 		bool IsPlayerAllowedAtLocation(glm::vec2 location) const;
-
+		bool IsTileAtLocationAccessible(glm::vec2 location) const;
 
 		glm::vec2 GetPlayerSpawnLocation() const;
 		glm::vec2 GetGhostSpawnLocation(int ghostIdx) const;
@@ -54,6 +55,5 @@ namespace dae
 		std::vector<glm::vec2> m_ghostSpawnLocations{};
 		glm::vec2 m_pacmanSpawnLocation{};
 
-		bool IsTileAtLocationAccessible(glm::vec2 location) const;
 	};
 }
