@@ -11,7 +11,7 @@ namespace dae
 	class Texture2D;
 	class BaseComponent;
 	
-	class GameObject final : public std::enable_shared_from_this<GameObject>, public Subject
+	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		~GameObject() = default;

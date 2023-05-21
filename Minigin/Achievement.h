@@ -11,13 +11,13 @@ public:
 	{
 		sender;
 		switch (event.m_type) {
-		case EventType::ACTOR_DIED:
+		case TEventType::ACTOR_DIED:
 			std::cout << "dead \n";
 			break; 
-		case EventType::LEVEL_STARTED:
+		case TEventType::LEVEL_STARTED:
 			break;
 
-		case EventType::PLAYER_SPAWNED:
+		case TEventType::PLAYER_SPAWNED:
 			break;
 			// etc...  
 		}

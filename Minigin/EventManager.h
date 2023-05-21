@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <memory>
 #include <vector>
 
 #include "Observer.h"
@@ -8,11 +9,11 @@
 class EventManager : public dae::Singleton<EventManager>
 {
 public:
-	void Subscribe(const EventType eventType, const std::weak_ptr<Observer>& pObserver);
-	void Unsubscribe(EventType eventType, std::weak_ptr<Observer>& pObserver);
+	static void Subscribe(const TEventType eventType, const std::weak_ptr<Observer>& pObserver);
+	static void Unsubscribe(TEventType eventType, const std::weak_ptr<Observer>& pObserver);
 
-	void Publish(Event& event);
+	static void Publish(Event event);
 
 private:
-	std::map<EventType, std::shared_ptr<std::vector<std::weak_ptr<Observer>>> > _subscriptions {};
+	std::map<TEventType, std::shared_ptr<std::vector<std::weak_ptr<Observer>>> > _subscriptions {};
 };

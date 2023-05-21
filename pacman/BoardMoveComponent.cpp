@@ -1,5 +1,8 @@
 #include "BoardMoveComponent.h"
 
+#include "EventManager.h"
+#include "EventType.h"
+
 using namespace dae;
 
 
@@ -10,6 +13,7 @@ BoardMoveComponent::BoardMoveComponent(std::shared_ptr<GameBoardModel> pModel) :
 void BoardMoveComponent::Update(float deltaTime)
 {
 	auto pOwner = GetOwner();
+	auto currentPos = pOwner->GetPosition();
 	auto newPos = CalculateNewPos(pOwner->GetPosition(), deltaTime);
 	auto tileSize = m_pModel->GetTileSize();
 
@@ -36,9 +40,9 @@ void BoardMoveComponent::Update(float deltaTime)
 		newPos.y = static_cast<float> (std::min(static_cast<int>(newPos.y), static_cast<int>(centerOfPlayer.y / tileSize) * tileSize));
 	}
 
-		//if (m_pModel->IsPlayerAllowedAtLocation(newPos))
+	if (newPos != currentPos)
 	{
 		pOwner->SetPosition(newPos);
+		EventManager::GetInstance().Publish(Event::Create(EventType::PLAYER_MOVED, pOwner));
 	}
-
 }

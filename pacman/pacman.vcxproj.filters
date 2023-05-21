@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{03b1b720-1a2a-458b-904d-0f111f7ff383}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{bbed95bd-dd56-4a1b-b9f8-efb2ef8f8783}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -70,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="BoardMoveComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EventType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@ namespace dae
 	class Font;
 	class Texture2D;
 
-	class FPSCalcComponent : public BaseComponent, public TextProvider, public Observer
+	class FPSCalcComponent : public BaseComponent, public TextProvider
 	{
 
 	public:
@@ -22,7 +22,6 @@ namespace dae
 	private:
 		int m_FPS{};
 		void CalcFPS(float deltaTime);
-		void Notify(Event& event) override;
 		float m_WaitTime{};
 
 

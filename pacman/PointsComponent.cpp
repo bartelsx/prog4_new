@@ -1,48 +1,50 @@
 #include "PointsComponent.h"
 
+#include <string>
+
+#include "EventType.h"
 #include "ServiceLocator.h"
 #include "SoundSystem.h"
 using namespace dae;
 
+std::shared_ptr<PointsComponent> PointsComponent::Create()
+{
+	auto ptr = std::shared_ptr<PointsComponent>(new PointsComponent());
+	EventManager::Subscribe(EventType::SMALL_PICKUP, ptr);
+	EventManager::Subscribe(EventType::POWER_UP, ptr);
+	return ptr;
+}
+
 void PointsComponent::Update(float)
-{
-
-}
-
-void PointsComponent::CalcPoints()
-{
-	m_Points += 100;
-
-}
+{}
 
 void PointsComponent::Notify(Event& event)
 {
-	switch (event.m_type) {
+	switch (event.GetType()) {
 	case EventType::ACTOR_DIED:
 		std::cout << "dead \n";
 		m_lives -= 1;
-		//ServiceLocator::GetSoundSystem().Play(2, 0.5f);
-		if(m_lives <=0)
+		if (m_lives <= 0)
 		{
-			auto eventt = Event(EventType::GAME_OVER);
-			Notify(eventt );
+			EventManager::Publish(Event(EventType::GAME_OVER));
 		}
 		break;
-	case EventType::ENEMY_DIED:
+
+		case EventType::ENEMY_DIED:
 		m_Points += 200;
 		break;
 
 	case EventType::FRUIT_PICKUP:
 		m_Points += 100;
 		break;
+
 	case EventType::POWER_UP:
 		m_Points += 50;
 		break;
+
 	case EventType::SMALL_PICKUP:
 		m_Points += 10;
 		break;
-	
-		// etc...  
 	}
 }
 
@@ -53,6 +55,6 @@ std::string PointsComponent::GetScore()
 }
 std::string PointsComponent::GetLives()
 {
-	std::string text{ "lives: " + std::to_string(m_lives)};
+	std::string text{ "lives: " + std::to_string(m_lives) };
 	return text;
 }

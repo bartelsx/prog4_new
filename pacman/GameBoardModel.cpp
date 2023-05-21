@@ -5,6 +5,8 @@
 #include <glm/vec2.hpp>
 #include <rapidjson/document.h>
 
+#include "EventManager.h"
+#include "EventType.h"
 #include "TextureComponent.h"
 
 using namespace dae;
@@ -29,11 +31,11 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 				switch (m_Grid[idx])
 				{
 				case 6:
-					m_ghostSpawnLocations.push_back(glm::vec2(posX, posY));
+					m_GhostSpawnLocations.push_back(glm::vec2(posX, posY));
 					m_Grid[idx] = 4;
 					break;
 				case 7:
-					m_pacmanSpawnLocation = glm::vec2(posX, posY);
+					m_PacmanSpawnLocation = glm::vec2(posX, posY);
 					m_Grid[idx] = 4;
 					break;
 
@@ -43,6 +45,12 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 			}
 		}
 	}
+}
+
+void GameBoardModel::ChangeTileValue(glm::vec2 position, TileValue newValue)
+{
+	auto idx = GetIdx(position);
+	m_Grid[idx] = int(newValue);
 }
 
 void GameBoardModel::ReadJsonFile(const std::string& filename)
@@ -91,6 +99,12 @@ int GameBoardModel::GetIdx(int row, int col) const
 	return row * m_Columns + col;
 }
 
+int GameBoardModel::GetIdx(const glm::vec2 location) const
+{
+	return GetIdx(static_cast<int>(location.y / m_TileSize), static_cast<int>(location.x / m_TileSize));
+}
+
+
 glm::vec2 GameBoardModel::GetOffset(int row, int col) const
 {
 	return glm::vec2 {col*m_TileSize, row*m_TileSize};
@@ -99,6 +113,11 @@ glm::vec2 GameBoardModel::GetOffset(int row, int col) const
 TileValue GameBoardModel::GetTileValue(int row, int col) const
 {
 	return static_cast<TileValue>(m_Grid[GetIdx(row, col)]);
+}
+
+TileValue GameBoardModel::GetTileValue(const glm::vec2 location) const
+{
+	return static_cast<TileValue>(m_Grid[GetIdx(location)]);
 }
 
 bool GameBoardModel::IsPlayerAllowedAtLocation(glm::vec2 location) const
@@ -120,10 +139,10 @@ bool GameBoardModel::IsTileAtLocationAccessible(glm::vec2 location) const
 glm::vec2 GameBoardModel::GetPlayerSpawnLocation() const
 {
 	return
-	m_pacmanSpawnLocation;
+	m_PacmanSpawnLocation;
 }
 
 glm::vec2 GameBoardModel::GetGhostSpawnLocation(int ghostIdx) const
 {
-	return  m_ghostSpawnLocations[ghostIdx];
+	return  m_GhostSpawnLocations[ghostIdx];
 }
