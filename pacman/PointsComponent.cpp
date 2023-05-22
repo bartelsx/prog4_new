@@ -10,8 +10,8 @@ using namespace dae;
 std::shared_ptr<PointsComponent> PointsComponent::Create()
 {
 	auto ptr = std::shared_ptr<PointsComponent>(new PointsComponent());
-	EventManager::Subscribe(EventType::SMALL_PICKUP, ptr);
-	EventManager::Subscribe(EventType::POWER_UP, ptr);
+	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
+	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
 	return ptr;
 }
 
@@ -38,11 +38,11 @@ void PointsComponent::Notify(Event& event)
 		m_Points += 100;
 		break;
 
-	case EventType::POWER_UP:
+	case EventType::BOOST_PICKUP:
 		m_Points += 50;
 		break;
 
-	case EventType::SMALL_PICKUP:
+	case EventType::PILL_PICKUP:
 		m_Points += 10;
 		break;
 	}

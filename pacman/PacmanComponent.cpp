@@ -4,9 +4,14 @@
 using namespace dae;
 
 PacmanComponent::PacmanComponent(const std::shared_ptr<Texture2D>& pTexture, const std::shared_ptr<GameBoardModel>& pGameBoardModel)
-	: TextureComponent(pTexture)
+	: ActorComponent(ActorType::Pacman, pTexture)
 	, m_pGameBoardModel(pGameBoardModel)
 {
+}
+
+std::shared_ptr<PacmanComponent> PacmanComponent::GetPtr()
+{
+	return std::dynamic_pointer_cast<PacmanComponent>(shared_from_this());
 }
 
 void PacmanComponent::Update(float)
@@ -18,16 +23,17 @@ void PacmanComponent::Update(float)
 	{
 		const auto centerOffset = m_pGameBoardModel->GetTileSize() / 2;
 		const auto centerOfActor = glm::vec2{ position.x + centerOffset, position.y + centerOffset };
+		const std::shared_ptr<PacmanComponent> ptr = GetPtr();
 
 		switch (m_pGameBoardModel->GetTileValue(centerOfActor))
 		{
 		case TileValue::Pill:
 			m_pGameBoardModel->ChangeTileValue(centerOfActor, TileValue::Path);
-			EventManager::Publish(Event::Create(EventType::SMALL_PICKUP, pOwner));
+			EventManager::Publish(Event::Create(EventType::PILL_PICKUP, ptr));
 			break;
 		case TileValue::Boost:
 			m_pGameBoardModel->ChangeTileValue(centerOfActor, TileValue::Path);
-			EventManager::Publish(Event::Create(EventType::POWER_UP, pOwner));
+			EventManager::Publish(Event::Create(EventType::BOOST_PICKUP, ptr));
 			break;
 		}
 		m_previousPosition = position;

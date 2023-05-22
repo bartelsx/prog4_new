@@ -6,7 +6,7 @@
 
 namespace dae
 {
-	class BaseComponent : std::enable_shared_from_this<BaseComponent>
+	class BaseComponent : public std::enable_shared_from_this<BaseComponent>
 	{
 	public:
 		BaseComponent() = default;

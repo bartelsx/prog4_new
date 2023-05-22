@@ -18,8 +18,9 @@ namespace dae
 		inline const static TEventType ENEMY_DIED = 2;
 		inline const static TEventType GAME_OVER = 3;
 		inline const static TEventType FRUIT_PICKUP = 4;
-		inline const static TEventType POWER_UP = 5;
-		inline const static TEventType SMALL_PICKUP = 6;
-		inline const static TEventType PLAYER_MOVED = 7;
+		inline const static TEventType BOOST_PICKUP = 5;
+		inline const static TEventType PILL_PICKUP = 6;
+		inline const static TEventType ACTOR_MOVED = 7;
+		inline const static TEventType GAME_START = 8;
 	};
 }

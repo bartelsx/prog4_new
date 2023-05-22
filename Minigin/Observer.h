@@ -17,29 +17,48 @@ namespace dae
 
 using TEventType = int;
 
-struct Event
+template <typename T>
+class EventWithPayload;
+
+class Event
 {
+public:
 	Event(TEventType type) : m_type{ type }{}
 
-	TEventType GetType() const { return m_type; }
+	virtual TEventType GetType() const { return m_type; }
 
 	template <typename T>
-	static Event Create(TEventType type, T data)
+	static EventWithPayload<T> Create(TEventType type, T data)
 	{
-		Event ev(type);
-		ev.SetData(data);
+		EventWithPayload<T> ev(type, data);
+		
 		return ev;
 	}
 
-	template <typename T>
-	void SetData(T data) { m_data = data; }
+	//template <typename T>
+	//void SetData(T data) { m_data = data; }
 
-	template <typename T>
-	T GetData() { return any_cast<T>(m_data); }
+	//template <typename T>
+	//T GetData() { return any_cast<T>(m_data); }
 
 	TEventType m_type{};
-	glm::uint8_t m_numArgs{};
-	std::any m_data{};
+	//glm::uint8_t m_numArgs{};
+	//std::any m_data{};
+};
+
+template <typename T>
+class EventWithPayload : public Event
+{
+public:
+	EventWithPayload(TEventType type, T data) : Event(type), m_Data(data)
+	{  }
+	
+	void SetData(T data) { m_Data = data; }
+
+	T GetData() { return m_Data; }
+
+private:
+	T m_Data;
 };
 
 

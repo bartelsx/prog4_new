@@ -6,7 +6,7 @@
 #include "Observer.h"
 #include "Singleton.h"
 
-class EventManager : public dae::Singleton<EventManager>
+class EventManager : dae::Singleton<EventManager>
 {
 public:
 	static void Subscribe(const TEventType eventType, const std::weak_ptr<Observer>& pObserver);

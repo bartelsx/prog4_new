@@ -1,27 +1,15 @@
 #include "Scene.h"
 
-#include <fstream>
-#include <sstream>
-
 #include "GameObject.h"
-#include <fstream>
-#include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
 #include <iomanip>
-#include <iostream>
-#include <fstream>
 #include <vector>
 #include <string>
-#include <sstream>
-#include <iomanip>
 #include <filesystem>
-#include <iterator>
 #include <memory>
 #include <utility>
 
-#include "TextureComponent.h"
 #include "rapidjson/document.h"
 using namespace rapidjson;
 using namespace dae;

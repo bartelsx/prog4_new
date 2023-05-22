@@ -1,11 +1,12 @@
 #pragma once
+#include "ActorComponent.h"
 #include "GameBoardModel.h"
 #include "TextureComponent.h"
 
 namespace dae
 {
 
-	class PacmanComponent :	public TextureComponent, std::enable_shared_from_this<PacmanComponent>
+	class PacmanComponent :	public ActorComponent
 	{
 	public:
 		~PacmanComponent() = default;
@@ -26,6 +27,7 @@ namespace dae
 		PacmanComponent(const std::shared_ptr<dae::Texture2D>& pTexture, const std::shared_ptr<GameBoardModel>& pGameBoardModel);
 		std::shared_ptr<GameBoardModel> m_pGameBoardModel;
 		glm::vec2 m_previousPosition{};
+		std::shared_ptr<PacmanComponent> GetPtr();
 	};
 }
 

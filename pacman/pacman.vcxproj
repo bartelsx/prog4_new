@@ -151,22 +151,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BoardMoveComponent.cpp" />
+    <ClCompile Include="ActorComponent.cpp" />
+    <ClCompile Include="ActorMoveComponent.cpp" />
     <ClCompile Include="GameBoardComponent.cpp" />
     <ClCompile Include="GameBoardModel.cpp" />
+    <ClCompile Include="GhostComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MoveToPacmanComponent.cpp" />
     <ClCompile Include="PacmanComponent.cpp" />
     <ClCompile Include="PointsComponent.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoardMoveComponent.h" />
+    <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="ActorMoveComponent.h" />
     <ClInclude Include="EventType.h" />
     <ClInclude Include="GameBoardComponent.h" />
     <ClInclude Include="GameBoardModel.h" />
+    <ClInclude Include="GhostComponent.h" />
+    <ClInclude Include="MoveToPacmanComponent.h" />
     <ClInclude Include="PacmanComponent.h" />
+    <ClInclude Include="ActorType.h" />
     <ClInclude Include="PointsComponent.h" />
     <ClInclude Include="ServiceLocator.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>

@@ -1,0 +1,29 @@
+#include "SoundPlayer.h"
+#include "EventManager.h"
+#include "EventType.h"
+#include "ServiceLocator.h"
+#include "Sound.h"
+
+using namespace dae;
+
+std::shared_ptr<SoundPlayer>SoundPlayer::Create()
+{
+	auto ptr = std::shared_ptr<SoundPlayer>(new SoundPlayer());
+	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
+	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
+	//EventManager::Subscribe(EventType::, ptr);
+	return ptr;
+}
+
+void SoundPlayer::Notify(Event& event)
+{
+	switch (event.GetType())
+	{
+	case EventType::PILL_PICKUP:
+		ServiceLocator::GetSoundSystem().Play(Sound::PACMAN_CHOMP, .5f);
+		break;
+	case EventType::BOOST_PICKUP:
+		ServiceLocator::GetSoundSystem().Play(Sound::PACMAN_POWERUP, .5f);
+		break;
+	}
+}

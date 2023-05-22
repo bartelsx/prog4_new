@@ -1,17 +1,17 @@
 #pragma once
 #include "SceneManager.h"
 
-
 namespace dae
 {
 	class TextureManager;
+	class GameObject;
 
 	struct GridData {
 		int width;
 		int height;
 		std::vector<int> grid;
 	};
-	class GameObject;
+
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -40,7 +40,5 @@ namespace dae
 		
 		int m_LevelIndex = 2;
 		int m_LevelCount = 3;
-
 	};
-
 }

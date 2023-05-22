@@ -1,4 +1,4 @@
-#include "BoardMoveComponent.h"
+#include "ActorMoveComponent.h"
 
 #include "EventManager.h"
 #include "EventType.h"
@@ -6,15 +6,17 @@
 using namespace dae;
 
 
-BoardMoveComponent::BoardMoveComponent(std::shared_ptr<GameBoardModel> pModel) : m_pModel(pModel)
+ActorMoveComponent::ActorMoveComponent(std::shared_ptr<MoveComponent> pBase, std::shared_ptr<GameBoardModel> pModel)
+	: m_pBase(pBase)
+	, m_pModel(pModel)
 {
 }
 
-void BoardMoveComponent::Update(float deltaTime)
+void ActorMoveComponent::Update(float deltaTime)
 {
 	auto pOwner = GetOwner();
 	auto currentPos = pOwner->GetPosition();
-	auto newPos = CalculateNewPos(pOwner->GetPosition(), deltaTime);
+	auto newPos = m_pBase->CalculateNewPos(pOwner->GetPosition(), deltaTime);
 	auto tileSize = m_pModel->GetTileSize();
 
 	glm::vec2 centerOfPlayer{ newPos.x + m_pModel->GetTileSize() / 2, newPos.y + m_pModel->GetTileSize() / 2 };
@@ -43,6 +45,6 @@ void BoardMoveComponent::Update(float deltaTime)
 	if (newPos != currentPos)
 	{
 		pOwner->SetPosition(newPos);
-		EventManager::GetInstance().Publish(Event::Create(EventType::PLAYER_MOVED, pOwner));
+		EventManager::Publish(EventWithPayload<std::shared_ptr<GameObject>>(EventType::ACTOR_MOVED, pOwner));
 	}
 }

@@ -7,6 +7,7 @@
 
 #include "AudioClip.h"
 
+using namespace dae;
 
 class SDLSoundSystem::SDLSoundSystemImpl
 {

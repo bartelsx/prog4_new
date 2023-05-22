@@ -3,34 +3,20 @@
 
 namespace dae
 {
+	static std::shared_ptr<SoundSystem>  ss_Instance = std::make_shared<NullSoundSystem>();
 
 	class ServiceLocator final
 	{
 	public:
-
 		static SoundSystem& GetSoundSystem()
 		{
-			if (ss_Instance == nullptr)
-			{
-				ss_Instance = std::make_shared<NullSoundSystem>();
-			}
-			return *ss_Instance.get();
+			return *ss_Instance;
 		}
 
 		static void RegisterSoundSystem(std::shared_ptr<SoundSystem> ss)
 		{
-			if (ss != nullptr)
-			{
-				ss_Instance = ss;
-			}
+			ss_Instance = ss;
 		}
-
-		static void Shutdown()
-		{
-			ss_Instance = nullptr;
-		}
-
-	private:
-		static std::shared_ptr<SoundSystem> ss_Instance;
 	};
+
 }
