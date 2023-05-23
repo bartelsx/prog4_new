@@ -1512,7 +1512,7 @@ static void ShowDemoWindowWidgets()
             // than usually reported by a typical string class.
             static ImVector<char> my_str;
             if (my_str.empty())
-                my_str.push_back(0);
+                my_str.emplace_back(0);
             Funcs::MyInputTextMultiline("##MyStr", &my_str, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16));
             ImGui::Text("Data: %p\nSize: %d\nCapacity: %d", (void*)my_str.begin(), my_str.size(), my_str.capacity());
             ImGui::TreePop();
@@ -1602,7 +1602,7 @@ static void ShowDemoWindowWidgets()
             static int next_tab_id = 0;
             if (next_tab_id == 0) // Initialize with some default tabs
                 for (int i = 0; i < 3; i++)
-                    active_tabs.push_back(next_tab_id++);
+                    active_tabs.emplace_back(next_tab_id++);
 
             // TabItemButton() and Leading/Trailing flags are distinct features which we will demo together.
             // (It is possible to submit regular tabs with Leading/Trailing flags, or TabItemButton tabs without Leading/Trailing flags...
@@ -1636,7 +1636,7 @@ static void ShowDemoWindowWidgets()
                 // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
                 if (show_trailing_button)
                     if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
-                        active_tabs.push_back(next_tab_id++); // Add new tab
+                        active_tabs.emplace_back(next_tab_id++); // Add new tab
 
                 // Submit our regular tabs
                 for (int n = 0; n < active_tabs.Size; )
@@ -5434,12 +5434,12 @@ static void ShowDemoWindowTables()
                                 if (item_is_selected)
                                     selection.find_erase_unsorted(item->ID);
                                 else
-                                    selection.push_back(item->ID);
+                                    selection.emplace_back(item->ID);
                             }
                             else
                             {
                                 selection.clear();
-                                selection.push_back(item->ID);
+                                selection.emplace_back(item->ID);
                             }
                         }
                     }
@@ -6553,10 +6553,10 @@ struct ExampleAppConsole
         HistoryPos = -1;
 
         // "CLASSIFY" is here to provide the test case where "C"+[tab] completes to "CL" and display multiple matches.
-        Commands.push_back("HELP");
-        Commands.push_back("HISTORY");
-        Commands.push_back("CLEAR");
-        Commands.push_back("CLASSIFY");
+        Commands.emplace_back("HELP");
+        Commands.emplace_back("HISTORY");
+        Commands.emplace_back("CLEAR");
+        Commands.emplace_back("CLASSIFY");
         AutoScroll = true;
         ScrollToBottom = false;
         AddLog("Welcome to Dear ImGui!");
@@ -6590,7 +6590,7 @@ struct ExampleAppConsole
         vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
         buf[IM_ARRAYSIZE(buf)-1] = 0;
         va_end(args);
-        Items.push_back(Strdup(buf));
+        Items.emplace_back(Strdup(buf));
     }
 
     void    Draw(const char* title, bool* p_open)
@@ -6748,7 +6748,7 @@ struct ExampleAppConsole
                 History.erase(History.begin() + i);
                 break;
             }
-        History.push_back(Strdup(command_line));
+        History.emplace_back(Strdup(command_line));
 
         // Process command
         if (Stricmp(command_line, "CLEAR") == 0)
@@ -6807,7 +6807,7 @@ struct ExampleAppConsole
                 ImVector<const char*> candidates;
                 for (int i = 0; i < Commands.Size; i++)
                     if (Strnicmp(Commands[i], word_start, (int)(word_end - word_start)) == 0)
-                        candidates.push_back(Commands[i]);
+                        candidates.emplace_back(Commands[i]);
 
                 if (candidates.Size == 0)
                 {
@@ -6916,7 +6916,7 @@ struct ExampleAppLog
     {
         Buf.clear();
         LineOffsets.clear();
-        LineOffsets.push_back(0);
+        LineOffsets.emplace_back(0);
     }
 
     void    AddLog(const char* fmt, ...) IM_FMTARGS(2)
@@ -6928,7 +6928,7 @@ struct ExampleAppLog
         va_end(args);
         for (int new_size = Buf.size(); old_size < new_size; old_size++)
             if (Buf[old_size] == '\n')
-                LineOffsets.push_back(old_size + 1);
+                LineOffsets.emplace_back(old_size + 1);
     }
 
     void    Draw(const char* title, bool* p_open = NULL)
@@ -7671,8 +7671,8 @@ static void ShowExampleAppCustomRendering(bool* p_open)
             // Add first and second point
             if (is_hovered && !adding_line && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
             {
-                points.push_back(mouse_pos_in_canvas);
-                points.push_back(mouse_pos_in_canvas);
+                points.emplace_back(mouse_pos_in_canvas);
+                points.emplace_back(mouse_pos_in_canvas);
                 adding_line = true;
             }
             if (adding_line)
@@ -7812,12 +7812,12 @@ struct ExampleAppDocuments
 
     ExampleAppDocuments()
     {
-        Documents.push_back(MyDocument("Lettuce",             true,  ImVec4(0.4f, 0.8f, 0.4f, 1.0f)));
-        Documents.push_back(MyDocument("Eggplant",            true,  ImVec4(0.8f, 0.5f, 1.0f, 1.0f)));
-        Documents.push_back(MyDocument("Carrot",              true,  ImVec4(1.0f, 0.8f, 0.5f, 1.0f)));
-        Documents.push_back(MyDocument("Tomato",              false, ImVec4(1.0f, 0.3f, 0.4f, 1.0f)));
-        Documents.push_back(MyDocument("A Rather Long Title", false));
-        Documents.push_back(MyDocument("Some Document",       false));
+        Documents.emplace_back(MyDocument("Lettuce",             true,  ImVec4(0.4f, 0.8f, 0.4f, 1.0f)));
+        Documents.emplace_back(MyDocument("Eggplant",            true,  ImVec4(0.8f, 0.5f, 1.0f, 1.0f)));
+        Documents.emplace_back(MyDocument("Carrot",              true,  ImVec4(1.0f, 0.8f, 0.5f, 1.0f)));
+        Documents.emplace_back(MyDocument("Tomato",              false, ImVec4(1.0f, 0.3f, 0.4f, 1.0f)));
+        Documents.emplace_back(MyDocument("A Rather Long Title", false));
+        Documents.emplace_back(MyDocument("Some Document",       false));
     }
 };
 
@@ -7962,7 +7962,7 @@ void ShowExampleAppDocuments(bool* p_open)
             if (doc->WantClose)
             {
                 doc->WantClose = false;
-                close_queue.push_back(doc);
+                close_queue.emplace_back(doc);
             }
         }
     }

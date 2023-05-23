@@ -31,7 +31,7 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 				switch (m_Grid[idx])
 				{
 				case 6:
-					m_GhostSpawnLocations.push_back(glm::vec2(posX, posY));
+					m_GhostSpawnLocations.emplace_back(glm::vec2(posX, posY));
 					m_Grid[idx] = 4;
 					break;
 				case 7:
@@ -83,7 +83,7 @@ void GameBoardModel::ReadJsonFile(const std::string& filename)
 	for (rapidjson::SizeType i = 0; i < grid.Size(); i++) {
 		for (rapidjson::SizeType j = 0; j < grid[i].Size(); j++) {
 			//std::cout << grid[i][j].GetInt() << " ";
-			m_Grid.push_back(grid[i][j].GetInt());
+			m_Grid.emplace_back(grid[i][j].GetInt());
 		}
 		//std::cout << std::endl;
 	}

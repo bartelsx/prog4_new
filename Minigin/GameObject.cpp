@@ -33,7 +33,7 @@ void dae::GameObject::AddComponent(const std::shared_ptr<BaseComponent>& compone
 	{
 		component->SetOwner(shared_from_this(), false);
 	}
-	m_Components.push_back(component);
+	m_Components.emplace_back(component);
 }
 
 std::shared_ptr<BaseComponent> dae::GameObject::GetComponent(int index)
@@ -129,7 +129,7 @@ void dae::GameObject::SetParent(std::shared_ptr<GameObject>& pParent)
 
 void dae::GameObject::AddChildCore(const std::shared_ptr<dae::GameObject> child)
 {
-	m_children.push_back(child);
+	m_children.emplace_back(child);
 	m_isDirty = true;
 }
 

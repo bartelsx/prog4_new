@@ -10,7 +10,7 @@ void EventManager::Subscribe(const TEventType eventType, const std::weak_ptr<Obs
 	{
 		instance._subscriptions.insert_or_assign(eventType, std::make_shared<std::vector<std::weak_ptr<Observer>>>());
 	}
-	instance._subscriptions[eventType]->push_back(pObserver);
+	instance._subscriptions[eventType]->emplace_back(pObserver);
 }
 
 void EventManager::Unsubscribe(TEventType eventType, const std::weak_ptr<Observer>& pObserver)
