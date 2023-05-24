@@ -7079,7 +7079,7 @@ bool ImGui::BeginMenuEx(const char* label, const char* icon, bool enabled)
     }
 
     // Tag menu as used. Next time BeginMenu() with same ID is called it will append to existing menu
-    g.MenusIdSubmittedThisFrame.push_back(id);
+    g.MenusIdSubmittedThisFrame.emplace_back(id);
 
     ImVec2 label_size = CalcTextSize(label, NULL, true);
 
@@ -7475,7 +7475,7 @@ bool    ImGui::BeginTabBarEx(ImGuiTabBar* tab_bar, const ImRect& tab_bar_bb, ImG
         PushOverrideID(tab_bar->ID);
 
     // Add to stack
-    g.CurrentTabBarStack.push_back(GetTabBarRefFromTabBar(tab_bar));
+    g.CurrentTabBarStack.emplace_back(GetTabBarRefFromTabBar(tab_bar));
     g.CurrentTabBar = tab_bar;
 
     // Append with multiple BeginTabBar()/EndTabBar() pairs.
@@ -8216,7 +8216,7 @@ bool    ImGui::TabItemEx(ImGuiTabBar* tab_bar, const char* label, bool* p_open, 
     bool tab_is_new = false;
     if (tab == NULL)
     {
-        tab_bar->Tabs.push_back(ImGuiTabItem());
+        tab_bar->Tabs.emplace_back(ImGuiTabItem());
         tab = &tab_bar->Tabs.back();
         tab->ID = id;
         tab_bar->TabsAddedNew = tab_is_new = true;
