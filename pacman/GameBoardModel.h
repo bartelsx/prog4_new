@@ -3,7 +3,6 @@
 #include <vector>
 #include <glm/vec2.hpp>
 
-#include "EventManager.h"
 #include "EventType.h"
 #include "Observer.h"
 #include "TextureManager.h"

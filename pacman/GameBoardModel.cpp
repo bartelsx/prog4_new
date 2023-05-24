@@ -5,7 +5,6 @@
 #include <glm/vec2.hpp>
 #include <rapidjson/document.h>
 
-#include "EventManager.h"
 #include "EventType.h"
 #include "TextureComponent.h"
 

@@ -10,15 +10,13 @@ using namespace dae;
 std::shared_ptr<PointsComponent> PointsComponent::Create()
 {
 	auto ptr = std::shared_ptr<PointsComponent>(new PointsComponent());
-	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
-	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
 	return ptr;
 }
 
 void PointsComponent::Update(float)
 {}
 
-void PointsComponent::Notify(Event& event)
+void PointsComponent::Notify(const Event& event, const Subject&)
 {
 	switch (event.GetType()) {
 	case EventType::ACTOR_DIED:
@@ -26,7 +24,7 @@ void PointsComponent::Notify(Event& event)
 		m_lives -= 1;
 		if (m_lives <= 0)
 		{
-			EventManager::Publish(Event(EventType::GAME_OVER));
+			//EventManager::Publish(Event(EventType::GAME_OVER));
 		}
 		break;
 

@@ -135,9 +135,6 @@
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IMoveLimiter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -222,9 +219,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AudioClip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

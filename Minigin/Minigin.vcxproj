@@ -197,7 +197,6 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="ControllerInputHandler.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
-    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCalcComponent.h" />
     <ClInclude Include="GameObject.h" />
@@ -233,7 +232,6 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="ControllerInputHandler.cpp" />
     <ClCompile Include="EllipticalMoveComponent.cpp" />
-    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCalcComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />

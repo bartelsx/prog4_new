@@ -1,6 +1,5 @@
 #include "ActorMoveComponent.h"
 
-#include "EventManager.h"
 #include "EventType.h"
 
 using namespace dae;
@@ -45,6 +44,5 @@ void ActorMoveComponent::Update(float deltaTime)
 	if (newPos != currentPos)
 	{
 		pOwner->SetPosition(newPos);
-		EventManager::Publish(EventWithPayload<std::shared_ptr<GameObject>>(EventType::ACTOR_MOVED, pOwner));
 	}
 }

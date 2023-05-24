@@ -15,7 +15,7 @@ glm::vec2 MoveToPacmanComponent::CalculateNewPos(glm::vec2 currentPos, float /*d
 	return currentPos;
 }
 
-void MoveToPacmanComponent::Notify(Event& )
+void MoveToPacmanComponent::Notify(const Event& , const Subject& )
 {
 	//auto ev = dynamic_cast<EventWithPayload<std::shared_ptr<ActorComponent>>&>(event);
 

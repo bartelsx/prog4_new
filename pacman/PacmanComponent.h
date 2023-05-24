@@ -6,7 +6,7 @@
 namespace dae
 {
 
-	class PacmanComponent :	public ActorComponent
+	class PacmanComponent :	public ActorComponent, public Subject
 	{
 	public:
 		~PacmanComponent() = default;

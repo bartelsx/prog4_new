@@ -1,5 +1,4 @@
 #include "SoundPlayer.h"
-#include "EventManager.h"
 #include "EventType.h"
 #include "ServiceLocator.h"
 #include "Sound.h"
@@ -9,13 +8,10 @@ using namespace dae;
 std::shared_ptr<SoundPlayer>SoundPlayer::Create()
 {
 	auto ptr = std::shared_ptr<SoundPlayer>(new SoundPlayer());
-	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
-	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
-	//EventManager::Subscribe(EventType::, ptr);
 	return ptr;
 }
 
-void SoundPlayer::Notify(Event& event)
+void SoundPlayer::Notify(const Event& event, const Subject&)
 {
 	switch (event.GetType())
 	{

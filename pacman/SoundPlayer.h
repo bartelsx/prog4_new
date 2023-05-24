@@ -8,7 +8,7 @@ namespace dae
     {
 	public:
 		static std::shared_ptr<SoundPlayer>Create();
-		void Notify(Event& event) override;
+		void Notify(const Event& event, const Subject& sender) override;
 
 	private:
 		SoundPlayer() = default;

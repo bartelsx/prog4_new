@@ -1,7 +1,6 @@
 #pragma once
 #include <xstring>
 #include "BaseComponent.h"
-#include "EventManager.h"
 
 namespace dae
 {
@@ -22,7 +21,7 @@ namespace dae
 		PointsComponent() = default;
 		std::shared_ptr<PointsComponent> m_ptr;
 		int m_Points{};
-		void Notify(Event& event) override;
+		void Notify(const Event& event, const Subject& sender) override;
 
 
 		int m_lives{ 3 };
