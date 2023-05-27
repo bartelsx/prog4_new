@@ -40,6 +40,10 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float)
 	PathNode targetCell{ colRow.x,colRow.y };
 
 	auto path = FindPath(startCell, targetCell);
+	if(path.size() <= 0)
+	{
+		return currentGhostLoc;
+	}
 	auto target = path.size() > 1 ? path[1] : path[0];
 	return m_pBoardModel->GetOffset(target);
 }
@@ -172,7 +176,9 @@ std::vector<int> ChasePacmanBehavior::FindPath(const PathNode& start, const Path
 			}
 		}
 	}
-
+	for (PathNode* cell : closedSet) {
+		delete cell;
+	}
 	// No path found
 	std::cout << "No path found!" << std::endl;
 	return std::vector<int>();
