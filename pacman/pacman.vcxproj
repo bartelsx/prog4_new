@@ -155,7 +155,10 @@
     <ClCompile Include="ActorMoveComponent.cpp" />
     <ClCompile Include="GameBoardComponent.cpp" />
     <ClCompile Include="GameBoardModel.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GhostComponent.cpp" />
+    <ClCompile Include="GhostMoveBehavior.cpp" />
+    <ClCompile Include="GhostMoveComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveToPacmanComponent.cpp" />
     <ClCompile Include="PacmanComponent.cpp" />
@@ -169,7 +172,10 @@
     <ClInclude Include="EventType.h" />
     <ClInclude Include="GameBoardComponent.h" />
     <ClInclude Include="GameBoardModel.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="GhostComponent.h" />
+    <ClInclude Include="GhostMoveBehavior.h" />
+    <ClInclude Include="GhostMoveComponent.h" />
     <ClInclude Include="MoveToPacmanComponent.h" />
     <ClInclude Include="PacmanComponent.h" />
     <ClInclude Include="ActorType.h" />

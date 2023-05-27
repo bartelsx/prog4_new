@@ -16,7 +16,6 @@ namespace dae
 		ActorComponent& operator=(ActorComponent&& other) = delete;
 
 		ActorType GetType() const { return m_ActorType; }
-		glm::vec2 GetPosition() const { return GetOwner()->GetPosition(); }
 
 	protected:
 		ActorType m_ActorType{};

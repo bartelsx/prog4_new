@@ -15,19 +15,15 @@ namespace dae
 	    ActorMoveComponent& operator=(const ActorMoveComponent& other) = delete;
 	    ActorMoveComponent& operator=(ActorMoveComponent&& other) = delete;
 
-		static std::shared_ptr<ActorMoveComponent> Create(std::shared_ptr<MoveComponent> pBase, std::shared_ptr<GameBoardModel> pModel)
+		static std::shared_ptr<ActorMoveComponent> Create(std::shared_ptr<GameBoardModel> pModel)
 		{
-			return std::shared_ptr<ActorMoveComponent>(new ActorMoveComponent(pBase, pModel));
+			return std::shared_ptr<ActorMoveComponent>(new ActorMoveComponent( pModel));
 		}
 
-		void SetSpeed(const float speed) override { m_pBase->SetSpeed(speed); }
-		void SetDirection(const glm::vec2& direction) override { m_pBase->SetDirection(direction); }
-
 		void Update(float deltaTime) override;
-
+    protected:
+	    ActorMoveComponent( std::shared_ptr<GameBoardModel> pModel);
     private:
-	    ActorMoveComponent(std::shared_ptr<MoveComponent> pBase, std::shared_ptr<GameBoardModel> pModel);
-		std::shared_ptr<MoveComponent> m_pBase;
 		std::shared_ptr<GameBoardModel> m_pModel;
     };
 }

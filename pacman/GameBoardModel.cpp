@@ -103,11 +103,34 @@ int GameBoardModel::GetIdx(const glm::vec2 location) const
 	return GetIdx(static_cast<int>(location.y / m_TileSize), static_cast<int>(location.x / m_TileSize));
 }
 
+glm::vec2 GameBoardModel::GetCenter(int row, int col) const
+{
+	return glm::vec2{ col * m_TileSize + m_TileSize*0.5f, row * m_TileSize + m_TileSize * 0.5f };
+}
 
 glm::vec2 GameBoardModel::GetOffset(int row, int col) const
 {
 	return glm::vec2 {col*m_TileSize, row*m_TileSize};
 }
+
+glm::vec2 GameBoardModel::GetOffset(int idx) const
+{
+	auto cr = GetColumnRow(idx);
+	return glm::vec2 {cr.x*m_TileSize, cr.y*m_TileSize};
+}
+
+glm::ivec2 GameBoardModel::GetColumnRow(const glm::vec2 location) const
+{
+		return glm::ivec2{int(location.x /m_TileSize),int(location.y / m_TileSize )};
+}
+
+glm::ivec2 GameBoardModel::GetColumnRow(const int idx) const
+{
+	const int row = idx / m_Columns;
+	const int col = idx % m_Columns;
+	return glm::ivec2(col, row);
+}
+
 
 TileValue GameBoardModel::GetTileValue(int row, int col) const
 {

@@ -5,9 +5,8 @@
 using namespace dae;
 
 
-ActorMoveComponent::ActorMoveComponent(std::shared_ptr<MoveComponent> pBase, std::shared_ptr<GameBoardModel> pModel)
-	: m_pBase(pBase)
-	, m_pModel(pModel)
+ActorMoveComponent::ActorMoveComponent( std::shared_ptr<GameBoardModel> pModel)
+	: m_pModel(pModel)
 {
 }
 
@@ -15,7 +14,7 @@ void ActorMoveComponent::Update(float deltaTime)
 {
 	auto pOwner = GetOwner();
 	auto currentPos = pOwner->GetPosition();
-	auto newPos = m_pBase->CalculateNewPos(pOwner->GetPosition(), deltaTime);
+	auto newPos = CalculateNewPos(pOwner->GetPosition(), deltaTime);
 	auto tileSize = m_pModel->GetTileSize();
 
 	glm::vec2 centerOfPlayer{ newPos.x + m_pModel->GetTileSize() / 2, newPos.y + m_pModel->GetTileSize() / 2 };

@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Events">
       <UniqueIdentifier>{bbed95bd-dd56-4a1b-b9f8-efb2ef8f8783}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Ghosts">
+      <UniqueIdentifier>{c959747b-e075-40e9-a4d4-be5bae0e969b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ghosts">
+      <UniqueIdentifier>{26cd02fe-d38a-44aa-a591-8b64db3be56f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -57,11 +63,20 @@
     <ClCompile Include="ActorComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="GhostComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="MoveToPacmanComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostComponent.cpp">
+      <Filter>Source Files\Ghosts</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostMoveBehavior.cpp">
+      <Filter>Source Files\Ghosts</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostMoveComponent.cpp">
+      <Filter>Source Files\Ghosts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,11 +116,20 @@
     <ClInclude Include="ActorType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GhostComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="MoveToPacmanComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostComponent.h">
+      <Filter>Header Files\Ghosts</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostMoveBehavior.h">
+      <Filter>Header Files\Ghosts</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostMoveComponent.h">
+      <Filter>Header Files\Ghosts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
