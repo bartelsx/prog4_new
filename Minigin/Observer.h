@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <unordered_map>
+#include "Singleton.h"
 
 namespace dae
 {
@@ -9,6 +11,7 @@ namespace dae
 	{
 	public:
 		Event(TEventType type) : m_type{ type } {}
+		virtual ~Event() = default;
 
 		virtual TEventType GetType() const { return m_type; }
 
@@ -28,7 +31,7 @@ namespace dae
 	class EventWithPayload : public Event
 	{
 	public:
-		EventWithPayload(TEventType type, T data) : Event(type), m_Data(data)
+		explicit EventWithPayload(TEventType type, T data) : Event(type), m_Data(data)
 		{  }
 
 		void SetData(T data) { m_Data = data; }
@@ -47,81 +50,141 @@ namespace dae
 	public:
 		Observer() = default;
 		virtual ~Observer() = default;
-		virtual void HandleEvent(const Event& event, const Subject& sender) = 0;
+		virtual void HandleEvent(const Event& event) = 0;
 		// Other stuff...
 	};
 
-	class Node
+	class EventManager : Singleton<EventManager>
 	{
 	public:
-		std::unique_ptr<Node> m_next{};
-		std::shared_ptr<Observer> pObserver{};
-
-		void Notify(const Event& event, const Subject& sender)
+		static void Subscribe(TEventType type, const std::shared_ptr<Observer>& pObserver)
 		{
-			if (m_next != nullptr)
-			{
-				m_next->Notify(event, sender);
-			}
-			pObserver->HandleEvent(event,sender);
-
-		}
-	};
-
-	class Subject
-	{
-	public:
-		Subject()
-			: m_head(nullptr)
-		{}
-
-		void AddObserver(const std::shared_ptr<Observer>& pObserver)
-		{
-			auto newHead = std::make_unique<Node>();
-			newHead->m_next = std::move(m_head);
-			newHead->pObserver = pObserver;
-			m_head = std::move(newHead);
+			GetInstance().SubscribeImpl(type, pObserver);
 		}
 
-		void RemoveObserver(const std::shared_ptr<Observer> pObserver)
+		void SubscribeImpl(TEventType type, const std::shared_ptr<Observer>& pObserver)
 		{
-			if (m_head == nullptr)
-			{
-				return;
-			}
+			auto it = m_Subscriptions.find(type);
 
-			if (m_head->pObserver == pObserver)
+			if (it == m_Subscriptions.end())
 			{
-				m_head = std::move(m_head->m_next);
-				return;
+				auto pNew = std::make_unique<std::vector<std::weak_ptr<Observer>>>();
+				pNew->emplace_back(pObserver);
+				m_Subscriptions[type] = std::move(pNew);
 			}
-
-			auto current = m_head.get();
-			while (current->m_next != nullptr)
+			else
 			{
-				if (current->m_next->pObserver == pObserver)
+				it->second->emplace_back(pObserver);
+			}
+		}
+
+		static void Publish(const TEventType type)
+		{
+			GetInstance().Publish(Event{ type });
+		}
+
+		template <typename TPayload>
+		static void Publish(const TEventType type, const TPayload& data)
+		{
+			GetInstance().Publish(EventWithPayload<TPayload>{type, data});
+		}
+
+		void Publish(const Event& event)
+		{
+			auto it = m_Subscriptions.find(event.GetType());
+
+			if (it != m_Subscriptions.end())
+			{
+				for (auto& pObserver : *it->second)
 				{
-					current->m_next = std::move(current->m_next->m_next);
-					return;
+					if (pObserver.expired())
+					{
+						//todo: trigger cleanup
+					}
+					else
+					{
+						pObserver.lock()->HandleEvent(event);
+					}
 				}
-
-				current = current->m_next.get();
 			}
-		}
-
-		void Notify(const Event& event) const
-		{
-			if (m_head == nullptr)
-			{
-				return;
-			}
-
-			m_head->Notify(event, *this);
 		}
 
 	private:
-		std::unique_ptr<Node> m_head;
+		std::unordered_map<TEventType, std::unique_ptr<std::vector<std::weak_ptr<Observer>>>> m_Subscriptions{};
 	};
+
+
+	//class Node
+	//{
+	//public:
+	//	std::unique_ptr<Node> m_next{};
+	//	std::shared_ptr<Observer> pObserver{};
+
+	//	void Notify(const Event& event, const Subject& sender)
+	//	{
+	//		if (m_next != nullptr)
+	//		{
+	//			m_next->Notify(event, sender);
+	//		}
+	//		pObserver->HandleEvent(event);
+
+	//	}
+	//};
+
+	//class Subject
+	//{
+	//public:
+	//	Subject()
+	//		: m_head(nullptr)
+	//	{}
+
+	//	void AddObserver(const std::shared_ptr<Observer>& pObserver)
+	//	{
+	//		auto newHead = std::make_unique<Node>();
+	//		newHead->m_next = std::move(m_head);
+	//		newHead->pObserver = pObserver;
+	//		m_head = std::move(newHead);
+	//	}
+
+	//	void RemoveObserver(const std::shared_ptr<Observer> pObserver)
+	//	{
+	//		if (m_head == nullptr)
+	//		{
+	//			return;
+	//		}
+
+	//		if (m_head->pObserver == pObserver)
+	//		{
+	//			m_head = std::move(m_head->m_next);
+	//			return;
+	//		}
+
+	//		auto current = m_head.get();
+	//		while (current->m_next != nullptr)
+	//		{
+	//			if (current->m_next->pObserver == pObserver)
+	//			{
+	//				current->m_next = std::move(current->m_next->m_next);
+	//				return;
+	//			}
+
+	//			current = current->m_next.get();
+	//		}
+	//	}
+
+	//	void Notify(const Event& event) const
+	//	{
+	//		if (m_head == nullptr)
+	//		{
+	//			return;
+	//		}
+
+	//		m_head->Notify(event, *this);
+	//	}
+
+	//private:
+	//	std::unique_ptr<Node> m_head;
+	//};
 }
 
 

@@ -20,7 +20,7 @@ void GhostComponent::Update(float deltaTime)
 		if (!m_wasColliding)
 		{
 			std::cout << "COLLISION !!!\n";
-			Notify(Event(EventType::ACTOR_DIED));
+			EventManager::Publish(EventType::ACTOR_DIED);
 		}
 		m_wasColliding = true;
 	}

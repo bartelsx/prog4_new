@@ -6,7 +6,7 @@
 
 namespace dae
 {
-	class ActorComponent : public TextureComponent, public Subject, public Observer
+	class ActorComponent : public TextureComponent,  public Observer
 	{
 	public:
 		ActorComponent(ActorType actorType, const std::shared_ptr<Texture2D>& pTexture) : TextureComponent(pTexture), m_ActorType(actorType){}
@@ -17,7 +17,7 @@ namespace dae
 		ActorComponent& operator=(ActorComponent&& other) = delete;
 
 		ActorType GetType() const { return m_ActorType; }
-		void HandleEvent(const Event& event, const Subject& sender) override;
+		void HandleEvent(const Event& event) override;
 
 		void SetSpawnLocation(glm::vec2 spawnLocation);
 
@@ -26,7 +26,7 @@ namespace dae
 		glm::vec2 m_SpawnLocation{};
 	};
 
-	inline void ActorComponent::HandleEvent(const Event& event, const Subject& )
+	inline void ActorComponent::HandleEvent(const Event& event)
 	{
 		if (event.GetType() == EventType::RESET_LEVEL)
 		{

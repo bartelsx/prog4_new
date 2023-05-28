@@ -10,7 +10,9 @@ namespace dae
 	public:
 		static std::shared_ptr<GhostComponent> Create(const std::shared_ptr<Texture2D>& pTexture, const std::shared_ptr<GameState>& pGameState) 
 		{
-			return std::shared_ptr<GhostComponent>(new GhostComponent(pTexture, pGameState));
+			auto ptr = std::shared_ptr<GhostComponent>(new GhostComponent(pTexture, pGameState));
+			EventManager::Subscribe(EventType::RESET_LEVEL, ptr);
+			return ptr;
 		}
 
 		void Update(float deltaTime) override;

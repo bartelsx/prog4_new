@@ -18,6 +18,11 @@ namespace dae
 		static std::shared_ptr<PacmanComponent> Create(const std::shared_ptr<dae::Texture2D>& pTexture, const std::shared_ptr<GameBoardModel>& pGameBoardModel)
 		{
 			auto ptr = std::shared_ptr<PacmanComponent>(new PacmanComponent(pTexture, pGameBoardModel));
+
+			EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
+			EventManager::Subscribe(EventType::FRUIT_PICKUP, ptr);
+			EventManager::Subscribe(EventType::RESET_LEVEL, ptr);
+
 			return ptr;
 		}
 

@@ -29,11 +29,11 @@ void PacmanComponent::Update(float)
 		{
 		case TileValue::Pill:
 			m_pGameBoardModel->ChangeTileValue(centerOfActor, TileValue::Path);
-			Notify(Event(EventType::PILL_PICKUP));
+			EventManager::Publish(EventType::PILL_PICKUP);
 			break;
 		case TileValue::Boost:
 			m_pGameBoardModel->ChangeTileValue(centerOfActor, TileValue::Path);
-			Notify(Event(EventType::BOOST_PICKUP));
+			EventManager::Publish(EventType::BOOST_PICKUP);
 			break;
 		}
 		m_previousPosition = position;

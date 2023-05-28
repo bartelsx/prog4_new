@@ -8,10 +8,14 @@ using namespace dae;
 std::shared_ptr<SoundPlayer>SoundPlayer::Create()
 {
 	auto ptr = std::shared_ptr<SoundPlayer>(new SoundPlayer());
+
+	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
+	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
+
 	return ptr;
 }
 
-void SoundPlayer::HandleEvent(const Event& event, const Subject&)
+void SoundPlayer::HandleEvent(const Event& event)
 {
 	switch (event.GetType())
 	{
