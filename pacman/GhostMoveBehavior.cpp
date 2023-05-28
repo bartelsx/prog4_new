@@ -30,7 +30,7 @@ ChasePacmanBehavior::ChasePacmanBehavior(const std::shared_ptr<GameObject>& pPac
 {
 }
 
-glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float)
+glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTime)
 {
 	auto colRow = m_pBoardModel->GetColumnRow(currentGhostLoc);
 
@@ -45,7 +45,12 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float)
 		return currentGhostLoc;
 	}
 	auto target = path.size() > 1 ? path[1] : path[0];
-	return m_pBoardModel->GetOffset(target);
+	auto distance = deltaTime * 100 * m_Speed;
+	auto targetLoc = m_pBoardModel->GetOffset(target);
+	auto newX = currentGhostLoc.x + (targetLoc.x < currentGhostLoc.x ? -distance : targetLoc.x > currentGhostLoc.x ? +distance : 0);
+	auto newY = currentGhostLoc.y + (targetLoc.y < currentGhostLoc.y ? -distance : targetLoc.y > currentGhostLoc.y ? +distance : 0);
+	//std::cout << newX << " " << newY << " " << distance<<"\n";
+	return glm::vec2{newX,newY};
 }
 
 

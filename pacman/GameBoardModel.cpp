@@ -108,6 +108,12 @@ glm::vec2 GameBoardModel::GetCenter(int row, int col) const
 	return glm::vec2{ col * m_TileSize + m_TileSize*0.5f, row * m_TileSize + m_TileSize * 0.5f };
 }
 
+glm::vec2 GameBoardModel::GetCenter(int idx) const
+{
+	auto offset = GetOffset(idx);
+	return glm::vec2{ offset.x + m_TileSize*0.5f, offset.y + m_TileSize * 0.5f };
+}
+
 glm::vec2 GameBoardModel::GetOffset(int row, int col) const
 {
 	return glm::vec2 {col*m_TileSize, row*m_TileSize};

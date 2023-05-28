@@ -14,5 +14,6 @@ GhostMoveComponent::GhostMoveComponent(const std::shared_ptr<GhostMoveBehavior> 
 glm::vec2 GhostMoveComponent::CalculateNewPos(glm::vec2 currentPos, float deltaTime) const
 {
 	auto pos = m_pChaseBehavior->GetNextLocation(currentPos, deltaTime);
+	
 	return pos;
 }

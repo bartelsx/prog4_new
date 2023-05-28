@@ -11,7 +11,7 @@ std::shared_ptr<SoundPlayer>SoundPlayer::Create()
 	return ptr;
 }
 
-void SoundPlayer::Notify(const Event& event, const Subject&)
+void SoundPlayer::HandleEvent(const Event& event, const Subject&)
 {
 	switch (event.GetType())
 	{

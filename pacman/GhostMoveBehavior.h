@@ -47,7 +47,7 @@ namespace dae
 		bool IsTargetCell(int col, int row, const PathNode& target);
 		std::vector<int> ReconstructPath(PathNode* current);
 		PathNode* FindMinFCell(const std::vector<PathNode*>& openSet);
-
+		float m_Speed{ 1.05f };
 		const std::shared_ptr<GameObject> m_pPacmanObj;
 		const std::shared_ptr<GameBoardModel> m_pBoardModel;
 	};

@@ -40,6 +40,9 @@ namespace dae
 		glm::vec2 GetOffset(int row, int col) const;
 		glm::vec2 GetOffset(int idx) const;
 
+		glm::vec2 GetCenter(int row, int col) const;
+		glm::vec2 GetCenter(int idx) const ;
+
 		TileValue GetTileValue(int row, int col) const;
 		TileValue GetTileValue(const glm::vec2 location) const;
 
@@ -52,7 +55,6 @@ namespace dae
 		glm::vec2 GetPlayerSpawnLocation() const;
 		glm::vec2 GetGhostSpawnLocation(int ghostIdx) const;
 		void LoadFromJsonFile(const std::string& path);
-		glm::vec2 GetCenter(int row, int col) const;
 		//void Notify(Event& event) override;
 		void HandleActorMoved(Event& event);
 		void ChangeTileValue(glm::vec2 position, TileValue newValue);

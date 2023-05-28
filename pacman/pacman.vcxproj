@@ -160,10 +160,10 @@
     <ClCompile Include="GhostMoveBehavior.cpp" />
     <ClCompile Include="GhostMoveComponent.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MoveToPacmanComponent.cpp" />
     <ClCompile Include="PacmanComponent.cpp" />
     <ClCompile Include="PointsComponent.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
+    <ClCompile Include="StartGameCommand.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,13 +176,13 @@
     <ClInclude Include="GhostComponent.h" />
     <ClInclude Include="GhostMoveBehavior.h" />
     <ClInclude Include="GhostMoveComponent.h" />
-    <ClInclude Include="MoveToPacmanComponent.h" />
     <ClInclude Include="PacmanComponent.h" />
     <ClInclude Include="ActorType.h" />
     <ClInclude Include="PointsComponent.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundPlayer.h" />
+    <ClInclude Include="StartGameCommand.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

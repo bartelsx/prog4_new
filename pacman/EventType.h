@@ -22,5 +22,6 @@ namespace dae
 		inline const static TEventType PILL_PICKUP = 6;
 		inline const static TEventType ACTOR_MOVED = 7;
 		inline const static TEventType GAME_START = 8;
+		inline const static TEventType RESET_LEVEL = 9;
 	};
 }

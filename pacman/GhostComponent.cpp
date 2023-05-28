@@ -1,1 +1,31 @@
 ﻿#include "GhostComponent.h"
+
+#include <iostream>
+
+#include "EventType.h"
+
+using namespace dae;
+
+void GhostComponent::Update(float deltaTime)
+{
+	ActorComponent::Update(deltaTime);
+
+	//Check collision with Pacman
+	auto myLocation = GetOwner()->GetPosition();
+	auto pacmanLoc = m_pGameState->GetPacmanLocation();
+
+	if (std::abs(myLocation.x - pacmanLoc.x) < 8 && std::abs(myLocation.y - pacmanLoc.y) < 8)
+	{
+		// COLLISION !!!
+		if (!m_wasColliding)
+		{
+			std::cout << "COLLISION !!!\n";
+			Notify(Event(EventType::ACTOR_DIED));
+		}
+		m_wasColliding = true;
+	}
+	else
+	{
+		m_wasColliding = false;
+	}
+}

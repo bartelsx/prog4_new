@@ -7,7 +7,7 @@ namespace dae
 	class Font;
 	class Texture2D;
 
-	class PointsComponent : public BaseComponent,  public Observer, std::enable_shared_from_this<PointsComponent>
+	class PointsComponent : public BaseComponent, public Subject,  public Observer, std::enable_shared_from_this<PointsComponent>
 	{
 
 	public:
@@ -21,7 +21,7 @@ namespace dae
 		PointsComponent() = default;
 		std::shared_ptr<PointsComponent> m_ptr;
 		int m_Points{};
-		void Notify(const Event& event, const Subject& sender) override;
+		void HandleEvent(const Event& event, const Subject& sender) override;
 
 
 		int m_lives{ 3 };

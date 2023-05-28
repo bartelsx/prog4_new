@@ -47,7 +47,7 @@ namespace dae
 	public:
 		Observer() = default;
 		virtual ~Observer() = default;
-		virtual void Notify(const Event& event, const Subject& sender) = 0;
+		virtual void HandleEvent(const Event& event, const Subject& sender) = 0;
 		// Other stuff...
 	};
 
@@ -63,7 +63,7 @@ namespace dae
 			{
 				m_next->Notify(event, sender);
 			}
-			pObserver->Notify(event,sender);
+			pObserver->HandleEvent(event,sender);
 
 		}
 	};

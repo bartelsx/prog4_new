@@ -16,19 +16,16 @@ std::shared_ptr<PointsComponent> PointsComponent::Create()
 void PointsComponent::Update(float)
 {}
 
-void PointsComponent::Notify(const Event& event, const Subject&)
+void PointsComponent::HandleEvent(const Event& event, const Subject&)
 {
 	switch (event.GetType()) {
 	case EventType::ACTOR_DIED:
 		std::cout << "dead \n";
 		m_lives -= 1;
-		if (m_lives <= 0)
-		{
-			//EventManager::Publish(Event(EventType::GAME_OVER));
-		}
+		Notify(m_lives <= 0 ? Event(EventType::GAME_OVER) : Event(EventType::RESET_LEVEL));
 		break;
 
-		case EventType::ENEMY_DIED:
+	case EventType::ENEMY_DIED:
 		m_Points += 200;
 		break;
 
