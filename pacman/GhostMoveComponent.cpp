@@ -30,5 +30,12 @@ void GhostMoveComponent::HandleEvent(const Event& event)
 	case EventType::END_BOOST:
 		m_pCurrentBehavior = m_pChaseBehavior;
 		break;
+	case EventType::ENEMY_DIED:
+		auto e = dynamic_cast<const EventWithPayload<std::shared_ptr<GameObject>>&>(event);
+		if (e.GetData() == GetOwner())
+		{
+			m_pCurrentBehavior = m_pChaseBehavior;
+		}
+		//break;
 	}
 }

@@ -21,23 +21,23 @@ void ActorMoveComponent::Update(float deltaTime)
 
 	if (! m_pModel->IsTileAtLocationAccessible(glm::vec2{centerOfPlayer.x-tileSize, centerOfPlayer.y}))//left
 	{
-		newPos.x = static_cast<float> (std::max(static_cast<int>(newPos.x), static_cast<int>(centerOfPlayer.x / tileSize) * tileSize ));
+		newPos.x = std::max(newPos.x, static_cast<float> (static_cast<int>(centerOfPlayer.x / tileSize) * tileSize ));
 	}
 
 
 	if (!m_pModel->IsTileAtLocationAccessible(glm::vec2{ centerOfPlayer.x + tileSize, centerOfPlayer.y }))//right
 	{
-		newPos.x = static_cast<float> (std::min(static_cast<int>(newPos.x), static_cast<int>(centerOfPlayer.x / tileSize) * tileSize));
+		newPos.x = std::min(newPos.x, static_cast<float> (static_cast<int>(centerOfPlayer.x / tileSize) * tileSize));
 	}
 
 	if (!m_pModel->IsTileAtLocationAccessible(glm::vec2{ centerOfPlayer.x , centerOfPlayer.y - tileSize }))//up
 	{
-		newPos.y = static_cast<float> (std::max(static_cast<int>(newPos.y), static_cast<int>(centerOfPlayer.y / tileSize) * tileSize));
+		newPos.y = std::max(newPos.y, static_cast<float> (static_cast<int>(centerOfPlayer.y / tileSize) * tileSize));
 	}
 
 	if (!m_pModel->IsTileAtLocationAccessible(glm::vec2{ centerOfPlayer.x , centerOfPlayer.y + tileSize }))//down
 	{
-		newPos.y = static_cast<float> (std::min(static_cast<int>(newPos.y), static_cast<int>(centerOfPlayer.y / tileSize) * tileSize));
+		newPos.y = std::min(newPos.y, static_cast<float> (static_cast<int>(centerOfPlayer.y / tileSize) * tileSize));
 	}
 
 	if (newPos != currentPos)

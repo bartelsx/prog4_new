@@ -1,7 +1,4 @@
 ﻿#include "GhostComponent.h"
-
-#include <iostream>
-
 #include "EventType.h"
 
 using namespace dae;
@@ -17,16 +14,25 @@ void GhostComponent::Update(float deltaTime)
 	if (std::abs(myLocation.x - pacmanLoc.x) < 8 && std::abs(myLocation.y - pacmanLoc.y) < 8)
 	{
 		// COLLISION !!!
-		if (!m_wasColliding)
+		if (!m_WasColliding)
 		{
-			std::cout << "COLLISION !!!\n";
-			EventManager::Publish(EventType::ACTOR_DIED);
+			if(m_IsScared)
+			{
+				EventManager::Publish(EventType::ENEMY_DIED, GetOwner());
+				GetOwner()->SetPosition(m_SpawnLocation);
+				m_IsScared = false;
+
+			}
+			else
+			{
+				EventManager::Publish(EventType::ACTOR_DIED);
+			}
 		}
-		m_wasColliding = true;
+		m_WasColliding = true;
 	}
 	else
 	{
-		m_wasColliding = false;
+		m_WasColliding = false;
 	}
 }
 
@@ -37,11 +43,16 @@ void GhostComponent::HandleEvent(const Event& event)
 	switch (event.GetType())
 	{
 	case EventType::BOOST_PICKUP:
-		std::cout << "BOOST_PICKUP\n";
+		m_IsScared = true;
 		break;
 	case EventType::END_BOOST:
-		std::cout << "END_BOOST\n";
+		m_IsScared = false;
 		break;
 	}
+}
+
+std::shared_ptr<dae::Texture2D> GhostComponent::GetTexture()
+{
+	return m_IsScared ? m_pScaredTexture : m_pTexture;
 }
 

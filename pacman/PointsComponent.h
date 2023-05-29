@@ -17,15 +17,17 @@ namespace dae
 
 		std::string GetScore();
 		std::string GetLives();
+
 	private:
 		PointsComponent() = default;
-		std::shared_ptr<PointsComponent> m_ptr;
-		int m_Points{};
 		void HandleEvent(const Event& event) override;
 
-
-		int m_lives{ 3 };
+		int m_Points{};
+		int m_Lives{ 3 };
 
 		std::shared_ptr<PointsComponent> GetPtr() { return std::dynamic_pointer_cast<PointsComponent>(shared_from_this()); }
+
+		int m_ScoreIdx{ 0 };
+		inline static constexpr int m_KillEnemyScores[] =  {200,400,800,1600} ;
 	};
 }

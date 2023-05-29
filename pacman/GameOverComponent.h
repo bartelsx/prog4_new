@@ -3,8 +3,16 @@
 
 namespace dae
 {
-	class GameOverComponent : TextComponent
+	class GameOverComponent : BaseComponent
 	{
-		
+	public:
+		~GameOverComponent() override = default;
+		GameOverComponent(const GameOverComponent& other) = delete;
+		GameOverComponent(GameOverComponent&& other) = delete;
+		GameOverComponent& operator=(const GameOverComponent& other) = delete;
+		GameOverComponent& operator=(GameOverComponent&& other) = delete;
+
+	private :
+		GameOverComponent() = default;
 	};
 }

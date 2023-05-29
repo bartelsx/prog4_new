@@ -87,6 +87,12 @@
     <ClCompile Include="FleeBehavior.cpp">
       <Filter>Source Files\Ghosts</Filter>
     </ClCompile>
+    <ClCompile Include="PathFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayedBehavior.cpp">
+      <Filter>Source Files\Ghosts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -147,6 +153,15 @@
       <Filter>Header Files\Ghosts</Filter>
     </ClInclude>
     <ClInclude Include="FleeBehavior.h">
+      <Filter>Header Files\Ghosts</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneId.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DelayedBehavior.h">
       <Filter>Header Files\Ghosts</Filter>
     </ClInclude>
   </ItemGroup>

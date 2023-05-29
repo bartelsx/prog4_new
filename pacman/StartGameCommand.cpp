@@ -1,5 +1,7 @@
 #include "StartGameCommand.h"
 
+#include "EventType.h"
+#include "SceneId.h"
 #include "SceneManager.h"
 
 dae::StartGameCommand::StartGameCommand(GameModes )
@@ -9,7 +11,8 @@ dae::StartGameCommand::StartGameCommand(GameModes )
 
 void dae::StartGameCommand::Execute()
 {
-	SceneManager::GetInstance().SetCurrentScene(1);
+	SceneManager::GetInstance().SetCurrentScene(SceneId::GAMEBOARD);
+	EventManager::Publish(EventType::GAME_START);
 }
 
 void dae::StartGameCommand::Release()

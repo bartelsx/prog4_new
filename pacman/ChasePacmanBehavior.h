@@ -4,13 +4,13 @@
 #include <glm/vec2.hpp>
 
 #include "GhostMoveBehavior.h"
-
-struct PathNode;
+#include "PathFinder.h"
 
 namespace dae
 {
 	class GameObject;
 	class GameBoardModel;
+	class PathFinder;
 
 	class ChasePacmanBehavior : public GhostMoveBehavior
 	{
@@ -31,14 +31,11 @@ namespace dae
 
 	private:
 		ChasePacmanBehavior(const std::shared_ptr<GameObject>& pPacmanObj, const std::shared_ptr<GameBoardModel>& pBoardModel);
-		std::vector<int> FindPath(const PathNode& start, const PathNode& target);
 
-		bool IsValidCell(int x, int y);
-		bool IsTargetCell(int col, int row, const PathNode& target);
-		std::vector<int> ReconstructPath(PathNode* current);
-		PathNode* FindMinFCell(const std::vector<PathNode*>& openSet);
-		float m_Speed{ 1.05f };
+		float m_Speed{ .8f };
 		const std::shared_ptr<GameObject> m_pPacmanObj;
 		const std::shared_ptr<GameBoardModel> m_pBoardModel;
+		std::shared_ptr<PathFinder> m_pathFinder;
+		std::vector<int> m_PrevPath{};
 	};
 }

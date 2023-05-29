@@ -13,6 +13,7 @@ namespace dae
 			auto ptr = std::shared_ptr<GhostMoveComponent>(new GhostMoveComponent(chaseBehavior, fleeBehavior, pModel));
 			EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
 			EventManager::Subscribe(EventType::END_BOOST, ptr);
+			EventManager::Subscribe(EventType::ENEMY_DIED, ptr);
 			return ptr;
 		}
 		~GhostMoveComponent() override = default;

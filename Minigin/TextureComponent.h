@@ -16,7 +16,8 @@ public:
 
 	//virtual ~TextureComponent();
 
-private:
+protected:
+	virtual std::shared_ptr<dae::Texture2D> GetTexture() { return m_pTexture; }
 	std::shared_ptr<dae::Texture2D> m_pTexture{};
 };
 

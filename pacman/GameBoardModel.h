@@ -3,6 +3,7 @@
 #include <vector>
 #include <glm/vec2.hpp>
 
+#include "ChasePacmanBehavior.h"
 #include "EventType.h"
 #include "Observer.h"
 #include "TextureManager.h"
@@ -48,6 +49,7 @@ namespace dae
 
 		glm::ivec2 GetColumnRow(const glm::vec2 location) const;
 		glm::ivec2 GetColumnRow(const int idx) const;
+		TileValue GetTileValue(int idx) const;
 
 		bool IsPlayerAllowedAtLocation(glm::vec2 location) const;
 		bool IsTileAtLocationAccessible(glm::vec2 location) const;
@@ -55,9 +57,10 @@ namespace dae
 		glm::vec2 GetPlayerSpawnLocation() const;
 		glm::vec2 GetGhostSpawnLocation(int ghostIdx) const;
 		void LoadFromJsonFile(const std::string& path);
-		//void Notify(Event& event) override;
-		void HandleActorMoved(Event& event);
 		void ChangeTileValue(glm::vec2 position, TileValue newValue);
+
+		int CalculateDistance(int firstIdx, int secondIdx) const;
+		std::vector<int> GetAdjacentAccessibleCells(int cellId) const;
 
 		static std::shared_ptr<GameBoardModel> Create()
 		{
@@ -67,6 +70,8 @@ namespace dae
 
 	private:
 		GameBoardModel() = default;
+		void AddIfValid(int row, int col, std::vector<int>& result) const;
+
 		std::vector<int> m_Grid;
 		float m_TileSize = 16;
 		int m_Columns{};

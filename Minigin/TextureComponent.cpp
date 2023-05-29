@@ -16,7 +16,7 @@ void TextureComponent::Render(bool)
 	if (auto pOwner = GetOwner())
 	{
 		auto pos = pOwner->GetWorldPosition();
-		dae::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+	dae::Renderer::GetInstance().RenderTexture(*GetTexture(), pos.x, pos.y);
 	}
 }
 

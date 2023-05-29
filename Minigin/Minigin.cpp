@@ -8,6 +8,7 @@
 #include "Minigin.h"
 
 #include <chrono>
+#include <iostream>
 
 #include "ControllerInputHandler.h"
 #include "KeyboardInputHandler.h"

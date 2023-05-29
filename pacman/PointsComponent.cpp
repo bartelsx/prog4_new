@@ -28,12 +28,13 @@ void PointsComponent::HandleEvent(const Event& event)
 	switch (event.GetType()) {
 	case EventType::ACTOR_DIED:
 		std::cout << "dead \n";
-		m_lives -= 1;
-		EventManager::Publish(m_lives <= 0 ? EventType::GAME_OVER : EventType::RESET_LEVEL);
+		m_Lives -= 1;
+		EventManager::Publish(m_Lives <= 0 ? EventType::GAME_OVER : EventType::RESET_LEVEL);
 		break;
 
 	case EventType::ENEMY_DIED:
-		m_Points += 200;
+		m_Points += m_KillEnemyScores[m_ScoreIdx];
+		++m_ScoreIdx;
 		break;
 
 	case EventType::FRUIT_PICKUP:
@@ -42,6 +43,7 @@ void PointsComponent::HandleEvent(const Event& event)
 
 	case EventType::BOOST_PICKUP:
 		m_Points += 50;
+		m_ScoreIdx = 0;
 		break;
 
 	case EventType::PILL_PICKUP:
@@ -57,6 +59,6 @@ std::string PointsComponent::GetScore()
 }
 std::string PointsComponent::GetLives()
 {
-	std::string text{ "lives: " + std::to_string(m_lives) };
+	std::string text{ "lives: " + std::to_string(m_Lives) };
 	return text;
 }
