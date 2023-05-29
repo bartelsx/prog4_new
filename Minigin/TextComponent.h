@@ -47,7 +47,7 @@ namespace dae
 	};
 
 
-	class TextComponent final : public BaseComponent
+	class TextComponent : public BaseComponent
 	{
 	public:
 		TextComponent() : m_isDirty(true){}

@@ -20,13 +20,24 @@ namespace dae
 	public:
 		MoveCommand(std::shared_ptr<MoveComponent> pOwner, MoveParameters(*pValueFunc)())
 			: CommandWithOwner(pOwner)
-			, m_pValueFunc(pValueFunc) {}
+			, m_pValueFunc(pValueFunc)
+			, m_moveParameters() {}
+
+		MoveCommand(std::shared_ptr<MoveComponent> pOwner, const MoveParameters& moveParameters)
+			: CommandWithOwner(pOwner)
+			, m_pValueFunc{ nullptr }
+			, m_moveParameters{ moveParameters }
+		{}
 
 		virtual void Execute()
 		{
 			if (m_pValueFunc != nullptr)
 			{
 				Move(m_pValueFunc());
+			}
+			else
+			{
+				Move(m_moveParameters);
 			}
 		}
 
@@ -43,80 +54,6 @@ namespace dae
 
 	private:
 		MoveParameters(*m_pValueFunc)();
+		MoveParameters m_moveParameters;
 	};
-
-	//class DieCommand : public CommandWithOwner<dae::GameObject>
-	//{
-	//public:
-	//	DieCommand(std::shared_ptr<dae::GameObject> pOwner) : CommandWithOwner<dae::GameObject>(pOwner) {  }
-	//
-	//	virtual void Release()
-	//	{
-	//		m_pOwner->Die();
-	//	}
-	//	virtual void Execute()
-	//	{
-	//		
-	//	}
-	//};
-	//
-	//class PickUpFruitCommand : public CommandWithOwner<dae::GameObject>
-	//{
-	//public:
-	//	PickUpFruitCommand(std::shared_ptr<dae::GameObject> pOwner) : CommandWithOwner<dae::GameObject>(pOwner) {  }
-	//
-	//	virtual void Release()
-	//	{
-	//		m_pOwner->FruitPickUp();
-	//	}
-	//	virtual void Execute()
-	//	{
-	//
-	//	}
-	//};
-	//
-	//class PickUpSmallCommand : public CommandWithOwner<dae::GameObject>
-	//{
-	//public:
-	//	PickUpSmallCommand(std::shared_ptr<dae::GameObject> pOwner) : CommandWithOwner<dae::GameObject>(pOwner) {  }
-	//
-	//	virtual void Release()
-	//	{
-	//		m_pOwner->SmallPickUp();
-	//	}
-	//	virtual void Execute()
-	//	{
-	//
-	//	}
-	//};
-	//
-	//class PickUpPowerUpCommand : public CommandWithOwner<dae::GameObject>
-	//{
-	//public:
-	//	PickUpPowerUpCommand(std::shared_ptr<dae::GameObject> pOwner) : CommandWithOwner<dae::GameObject>(pOwner) {  }
-	//
-	//	virtual void Release()
-	//	{
-	//		m_pOwner->PowerUp();
-	//	}
-	//	virtual void Execute()
-	//	{
-	//
-	//	}
-	//};
-	//
-	//class EnemyDeadCommand : public CommandWithOwner<dae::GameObject>
-	//{
-	//public:
-	//	EnemyDeadCommand(std::shared_ptr<dae::GameObject> pOwner) : CommandWithOwner<dae::GameObject>(pOwner) {  }
-	//
-	//	virtual void Release()
-	//	{
-	//		m_pOwner->EnemyDead();
-	//	}
-	//	virtual void Execute()
-	//	{
-	//
-	//	}
-	//};
 }

@@ -23,5 +23,6 @@ namespace dae
 		inline const static TEventType ACTOR_MOVED = 7;
 		inline const static TEventType GAME_START = 8;
 		inline const static TEventType RESET_LEVEL = 9;
+		inline const static TEventType END_BOOST = 10;
 	};
 }

@@ -153,8 +153,11 @@
   <ItemGroup>
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="ActorMoveComponent.cpp" />
+    <ClCompile Include="ChasePacmanBehavior.cpp" />
+    <ClCompile Include="FleeBehavior.cpp" />
     <ClCompile Include="GameBoardComponent.cpp" />
     <ClCompile Include="GameBoardModel.cpp" />
+    <ClCompile Include="GameOverComponent.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GhostComponent.cpp" />
     <ClCompile Include="GhostMoveBehavior.cpp" />
@@ -169,9 +172,12 @@
   <ItemGroup>
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="ActorMoveComponent.h" />
+    <ClInclude Include="ChasePacmanBehavior.h" />
     <ClInclude Include="EventType.h" />
+    <ClInclude Include="FleeBehavior.h" />
     <ClInclude Include="GameBoardComponent.h" />
     <ClInclude Include="GameBoardModel.h" />
+    <ClInclude Include="GameOverComponent.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GhostComponent.h" />
     <ClInclude Include="GhostMoveBehavior.h" />

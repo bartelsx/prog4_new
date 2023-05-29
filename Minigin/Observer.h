@@ -13,18 +13,10 @@ namespace dae
 		Event(TEventType type) : m_type{ type } {}
 		virtual ~Event() = default;
 
-		virtual TEventType GetType() const { return m_type; }
-
-
-		//template <typename T>
-		//void SetData(T data) { m_data = data; }
-
-		//template <typename T>
-		//T GetData() { return any_cast<T>(m_data); }
+		TEventType GetType() const { return m_type; }
+		bool Is(TEventType type) const { return m_type == type; }
 
 		TEventType m_type{};
-		//glm::uint8_t m_numArgs{};
-		//std::any m_data{};
 	};
 
 	template <typename T>
@@ -62,6 +54,18 @@ namespace dae
 			GetInstance().SubscribeImpl(type, pObserver);
 		}
 
+		static void Publish(const TEventType type)
+		{
+			GetInstance().PublishImpl(Event{ type });
+		}
+
+		template <typename TPayload>
+		static void Publish(const TEventType type, const TPayload& data)
+		{
+			GetInstance().PublishImpl(EventWithPayload<TPayload>{type, data});
+		}
+
+	private:
 		void SubscribeImpl(TEventType type, const std::shared_ptr<Observer>& pObserver)
 		{
 			auto it = m_Subscriptions.find(type);
@@ -78,18 +82,8 @@ namespace dae
 			}
 		}
 
-		static void Publish(const TEventType type)
-		{
-			GetInstance().Publish(Event{ type });
-		}
 
-		template <typename TPayload>
-		static void Publish(const TEventType type, const TPayload& data)
-		{
-			GetInstance().Publish(EventWithPayload<TPayload>{type, data});
-		}
-
-		void Publish(const Event& event)
+		void PublishImpl(const Event& event)
 		{
 			auto it = m_Subscriptions.find(event.GetType());
 
@@ -109,7 +103,7 @@ namespace dae
 			}
 		}
 
-	private:
+
 		std::unordered_map<TEventType, std::unique_ptr<std::vector<std::weak_ptr<Observer>>>> m_Subscriptions{};
 	};
 

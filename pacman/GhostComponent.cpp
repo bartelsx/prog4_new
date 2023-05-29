@@ -29,3 +29,19 @@ void GhostComponent::Update(float deltaTime)
 		m_wasColliding = false;
 	}
 }
+
+void GhostComponent::HandleEvent(const Event& event)
+{
+	ActorComponent::HandleEvent(event);
+
+	switch (event.GetType())
+	{
+	case EventType::BOOST_PICKUP:
+		std::cout << "BOOST_PICKUP\n";
+		break;
+	case EventType::END_BOOST:
+		std::cout << "END_BOOST\n";
+		break;
+	}
+}
+
