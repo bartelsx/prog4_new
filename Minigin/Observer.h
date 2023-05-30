@@ -14,8 +14,13 @@ namespace dae
 		virtual ~Event() = default;
 
 		TEventType GetType() const { return m_type; }
+		void SetType(TEventType t) { m_type = t; }
+
+		virtual Event* Clone() const { return new Event(m_type); }
+
 		bool Is(TEventType type) const { return m_type == type; }
 
+	protected:
 		TEventType m_type{};
 	};
 
@@ -23,10 +28,10 @@ namespace dae
 	class EventWithPayload : public Event
 	{
 	public:
-		explicit EventWithPayload(TEventType type, T data) : Event(type), m_Data(data)
-		{  }
+		EventWithPayload(TEventType type, T data) : Event(type), m_Data(data) {}
 
 		void SetData(T data) { m_Data = data; }
+		Event* Clone() const override { return new EventWithPayload(m_type, m_Data); }
 
 		T GetData() { return m_Data; }
 
@@ -57,6 +62,11 @@ namespace dae
 		static void Publish(const TEventType type)
 		{
 			GetInstance().PublishImpl(Event{ type });
+		}
+
+		static void Publish(const Event& event)
+		{
+			GetInstance().PublishImpl(event);
 		}
 
 		template <typename TPayload>

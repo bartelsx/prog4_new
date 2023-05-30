@@ -14,6 +14,9 @@ void TimerComponent::HandleEvent(const Event& event)
 	if (event.Is(m_TriggerEvent))
 	{
 		m_CountDown += m_Delay;
+
+		m_pEventToPublish = std::unique_ptr<Event>( event.Clone());
+		m_pEventToPublish->SetType(m_TimedEvent);
 	}
 }
 
@@ -25,7 +28,7 @@ void TimerComponent::Update(float deltaTime)
 
 		if (m_CountDown <= 0.f)
 		{
-			EventManager::Publish(m_TimedEvent);
+			EventManager::Publish(*std::move(m_pEventToPublish));
 		}
 	}
 }

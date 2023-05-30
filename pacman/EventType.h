@@ -15,14 +15,14 @@ namespace dae
 		EventType& operator=(EventType&& other) = delete;
 
 		inline const static TEventType ACTOR_DIED = 1;
-		inline const static TEventType ENEMY_DIED = 2;
-		inline const static TEventType GAME_OVER = 3;
-		inline const static TEventType FRUIT_PICKUP = 4;
-		inline const static TEventType BOOST_PICKUP = 5;
-		inline const static TEventType PILL_PICKUP = 6;
-		inline const static TEventType ACTOR_MOVED = 7;
-		inline const static TEventType GAME_START = 8;
-		inline const static TEventType RESET_LEVEL = 9;
-		inline const static TEventType END_BOOST = 10;
+		inline const static TEventType ENEMY_DIED = 3;
+		inline const static TEventType GAME_OVER = 4;
+		inline const static TEventType FRUIT_PICKUP = 5;
+		inline const static TEventType BOOST_PICKUP = 6;
+		inline const static TEventType END_BOOST = 7;
+		inline const static TEventType PILL_PICKUP = 8;
+		inline const static TEventType ACTOR_MOVED = 9;
+		inline const static TEventType GAME_START = 10;
+		inline const static TEventType RESET_LEVEL = 11;
 	};
 }

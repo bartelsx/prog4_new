@@ -11,6 +11,8 @@ std::shared_ptr<SoundPlayer>SoundPlayer::Create()
 
 	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
 	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
+	EventManager::Subscribe(EventType::ACTOR_DIED, ptr);
+	EventManager::Subscribe(EventType::ENEMY_DIED, ptr);
 
 	return ptr;
 }
@@ -24,6 +26,12 @@ void SoundPlayer::HandleEvent(const Event& event)
 		break;
 	case EventType::BOOST_PICKUP:
 		ServiceLocator::GetSoundSystem().Play(Sound::PACMAN_POWERUP, .5f);
+		break;
+	case EventType::ACTOR_DIED:
+		ServiceLocator::GetSoundSystem().Play(Sound::DEATH, .5f);
+		break;
+	case EventType::ENEMY_DIED:
+		ServiceLocator::GetSoundSystem().Play(Sound::EATGHOST, .5f);
 		break;
 	}
 }

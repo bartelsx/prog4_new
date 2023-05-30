@@ -21,7 +21,6 @@ void GhostComponent::Update(float deltaTime)
 				EventManager::Publish(EventType::ENEMY_DIED, GetOwner());
 				GetOwner()->SetPosition(m_SpawnLocation);
 				m_IsScared = false;
-
 			}
 			else
 			{
