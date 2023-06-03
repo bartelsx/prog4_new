@@ -215,6 +215,11 @@ glm::vec2 GameBoardModel::GetPlayerSpawnLocation() const
 		m_PacmanSpawnLocation;
 }
 
+size_t GameBoardModel::GetGhostsCount() const
+{
+	return m_GhostSpawnLocations.size();
+}
+
 glm::vec2 GameBoardModel::GetGhostSpawnLocation(int ghostIdx) const
 {
 	return  m_GhostSpawnLocations[ghostIdx];

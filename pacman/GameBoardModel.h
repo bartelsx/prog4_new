@@ -60,6 +60,7 @@ namespace dae
 		bool IsTileAccessible(int col, int row) const;
 
 		glm::vec2 GetPlayerSpawnLocation() const;
+		size_t GetGhostsCount() const;
 		glm::vec2 GetGhostSpawnLocation(int ghostIdx) const;
 		void LoadFromJsonFile(const std::string& path);
 		void ChangeTileValue(glm::vec2 position, TileValue newValue);

@@ -1,10 +1,6 @@
 ﻿
 #include "ChasePacmanBehavior.h"
-
-#include <iostream>
-#include <ostream>
 #include <vector>
-
 #include "GameBoardModel.h"
 #include "TargetSelector.h"
 
@@ -29,23 +25,23 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float 
 	auto pacmanCenter{ m_pPacmanObj->GetPosition() };
 	pacmanCenter = glm::vec2{ pacmanCenter.x + centerOffset, pacmanCenter.y + centerOffset };
 
-	auto startId = m_pBoardModel->GetIdx(ghostCenter);
-	int pacmanId = m_pBoardModel->GetIdx(pacmanCenter);
-	auto targetId = m_pTargetSelector->GetTarget(pacmanId, m_pBoardModel);
+	auto startIdx = m_pBoardModel->GetIdx(ghostCenter);
+	int pacmanIdx = m_pBoardModel->GetIdx(pacmanCenter);
+	auto targetIdx = m_pTargetSelector->GetTarget(pacmanIdx, m_pBoardModel);
 
-	auto startIt = std::ranges::find(m_PrevPath, startId);
-	auto targetIt = std::ranges::find(m_PrevPath, targetId);
+	auto startIt = std::ranges::find(m_PrevPath, startIdx);
+	auto targetIt = std::ranges::find(m_PrevPath, targetIdx);
 
-	//If both pacman and ghost are on the previous calculated path, reuse the previous calculated path
+	//If both target and ghost are on the previous calculated path, reuse the previous calculated path
 	if (startIt == m_PrevPath.end() || targetIt == m_PrevPath.end())
 	{
-		if (pacmanId == targetId)
+		if (pacmanIdx == targetIdx)
 		{
-			m_PrevPath = m_pathFinder->FindPath(startId, targetId, {});
+			m_PrevPath = m_pathFinder->FindPath(startIdx, targetIdx, {});
 		}
 		else
 		{
-			m_PrevPath = m_pathFinder->FindPath(startId, targetId, {pacmanId});
+			m_PrevPath = m_pathFinder->FindPath(startIdx, targetIdx, {pacmanIdx});
 		}
 
 		if (m_PrevPath.empty())

@@ -96,6 +96,9 @@
     <ClCompile Include="TargetSelector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SequentialBehavior.cpp">
+      <Filter>Header Files\Ghosts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="TargetSelector.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SequentialBehavior.h">
+      <Filter>Header Files\Ghosts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
