@@ -93,6 +93,9 @@
     <ClCompile Include="DelayedBehavior.cpp">
       <Filter>Source Files\Ghosts</Filter>
     </ClCompile>
+    <ClCompile Include="TargetSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="DelayedBehavior.h">
       <Filter>Header Files\Ghosts</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetSelector.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

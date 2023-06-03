@@ -32,8 +32,8 @@ void GameBoardComponent::Render(bool )
 	{
 		for (int col = 0; col < m_pModel->GetColumns(); ++col)
 		{
-			TileValue tileValue = m_pModel->GetTileValue(row, col);
-			glm::vec2 offset = m_pModel->GetOffset(row, col);
+			TileValue tileValue = m_pModel->GetTileValue(col, row);
+			glm::vec2 offset = m_pModel->GetOffset(col, row);
 			int textureIdx = (tileValue == TileValue::Gate ? 4 : static_cast<int>(tileValue)) - 1;
 			dae::Renderer::GetInstance().RenderTexture(*m_pTextures[textureIdx], upperLeft.x+offset.x, upperLeft.y+offset.y);
 		}

@@ -17,7 +17,7 @@ int FleeBehavior::CalcDistance(int candidateCol, int candidateRow, int pacmanCol
 		return 0;
 	}
 
-	if (m_pBoardModel->GetTileValue(candidateRow, candidateCol) == TileValue::Wall)
+	if (m_pBoardModel->GetTileValue(candidateCol, candidateRow) == TileValue::Wall)
 	{
 		return 0;
 	}

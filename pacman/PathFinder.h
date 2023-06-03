@@ -22,7 +22,7 @@ namespace dae
 		PathFinder& operator=(const PathFinder& other) = delete;
 		PathFinder& operator=(PathFinder&& other) = delete;
 
-		std::vector<int> FindPath(int start, int target) const;
+		std::vector<int> FindPath(int startCellId, int targetCellId, std::initializer_list<int> excludeIds) const;
 
 	private:
 		std::vector<int> ReconstructPath(PathNode* current) const;

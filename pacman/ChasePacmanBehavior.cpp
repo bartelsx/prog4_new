@@ -6,15 +6,17 @@
 #include <vector>
 
 #include "GameBoardModel.h"
+#include "TargetSelector.h"
 
 struct PathNode;
 
 using namespace dae;
 
-ChasePacmanBehavior::ChasePacmanBehavior(const std::shared_ptr<GameObject>& pPacmanObj, const std::shared_ptr<GameBoardModel>& pBoardModel)
+ChasePacmanBehavior::ChasePacmanBehavior(const std::shared_ptr<GameObject>& pPacmanObj, const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<TargetSelector>& pTargetSelector)
 	: GhostMoveBehavior()
 	, m_pPacmanObj(pPacmanObj)
 	, m_pBoardModel(pBoardModel)
+	, m_pTargetSelector(pTargetSelector)
 
 {
 	m_pathFinder = std::make_shared<PathFinder>(pBoardModel);
@@ -28,7 +30,8 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float 
 	pacmanCenter = glm::vec2{ pacmanCenter.x + centerOffset, pacmanCenter.y + centerOffset };
 
 	auto startId = m_pBoardModel->GetIdx(ghostCenter);
-	auto targetId = m_pBoardModel->GetIdx(pacmanCenter);
+	int pacmanId = m_pBoardModel->GetIdx(pacmanCenter);
+	auto targetId = m_pTargetSelector->GetTarget(pacmanId, m_pBoardModel);
 
 	auto startIt = std::ranges::find(m_PrevPath, startId);
 	auto targetIt = std::ranges::find(m_PrevPath, targetId);
@@ -36,7 +39,15 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float 
 	//If both pacman and ghost are on the previous calculated path, reuse the previous calculated path
 	if (startIt == m_PrevPath.end() || targetIt == m_PrevPath.end())
 	{
-		m_PrevPath = m_pathFinder->FindPath(startId, targetId);
+		if (pacmanId == targetId)
+		{
+			m_PrevPath = m_pathFinder->FindPath(startId, targetId, {});
+		}
+		else
+		{
+			m_PrevPath = m_pathFinder->FindPath(startId, targetId, {pacmanId});
+		}
+
 		if (m_PrevPath.empty())
 		{
 			return currentGhostLoc;
@@ -50,10 +61,12 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float 
 		return currentGhostLoc;
 	}
 
-	auto target = *(startIt+1);
+	auto nextCell = *(startIt+1);
 	auto distance = deltaTime * 100 * m_Speed;
-	auto targetLoc = m_pBoardModel->GetOffset(target);
-	auto newX = currentGhostLoc.x + (targetLoc.x < currentGhostLoc.x ? -distance : targetLoc.x > currentGhostLoc.x ? +distance : 0);
-	auto newY = currentGhostLoc.y + (targetLoc.y < currentGhostLoc.y ? -distance : targetLoc.y > currentGhostLoc.y ? +distance : 0);
+	auto nextCellLoc = m_pBoardModel->GetOffset(nextCell);
+
+	auto newX = currentGhostLoc.x + (nextCellLoc.x < currentGhostLoc.x ? -distance : nextCellLoc.x > currentGhostLoc.x ? distance : 0);
+	auto newY = currentGhostLoc.y + (nextCellLoc.y < currentGhostLoc.y ? -distance : nextCellLoc.y > currentGhostLoc.y ? distance : 0);
+
 	return glm::vec2{ newX,newY };
 }

@@ -22,7 +22,7 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 			float posY = float(row * m_TileSize);
 
 
-			int idx = GetIdx(row, col);
+			int idx = GetIdx(col, row);
 			if (m_Grid[idx] != 0)
 			{
 				auto object{ dae::GameObject::Create() };
@@ -61,11 +61,11 @@ int GameBoardModel::CalculateDistance(int firstIdx, int secondIdx) const
 	return abs(cr1.x - cr2.x) + abs(cr1.y - cr2.y);
 }
 
-void GameBoardModel::AddIfValid(int row, int col, std::vector<int>& result) const
+void GameBoardModel::AddIfValid(int col, int row, std::vector<int>& result) const
 {
 	if (row >= 0 && row < m_Rows && col >= 0 && col < m_Columns)
 	{
-		auto idx = GetIdx(row, col);
+		auto idx = GetIdx(col, row);
 		if (GetTileValue(idx) != TileValue::Wall)
 		{
 			result.emplace_back(idx);
@@ -79,10 +79,10 @@ std::vector<int> GameBoardModel::GetAdjacentAccessibleCells(int cellId) const
 
 	auto cr = GetColumnRow(cellId);
 
-	AddIfValid(cr.y - 1, cr.x, result);
-	AddIfValid(cr.y + 1, cr.x, result);
-	AddIfValid(cr.y, cr.x - 1, result);
-	AddIfValid(cr.y, cr.x + 1, result);
+	AddIfValid(cr.x, cr.y - 1, result);
+	AddIfValid(cr.x, cr.y + 1, result);
+	AddIfValid(cr.x - 1, cr.y, result);
+	AddIfValid(cr.x + 1, cr.y, result);
 
 	return result;
 }
@@ -123,7 +123,7 @@ void GameBoardModel::ReadJsonFile(const std::string& filename)
 	}
 }
 
-int GameBoardModel::GetIdx(int row, int col) const
+int GameBoardModel::GetIdx(int col, int row) const
 {
 	if (row < 0 || col < 0 || row >= m_Rows || col >= m_Columns)
 	{
@@ -135,10 +135,10 @@ int GameBoardModel::GetIdx(int row, int col) const
 
 int GameBoardModel::GetIdx(const glm::vec2 location) const
 {
-	return GetIdx(static_cast<int>(location.y / m_TileSize), static_cast<int>(location.x / m_TileSize));
+	return GetIdx(static_cast<int>(location.x / m_TileSize), static_cast<int>(location.y / m_TileSize));
 }
 
-glm::vec2 GameBoardModel::GetCenter(int row, int col) const
+glm::vec2 GameBoardModel::GetCenter(int col, int row) const
 {
 	return glm::vec2{ col * m_TileSize + m_TileSize * 0.5f, row * m_TileSize + m_TileSize * 0.5f };
 }
@@ -149,7 +149,7 @@ glm::vec2 GameBoardModel::GetCenter(int idx) const
 	return glm::vec2{ offset.x + m_TileSize * 0.5f, offset.y + m_TileSize * 0.5f };
 }
 
-glm::vec2 GameBoardModel::GetOffset(int row, int col) const
+glm::vec2 GameBoardModel::GetOffset(int col, int row) const
 {
 	return glm::vec2{ col * m_TileSize, row * m_TileSize };
 }
@@ -178,9 +178,9 @@ TileValue GameBoardModel::GetTileValue(int idx) const
 	return static_cast<TileValue>(m_Grid[idx]);
 }
 
-TileValue GameBoardModel::GetTileValue(int row, int col) const
+TileValue GameBoardModel::GetTileValue(int col, int row) const
 {
-	return GetTileValue(GetIdx(row, col));
+	return GetTileValue(GetIdx(col, row));
 }
 
 TileValue GameBoardModel::GetTileValue(const glm::vec2 location) const
@@ -190,17 +190,22 @@ TileValue GameBoardModel::GetTileValue(const glm::vec2 location) const
 
 bool GameBoardModel::IsPlayerAllowedAtLocation(glm::vec2 location) const
 {
-	return IsTileAtLocationAccessible(location)
-		&& IsTileAtLocationAccessible({ location.x + m_TileSize - 1, location.y + m_TileSize - 1 })
-		&& IsTileAtLocationAccessible({ location.x , location.y + m_TileSize - 1 })
-		&& IsTileAtLocationAccessible({ location.x + m_TileSize - 1, location.y });
+	return IsTileAccessible(location)
+		&& IsTileAccessible({ location.x + m_TileSize - 1, location.y + m_TileSize - 1 })
+		&& IsTileAccessible({ location.x , location.y + m_TileSize - 1 })
+		&& IsTileAccessible({ location.x + m_TileSize - 1, location.y });
 }
 
-bool GameBoardModel::IsTileAtLocationAccessible(glm::vec2 location) const
+bool GameBoardModel::IsTileAccessible(glm::vec2 location) const
 {
 	int row = int(location.y / m_TileSize);
 	int col = int(location.x / m_TileSize);
-	auto tileValue = m_Grid[GetIdx(row, col)];
+	return IsTileAccessible(col, row);
+}
+
+bool GameBoardModel::IsTileAccessible(int col, int row) const
+{
+	const auto tileValue = m_Grid[GetIdx(col, row)];
 	return tileValue != int(TileValue::Wall);
 }
 

@@ -3,6 +3,10 @@
 #include <vector>
 #include <glm/vec2.hpp>
 
+#include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
 #include "ChasePacmanBehavior.h"
 #include "EventType.h"
 #include "Observer.h"
@@ -28,7 +32,7 @@ namespace dae
 		GameBoardModel& operator=(GameBoardModel&& other) = delete;
 
 		void ReadJsonFile(const std::string& filename);
-		int GetIdx(int row, int col) const;
+		int GetIdx(int col, int row) const;
 		int GetIdx(const glm::vec2 location) const;
 
 		int GetTileSize() const { return int(m_TileSize); }
@@ -38,13 +42,13 @@ namespace dae
 		int GetRows() const { return m_Rows; }
 		int GetColumns() const { return m_Columns; } 
 
-		glm::vec2 GetOffset(int row, int col) const;
+		glm::vec2 GetOffset(int col, int row) const;
 		glm::vec2 GetOffset(int idx) const;
 
-		glm::vec2 GetCenter(int row, int col) const;
+		glm::vec2 GetCenter(int col, int row) const;
 		glm::vec2 GetCenter(int idx) const ;
 
-		TileValue GetTileValue(int row, int col) const;
+		TileValue GetTileValue(int col, int row) const;
 		TileValue GetTileValue(const glm::vec2 location) const;
 
 		glm::ivec2 GetColumnRow(const glm::vec2 location) const;
@@ -52,7 +56,8 @@ namespace dae
 		TileValue GetTileValue(int idx) const;
 
 		bool IsPlayerAllowedAtLocation(glm::vec2 location) const;
-		bool IsTileAtLocationAccessible(glm::vec2 location) const;
+		bool IsTileAccessible(glm::vec2 location) const;
+		bool IsTileAccessible(int col, int row) const;
 
 		glm::vec2 GetPlayerSpawnLocation() const;
 		glm::vec2 GetGhostSpawnLocation(int ghostIdx) const;
@@ -70,7 +75,7 @@ namespace dae
 
 	private:
 		GameBoardModel() = default;
-		void AddIfValid(int row, int col, std::vector<int>& result) const;
+		void AddIfValid(int col, int row, std::vector<int>& result) const;
 
 		std::vector<int> m_Grid;
 		float m_TileSize = 16;

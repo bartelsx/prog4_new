@@ -169,6 +169,7 @@
     <ClCompile Include="PointsComponent.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
+    <ClCompile Include="TargetSelector.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +195,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="StartGameCommand.h" />
+    <ClInclude Include="TargetSelector.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -23,9 +23,10 @@ void TextureManager::LoadTextures()
 	m_Textures[Textures::WallTexture] = rm.LoadTexture("../Data/wall.png");
 	m_Textures[Textures::PacmanTexture] = rm.LoadTexture("../Data/pacman.png");
 	m_Textures[Textures::MrsPacmanTexture] = rm.LoadTexture("../Data/mspacman.png");
-	m_Textures[Textures::Ghost1Texture] = rm.LoadTexture("../Data/ghost1.png");
-	m_Textures[Textures::Ghost2Texture] = rm.LoadTexture("../Data/ghost2.png");
-	m_Textures[Textures::Ghost3Texture] = rm.LoadTexture("../Data/ghost3.png");
+	m_Textures[Textures::BlinkyTexture] = rm.LoadTexture("../Data/ghost1.png");
+	m_Textures[Textures::InkyTexture] = rm.LoadTexture("../Data/ghost2.png");
+	m_Textures[Textures::ClydeTexture] = rm.LoadTexture("../Data/ghost3.png");
+	m_Textures[Textures::PinkyTexture] = rm.LoadTexture("../Data/ghost-pink.png");
 	m_Textures[Textures::ScaredGhostTexture] = rm.LoadTexture("../Data/scaredghost.png");
 
 }

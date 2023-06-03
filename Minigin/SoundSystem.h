@@ -23,8 +23,6 @@ namespace dae
 		virtual void InitializeSoundSystem() = 0;
 		virtual void Play(const Sound_id /*id*/, const float /*volume*/) = 0;
 		virtual void RegisterSound(const Sound_id /*id*/, const std::string& /*path*/) = 0;
-
-
 	};
 
 	class SDLSoundSystem final : public SoundSystem

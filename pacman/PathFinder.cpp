@@ -44,7 +44,7 @@ PathNode* PathFinder::FindMinFCell(const std::vector<PathNode*>& openSet) {
 }
 
 // A* algorithm to find the best path
-std::vector<int> PathFinder::FindPath(int startCellId, int targetCellId) const
+std::vector<int> PathFinder::FindPath(int startCellId, int targetCellId, std::initializer_list<int> excludeIds) const
 {
 	auto startNode = new PathNode{ startCellId };
 	// Create a vector of open and closed cells
@@ -87,6 +87,12 @@ std::vector<int> PathFinder::FindPath(int startCellId, int targetCellId) const
 		// Process adjacent cells
 		for (int adjacentIdx : adjacentCells)
 		{
+			// Skip if the adjacent cell is in the excluded set
+			if (std::find(excludeIds.begin(), excludeIds.end(), adjacentIdx) != excludeIds.end())
+			{
+				continue;
+			}
+
 			// Skip if the adjacent cell is already in the closed set
 			bool isInClosed{};
 			for (auto closed : closedSet)
