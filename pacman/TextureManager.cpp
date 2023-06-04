@@ -28,5 +28,6 @@ void TextureManager::LoadTextures()
 	m_Textures[Textures::ClydeTexture] = rm.LoadTexture("../Data/ghost3.png");
 	m_Textures[Textures::PinkyTexture] = rm.LoadTexture("../Data/ghost-pink.png");
 	m_Textures[Textures::ScaredGhostTexture] = rm.LoadTexture("../Data/scaredghost.png");
+	m_Textures[Textures::EyesTexture] = rm.LoadTexture("../Data/eyes.png");
 
 }

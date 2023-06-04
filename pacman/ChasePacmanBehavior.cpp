@@ -20,13 +20,8 @@ ChasePacmanBehavior::ChasePacmanBehavior(const std::shared_ptr<GameObject>& pPac
 
 glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTime)
 {
-	const float centerOffset = m_pBoardModel->GetTileSize()/2.f;
-	auto ghostCenter= glm::vec2{ currentGhostLoc.x + centerOffset, currentGhostLoc.y + centerOffset };
-	auto pacmanCenter{ m_pPacmanObj->GetPosition() };
-	pacmanCenter = glm::vec2{ pacmanCenter.x + centerOffset, pacmanCenter.y + centerOffset };
-
-	auto startIdx = m_pBoardModel->GetIdx(ghostCenter);
-	int pacmanIdx = m_pBoardModel->GetIdx(pacmanCenter);
+	auto startIdx = m_pBoardModel->GetIdx(currentGhostLoc, true);
+	int pacmanIdx = m_pBoardModel->GetIdx(m_pPacmanObj->GetPosition(), true);
 	auto targetIdx = m_pTargetSelector->GetTarget(pacmanIdx, m_pBoardModel);
 
 	auto startIt = std::ranges::find(m_PrevPath, startIdx);

@@ -19,7 +19,7 @@ namespace dae
 		virtual void Update(float deltaTime);
 		virtual void Render(bool isDirty);
 
-		void SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent = true);
+		virtual void SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent = true);
 		std::shared_ptr<dae::GameObject> GetOwner() const;
 
 	protected:

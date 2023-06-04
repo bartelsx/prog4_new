@@ -194,7 +194,9 @@
     <ClInclude Include="Achievement.h" />
     <ClInclude Include="AudioClip.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="CompositeComponent.h" />
     <ClInclude Include="ControllerInputHandler.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
     <ClInclude Include="Font.h" />
@@ -215,13 +217,14 @@
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MoveComponent.h" />
-    <ClInclude Include="Observer.h" />
+    <ClInclude Include="Events.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundSystem.h" />
+    <ClInclude Include="SwitchingComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
@@ -231,6 +234,8 @@
   <ItemGroup>
     <ClCompile Include="AudioClip.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="CompositeComponent.cpp" />
     <ClCompile Include="ControllerInputHandler.cpp" />
     <ClCompile Include="EllipticalMoveComponent.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -252,6 +257,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
+    <ClCompile Include="SwitchingComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />

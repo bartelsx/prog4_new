@@ -33,7 +33,7 @@ namespace dae
 		void SetData(T data) { m_Data = data; }
 		Event* Clone() const override { return new EventWithPayload(m_type, m_Data); }
 
-		T GetData() { return m_Data; }
+		T GetData() const { return m_Data; }
 
 	private:
 		T m_Data;

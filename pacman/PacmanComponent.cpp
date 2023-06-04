@@ -3,8 +3,8 @@
 
 using namespace dae;
 
-PacmanComponent::PacmanComponent(const std::shared_ptr<Texture2D>& pTexture, const std::shared_ptr<GameBoardModel>& pGameBoardModel)
-	: ActorComponent(ActorType::Pacman, pTexture)
+PacmanComponent::PacmanComponent(const std::shared_ptr<GameBoardModel>& pGameBoardModel)
+	: ActorComponent(ActorType::Pacman)
 	, m_pGameBoardModel(pGameBoardModel)
 {
 }

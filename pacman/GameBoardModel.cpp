@@ -5,6 +5,8 @@
 #include <glm/vec2.hpp>
 #include <rapidjson/document.h>
 
+#include "ActorComponent.h"
+#include "ActorComponent.h"
 #include "EventType.h"
 #include "TextureComponent.h"
 
@@ -48,7 +50,7 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 
 void GameBoardModel::ChangeTileValue(glm::vec2 position, TileValue newValue)
 {
-	auto idx = GetIdx(position);
+	auto idx = GetIdx(position, false);
 	m_Grid[idx] = int(newValue);
 }
 
@@ -133,9 +135,10 @@ int GameBoardModel::GetIdx(int col, int row) const
 	return row * m_Columns + col;
 }
 
-int GameBoardModel::GetIdx(const glm::vec2 location) const
+int GameBoardModel::GetIdx(const glm::vec2 location, bool applyCenterOffset = false) const
 {
-	return GetIdx(static_cast<int>(location.x / m_TileSize), static_cast<int>(location.y / m_TileSize));
+	auto offset = applyCenterOffset ? m_TileSize * .5f : 0.f;
+	return GetIdx(static_cast<int>((location.x + offset) / m_TileSize), static_cast<int>((location.y + offset)/ m_TileSize));
 }
 
 glm::vec2 GameBoardModel::GetCenter(int col, int row) const

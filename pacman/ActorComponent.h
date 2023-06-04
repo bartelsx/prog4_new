@@ -6,10 +6,10 @@
 
 namespace dae
 {
-	class ActorComponent : public TextureComponent,  public Observer
+	class ActorComponent : public BaseComponent,  public Observer
 	{
 	public:
-		ActorComponent(ActorType actorType, const std::shared_ptr<Texture2D>& pTexture) : TextureComponent(pTexture), m_ActorType(actorType){}
+		ActorComponent(ActorType actorType) : m_ActorType(actorType){}
 		~ActorComponent() override = default;
 		ActorComponent(const ActorComponent& other) = delete;
 		ActorComponent(ActorComponent&& other) = delete;

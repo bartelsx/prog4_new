@@ -34,24 +34,19 @@ void GhostComponent::Update(float deltaTime)
 		m_WasColliding = false;
 	}
 }
-
-void GhostComponent::HandleEvent(const Event& event)
-{
-	ActorComponent::HandleEvent(event);
-
-	switch (event.GetType())
-	{
-	case EventType::BOOST_PICKUP:
-		m_IsScared = true;
-		break;
-	case EventType::END_BOOST:
-		m_IsScared = false;
-		break;
-	}
-}
-
-std::shared_ptr<dae::Texture2D> GhostComponent::GetTexture()
-{
-	return m_IsScared ? m_pScaredTexture : m_pTexture;
-}
+//
+//void GhostComponent::HandleEvent(const Event& event)
+//{
+//	ActorComponent::HandleEvent(event);
+//
+//	switch (event.GetType())
+//	{
+//	case EventType::BOOST_PICKUP:
+//		m_IsScared = true;
+//		break;
+//	case EventType::END_BOOST:
+//		m_IsScared = false;
+//		break;
+//	}
+//}
 

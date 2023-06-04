@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Events.h"
 
 namespace dae
 {

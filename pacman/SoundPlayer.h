@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Observer.h"
+#include "Events.h"
 
 namespace dae
 {

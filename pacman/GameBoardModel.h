@@ -4,12 +4,8 @@
 #include <glm/vec2.hpp>
 
 #include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
 #include "ChasePacmanBehavior.h"
-#include "EventType.h"
-#include "Observer.h"
+#include "Events.h"
 #include "TextureManager.h"
 
 namespace dae
@@ -33,7 +29,7 @@ namespace dae
 
 		void ReadJsonFile(const std::string& filename);
 		int GetIdx(int col, int row) const;
-		int GetIdx(const glm::vec2 location) const;
+		int GetIdx(const glm::vec2 location, bool applyCenterOffset) const;
 
 		int GetTileSize() const { return int(m_TileSize); }
 		int GetWidth() const { return int(m_Columns * m_TileSize); }
