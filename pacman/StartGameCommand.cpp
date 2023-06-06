@@ -4,7 +4,7 @@
 #include "SceneId.h"
 #include "SceneManager.h"
 
-dae::StartGameCommand::StartGameCommand(GameModes )
+dae::StartGameCommand::StartGameCommand(GameMode )
 {
 
 }

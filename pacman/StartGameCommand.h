@@ -3,17 +3,18 @@
 
 namespace dae
 {
-	enum GameModes
+	enum GameMode
 	{
 		SinglePlayer,
 		Coop,
 		Versus
 	};
+
 	class StartGameCommand :
 		public Command
 	{
 	public:
-		StartGameCommand(GameModes gameMode);
+		StartGameCommand(GameMode gameMode);
 		~StartGameCommand() = default;
 		StartGameCommand(const StartGameCommand& other) = delete;
 		StartGameCommand(StartGameCommand&& other) = delete;

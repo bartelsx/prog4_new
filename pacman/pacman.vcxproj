@@ -154,6 +154,7 @@
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="ActorMoveComponent.cpp" />
     <ClCompile Include="RthBehavior.cpp" />
+    <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SequentialBehavior.cpp" />
     <ClCompile Include="ChasePacmanBehavior.cpp" />
     <ClCompile Include="DelayedBehavior.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="ActorMoveComponent.h" />
     <ClInclude Include="RthBehavior.h" />
+    <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SequentialBehavior.h" />
     <ClInclude Include="ChasePacmanBehavior.h" />
     <ClInclude Include="DelayedBehavior.h" />
