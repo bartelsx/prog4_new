@@ -7,6 +7,12 @@
 
 #include "ActorComponent.h"
 #include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
+#include "ActorComponent.h"
 #include "EventType.h"
 #include "TextureComponent.h"
 
@@ -37,6 +43,10 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 					break;
 				case 7:
 					m_PacmanSpawnLocation = glm::vec2(posX, posY);
+					m_Grid[idx] = 4;
+					break;
+				case 8:
+					m_Teleports.emplace_back(idx);
 					m_Grid[idx] = 4;
 					break;
 
@@ -85,6 +95,11 @@ std::vector<int> GameBoardModel::GetAdjacentAccessibleCells(int cellId) const
 	AddIfValid(cr.x, cr.y + 1, result);
 	AddIfValid(cr.x - 1, cr.y, result);
 	AddIfValid(cr.x + 1, cr.y, result);
+
+	if (IsTeleport(cellId))
+	{
+		result.emplace_back(GetPairedTeleport(cellId));
+	}
 
 	return result;
 }
@@ -197,6 +212,28 @@ bool GameBoardModel::IsPlayerAllowedAtLocation(glm::vec2 location) const
 		&& IsTileAccessible({ location.x + m_TileSize - 1, location.y + m_TileSize - 1 })
 		&& IsTileAccessible({ location.x , location.y + m_TileSize - 1 })
 		&& IsTileAccessible({ location.x + m_TileSize - 1, location.y });
+}
+
+bool GameBoardModel::IsTeleport(int cellIdx) const
+{
+	auto it = std::find(m_Teleports.begin(), m_Teleports.end(), cellIdx);
+	return it < m_Teleports.end();
+}
+
+int GameBoardModel::GetPairedTeleport(int cellIdx) const
+{
+	auto it = std::find(m_Teleports.begin(), m_Teleports.end(), cellIdx);
+	if (it < m_Teleports.end())
+	{
+		int thisTeleportIdx = static_cast<int>( std::distance(m_Teleports.begin(), it));
+		int otherTeleportIdx = thisTeleportIdx ^ 1; //flip low order bit
+		if (otherTeleportIdx < m_Teleports.size())
+		{
+			return m_Teleports[otherTeleportIdx];
+		}
+	}
+	assert(false);
+	return cellIdx;
 }
 
 bool GameBoardModel::IsTileAccessible(glm::vec2 location) const

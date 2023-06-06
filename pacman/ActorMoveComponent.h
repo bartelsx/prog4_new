@@ -25,7 +25,7 @@ namespace dae
     protected:
 	    ActorMoveComponent( std::shared_ptr<GameBoardModel> pModel);
     private:
-		std::shared_ptr<GameBoardModel> m_pModel;
+		std::shared_ptr<GameBoardModel> m_pBoardModel;
     };
 }
 

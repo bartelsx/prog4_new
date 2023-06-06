@@ -64,6 +64,9 @@ namespace dae
 		int CalculateDistance(int firstIdx, int secondIdx) const;
 		std::vector<int> GetAdjacentAccessibleCells(int cellId) const;
 
+		bool IsTeleport(int cellIdx) const;
+		int GetPairedTeleport(int cellIdx) const;
+
 		static std::shared_ptr<GameBoardModel> Create()
 		{
 			auto sptr = std::shared_ptr<GameBoardModel>(new GameBoardModel());
@@ -81,6 +84,7 @@ namespace dae
 
 		std::vector<glm::vec2> m_GhostSpawnLocations{};
 		glm::vec2 m_PacmanSpawnLocation{};
-
+		std::vector <int> m_Teleports{};
+		
 	};
 }
