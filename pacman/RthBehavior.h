@@ -19,8 +19,8 @@ namespace dae
 	private:
 		RthBehavior(const std::shared_ptr<GameBoardModel> pBoardModel, const std::shared_ptr<GameObject>pGhostObj, const glm::vec2& homeLocation);
 
-		std::shared_ptr<GameBoardModel> m_pBoardModel;
-		std::shared_ptr<GameObject> m_pGhostObj;
+		const std::shared_ptr<GameBoardModel>& m_pBoardModel;
+		const std::shared_ptr<GameObject>& m_pGhostObj;
 		glm::vec2 m_HomeLocation;
 
 		std::unique_ptr<PathFinder> m_pPathFinder;
