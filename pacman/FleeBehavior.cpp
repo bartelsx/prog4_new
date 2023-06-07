@@ -22,6 +22,13 @@ int FleeBehavior::CalcDistance(int candidateCol, int candidateRow, int pacmanCol
 		return 0;
 	}
 
+	auto cellIdx = m_pBoardModel->GetIdx(candidateCol, candidateRow);
+	if (m_pBoardModel->IsTeleport(cellIdx))
+	{
+		auto crOtherTeleport = m_pBoardModel->GetColumnRow(m_pBoardModel->GetPairedTeleport(cellIdx));
+		return abs(pacmanCol - crOtherTeleport.x) + abs(pacmanRow - crOtherTeleport.y);
+	}
+
 	return abs(pacmanCol - candidateCol) + abs(pacmanRow - candidateRow);
 }
 
@@ -55,8 +62,19 @@ glm::vec2 FleeBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTi
 
 	if ((dist = CalcDistance(crGhost.x, crGhost.y+1, crPacman.x, crPacman.y)) > maxDist)
 	{
+		maxDist = dist;
 		direction = glm::ivec2(0,1);
 	}
+
+	//auto ghostCell = m_pBoardModel->GetIdx(currentGhostLoc, true);
+	//if (m_pBoardModel->IsTeleport(ghostCell))
+	//{
+	//	auto crTeleport = m_pBoardModel->GetColumnRow(m_pBoardModel->GetPairedTeleport(ghostCell));
+	//	if (CalcDistance(crTeleport.x, crTeleport.y, crPacman.x, crPacman.y) > maxDist)
+	//	{
+	//		return m_pBoardModel->GetOffset(crTeleport.x, crTeleport.y);
+	//	}
+	//}
 
 	const float distance = m_speed * 100 * deltaTime;
 
