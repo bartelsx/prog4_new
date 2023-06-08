@@ -2,18 +2,18 @@
 
 using namespace dae;
 
-
-std::shared_ptr<RthBehavior> RthBehavior::Create(const std::shared_ptr<GameBoardModel> pBoardModel, const std::shared_ptr<GameObject>pGhostObj, const glm::vec2& homeLocation)
+std::shared_ptr<RthBehavior> RthBehavior::Create(const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<GameObject>& pGhostObj, const glm::vec2& homeLocation)
 {
 	return std::shared_ptr<RthBehavior>(new RthBehavior(pBoardModel, pGhostObj, homeLocation));
 }
 
-RthBehavior::RthBehavior(const std::shared_ptr<GameBoardModel> pBoardModel, const std::shared_ptr<GameObject>pGhostObj, const glm::vec2& homeLocation)
+RthBehavior::RthBehavior(const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<GameObject>& pGhostObj, const glm::vec2& homeLocation)
 	: m_pBoardModel{ pBoardModel }
 	, m_pGhostObj{ pGhostObj }
 	, m_HomeLocation{ homeLocation }
 {
-	m_pPathFinder = std::make_unique<PathFinder>(pBoardModel);
+
+	m_pPathFinder = std::make_unique<PathFinder>(m_pBoardModel);
 }
 
 glm::vec2 RthBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTime)
@@ -27,7 +27,11 @@ glm::vec2 RthBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTim
 
 		if (m_CalculatedPath.empty())
 		{
-			EventManager::Publish(EventType::REACHED_HOME, m_pGhostObj);
+			if (!m_pGhostObj.expired())
+			{
+				EventManager::Publish(EventType::REACHED_HOME, m_pGhostObj.lock());
+
+			}
 			m_CalculatedPath.clear();
 			return m_HomeLocation;
 		}
@@ -35,7 +39,7 @@ glm::vec2 RthBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTim
 		m_TraveledDistance = 0;
 	}
 
-	m_TraveledDistance += 100 * m_Speed * deltaTime ;
+	m_TraveledDistance += 100 * m_Speed * deltaTime;
 	const int tileSize = m_pBoardModel->GetTileSize();
 
 	int idx = int(m_TraveledDistance) / tileSize;
@@ -44,7 +48,7 @@ glm::vec2 RthBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTim
 	idx = std::min(idx, pathSize - 2);
 
 	const float remaining = (pathSize - 1 - idx) * static_cast<float>(tileSize);
-	float distance = m_TraveledDistance - static_cast<float>( idx * tileSize);
+	float distance = m_TraveledDistance - static_cast<float>(idx * tileSize);
 
 	distance = std::min(remaining, distance);
 
@@ -54,16 +58,20 @@ glm::vec2 RthBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTim
 	const auto newX = prevCellLoc.x + (nextCellLoc.x < prevCellLoc.x ? -distance : nextCellLoc.x > prevCellLoc.x ? distance : 0);
 	const auto newY = prevCellLoc.y + (nextCellLoc.y < prevCellLoc.y ? -distance : nextCellLoc.y > prevCellLoc.y ? distance : 0);
 
-	if (abs(newX-m_HomeLocation.x) + abs(newY-m_HomeLocation.y) < 4)
+	if (abs(newX - m_HomeLocation.x) + abs(newY - m_HomeLocation.y) < 4)
 	{
-		EventManager::Publish(EventType::REACHED_HOME, m_pGhostObj);
+		if (!m_pGhostObj.expired())
+		{
+			EventManager::Publish(EventType::REACHED_HOME, m_pGhostObj.lock());
+
+		}
 		m_CalculatedPath.clear();
 		return m_HomeLocation;
 	}
 
 	return glm::vec2{ newX,newY };
 
-	
+
 }
 
 

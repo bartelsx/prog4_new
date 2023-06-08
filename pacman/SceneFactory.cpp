@@ -108,7 +108,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	//-> Visual
 	rthComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(EyesTexture)));
 	//-> Movement
-	rthComp->Add(GhostMoveComponent::Create(RthBehavior::Create(pBoardModel, ghostObj, pBoardModel->GetGhostSpawnLocation(0)), pBoardModel));
+	rthComp->Add(GhostMoveComponent::Create(RthBehavior::Create(pBoardModel, ghostObj, pBoardModel->GetGhostSpawnLocation(index)), pBoardModel));
 
 	//Combine those components in a SwitchingComponent
 	const auto switchingComp = SwitchingComponent::Create();

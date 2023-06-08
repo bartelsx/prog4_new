@@ -28,7 +28,7 @@ namespace dae
 
 	private:
 		SwitchingComponent() = default;
-		std::unordered_map<TEventType, std::shared_ptr<BaseComponent>> m_Components{};
+		std::unordered_map<TEventType,  std::shared_ptr<BaseComponent>> m_Components{};
 		std::shared_ptr<BaseComponent> m_CurrentComponent{};
     };
 }
