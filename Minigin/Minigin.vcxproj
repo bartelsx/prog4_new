@@ -199,9 +199,11 @@
     <ClInclude Include="CompositeComponent.h" />
     <ClInclude Include="ControllerInputHandler.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
+    <ClInclude Include="FireEventComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCalcComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GoToComponent.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_opengl2.h" />
@@ -239,9 +241,11 @@
     <ClCompile Include="CompositeComponent.cpp" />
     <ClCompile Include="ControllerInputHandler.cpp" />
     <ClCompile Include="EllipticalMoveComponent.cpp" />
+    <ClCompile Include="FireEventComponent.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCalcComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GoToComponent.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />

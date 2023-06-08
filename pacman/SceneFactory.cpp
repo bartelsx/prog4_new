@@ -26,6 +26,8 @@
 #include "TargetSelector.h"
 #include "TextComponent.h"
 #include "DelayedEventComponent.h"
+#include "FireEventComponent.h"
+#include "GoToComponent.h"
 #include "TimerComponent.h"
 
 using namespace dae;
@@ -83,9 +85,9 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 
 
 	//Waiting state
-	const auto waiting = CompositeComponent::Create();
-	waiting->Add(normalTexture);
-	waiting->Add(TimerComponent::Create(static_cast<float>(index * 2 + 2), EventType::WAKE_UP));
+	const auto waitingComp = CompositeComponent::Create();
+	waitingComp->Add(normalTexture);
+	waitingComp->Add(TimerComponent::Create(static_cast<float>(index * 2 + 2), EventType::WAKE_UP));
 
 	//Normal state
 	const auto normalComp = CompositeComponent::Create();
@@ -96,6 +98,10 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	collComp->AddWatchedObject(pacmanObj);
 	normalComp->Add(collComp);
 
+	//ResetState
+	const auto resetComp = CompositeComponent::Create();
+	resetComp->Add(GoToComponent::Create(pBoardModel->GetGhostSpawnLocation(index)));
+	resetComp->Add(FireEventComponent::Create(EventType::REACHED_HOME, true));
 
 	//Scared state
 	const auto scaredComp = CompositeComponent::Create();
@@ -112,11 +118,12 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 
 	//Combine those components in a StateComponent
 	const auto stateComponent = StateComponent::Create();
-	stateComponent->Set(EventType::REACHED_HOME, waiting); //also initial state
+	stateComponent->Set(EventType::REACHED_HOME, waitingComp); //also initial state
 	stateComponent->Set(EventType::END_BOOST, normalComp); 
 	stateComponent->Set(EventType::WAKE_UP, normalComp); 
 	stateComponent->Set(EventType::BOOST_PICKUP, scaredComp);
 	stateComponent->Set(EventType::ENEMY_DIED, rthComp);
+	stateComponent->Set(EventType::RESET_LEVEL, resetComp);
 
 	ghostObj->AddComponent(stateComponent);
 	ghostObj->SetPosition(pBoardModel->GetGhostSpawnLocation(index));
