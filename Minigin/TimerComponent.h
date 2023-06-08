@@ -1,13 +1,10 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Events.h"
+
 
 namespace dae
 {
-	/**
-	 * This component will wait for a triggerEvent, and then fire a delayedEvent some time later
-	 */
-	class TimerComponent : public BaseComponent, public Observer
+	class TimerComponent : public BaseComponent
 	{
 	public:
 		~TimerComponent() override = default;
@@ -16,23 +13,15 @@ namespace dae
 		TimerComponent& operator=(const TimerComponent& other) = delete;
 		TimerComponent& operator=(TimerComponent&& other) = delete;
 
-		static std::shared_ptr<TimerComponent> Create(TEventType triggerEvent, TEventType timedEvent, float delay)
-		{
-			auto ptr = std::shared_ptr<TimerComponent>(new TimerComponent(triggerEvent, timedEvent, delay));
-			EventManager::Subscribe(triggerEvent, ptr);
-			return ptr;
-		}
+		static std::shared_ptr<TimerComponent> Create(float interval, TEventType eventType);
 
-		void HandleEvent(const Event& event) override;
 		void Update(float deltaTime) override;
 
 	private:
-		TimerComponent(TEventType triggerEvent, TEventType timedEvent, float delay);
+		TimerComponent(float interval, TEventType eventType);
 
-		TEventType m_TriggerEvent;
-		TEventType m_TimedEvent;
-		float m_Delay;
-		float m_CountDown{};
-		std::unique_ptr<Event> m_pEventToPublish{};
+		float m_RemainingTime;
+		float m_Interval;
+		TEventType m_EventType;
 	};
 }

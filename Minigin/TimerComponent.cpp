@@ -1,35 +1,28 @@
-#include "TimerComponent.h"
+﻿#include "TimerComponent.h"
 
 using namespace dae;
 
-TimerComponent::TimerComponent(TEventType triggerEvent, TEventType timedEvent, float delay)
-	: m_TriggerEvent(triggerEvent)
-	, m_TimedEvent(timedEvent)
-	, m_Delay(delay)
+
+TimerComponent::TimerComponent(float interval, TEventType eventType)
+	: m_Interval(interval)
+	, m_EventType(eventType)
 {
+	m_RemainingTime = interval;
 }
 
-void TimerComponent::HandleEvent(const Event& event)
+std::shared_ptr<TimerComponent> TimerComponent::Create(float interval, TEventType eventType)
 {
-	if (event.Is(m_TriggerEvent))
-	{
-		m_CountDown += m_Delay;
-
-		m_pEventToPublish = std::unique_ptr<Event>( event.Clone());
-		m_pEventToPublish->SetType(m_TimedEvent);
-	}
+	return std::shared_ptr<TimerComponent>(new TimerComponent(interval, eventType));
 }
 
 void TimerComponent::Update(float deltaTime)
 {
-	if (m_CountDown > 0.f)
-	{
-		m_CountDown = std::max(0.f, m_CountDown - deltaTime);
+	m_RemainingTime -= deltaTime;
 
-		if (m_CountDown <= 0.f)
-		{
-			EventManager::Publish(*std::move(m_pEventToPublish));
-		}
+	if (m_RemainingTime <= 0)
+	{
+		EventManager::Publish(m_EventType, GetOwner());
+		m_RemainingTime = m_Interval;
 	}
 }
 

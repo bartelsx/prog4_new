@@ -4,17 +4,17 @@
 namespace dae
 {
 	// This component selects one of its subcomponents when the corresponding Event is received
-	class SwitchingComponent :  public BaseComponent, public Observer
+	class StateComponent :  public BaseComponent, public Observer
     {
 	public:
-	    ~SwitchingComponent() override = default;
-	    SwitchingComponent(const SwitchingComponent& other) = delete;
-	    SwitchingComponent(SwitchingComponent&& other) = delete;
-	    SwitchingComponent& operator=(const SwitchingComponent& other) = delete;
-	    SwitchingComponent& operator=(SwitchingComponent&& other) = delete;
+	    ~StateComponent() override = default;
+	    StateComponent(const StateComponent& other) = delete;
+	    StateComponent(StateComponent&& other) = delete;
+	    StateComponent& operator=(const StateComponent& other) = delete;
+	    StateComponent& operator=(StateComponent&& other) = delete;
 
-		static std::shared_ptr<SwitchingComponent> Create();
-		std::shared_ptr<SwitchingComponent> GetPtr();
+		static std::shared_ptr<StateComponent> Create();
+		std::shared_ptr<StateComponent> GetPtr();
 
 		//Set the component that will be selected when receiving an event of eventType
 		void Set(TEventType eventType, const std::shared_ptr<BaseComponent> component);
@@ -27,7 +27,7 @@ namespace dae
 		void SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent) override;
 
 	private:
-		SwitchingComponent() = default;
+		StateComponent() = default;
 		std::unordered_map<TEventType,  std::shared_ptr<BaseComponent>> m_Components{};
 		std::shared_ptr<BaseComponent> m_CurrentComponent{};
     };

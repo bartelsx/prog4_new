@@ -1,18 +1,18 @@
-#include "SwitchingComponent.h"
+#include "StateComponent.h"
 
 using namespace dae;
 
-std::shared_ptr<SwitchingComponent> SwitchingComponent::Create()
+std::shared_ptr<StateComponent> StateComponent::Create()
 {
-	return std::shared_ptr<SwitchingComponent>(new SwitchingComponent());
+	return std::shared_ptr<StateComponent>(new StateComponent());
 }
 
-std::shared_ptr<SwitchingComponent> SwitchingComponent::GetPtr()
+std::shared_ptr<StateComponent> StateComponent::GetPtr()
 {
-	return std::dynamic_pointer_cast<SwitchingComponent>(shared_from_this());
+	return std::dynamic_pointer_cast<StateComponent>(shared_from_this());
 }
 
-void SwitchingComponent::Set(TEventType eventType, const std::shared_ptr<BaseComponent> component)
+void StateComponent::Set(TEventType eventType, const std::shared_ptr<BaseComponent> component)
 {
 	if (!m_Components.contains(eventType))
 	{
@@ -29,7 +29,7 @@ void SwitchingComponent::Set(TEventType eventType, const std::shared_ptr<BaseCom
 	}
 }
 
-void SwitchingComponent::HandleEvent(const Event& event)
+void StateComponent::HandleEvent(const Event& event)
 {
 	const auto* pEventWithOwner = dynamic_cast<const EventWithPayload<std::shared_ptr<GameObject>>*>(&event);
 
@@ -43,7 +43,7 @@ void SwitchingComponent::HandleEvent(const Event& event)
 	}
 }
 
-void SwitchingComponent::Update(float deltaTime)
+void StateComponent::Update(float deltaTime)
 {
 	if (m_CurrentComponent != nullptr)
 	{
@@ -51,7 +51,7 @@ void SwitchingComponent::Update(float deltaTime)
 	}
 }
 
-void SwitchingComponent::Render(bool isDirty)
+void StateComponent::Render(bool isDirty)
 {
 	if (m_CurrentComponent != nullptr)
 	{
@@ -59,7 +59,7 @@ void SwitchingComponent::Render(bool isDirty)
 	}
 }
 
-void SwitchingComponent::SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent)
+void StateComponent::SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent)
 {
 	BaseComponent::SetOwner(pOwner, doAddComponent);
 

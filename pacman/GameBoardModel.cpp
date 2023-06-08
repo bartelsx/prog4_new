@@ -1,19 +1,8 @@
 #include "GameBoardModel.h"
-
 #include <fstream>
 #include <iostream>
 #include <glm/vec2.hpp>
 #include <rapidjson/document.h>
-
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "ActorComponent.h"
-#include "EventType.h"
 #include "TextureComponent.h"
 
 using namespace dae;

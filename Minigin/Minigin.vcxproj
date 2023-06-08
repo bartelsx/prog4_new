@@ -224,10 +224,11 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundSystem.h" />
-    <ClInclude Include="SwitchingComponent.h" />
+    <ClInclude Include="StateComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
+    <ClInclude Include="DelayedEventComponent.h" />
     <ClInclude Include="TimerComponent.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
@@ -257,10 +258,11 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
-    <ClCompile Include="SwitchingComponent.cpp" />
+    <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="DelayedEventComponent.cpp" />
     <ClCompile Include="TimerComponent.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>

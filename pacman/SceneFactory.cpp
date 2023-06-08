@@ -22,9 +22,10 @@
 #include "Sound.h"
 #include "SoundPlayer.h"
 #include "StartGameCommand.h"
-#include "SwitchingComponent.h"
+#include "StateComponent.h"
 #include "TargetSelector.h"
 #include "TextComponent.h"
+#include "DelayedEventComponent.h"
 #include "TimerComponent.h"
 
 using namespace dae;
@@ -78,46 +79,46 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	const float tolerance = pBoardModel->GetTileSize() * .5f;
 
 	auto ghostObj = GameObject::Create();
+	auto normalTexture = TextureComponent::Create(_pTextureManager->GetTexture(textureId));
 
-	//Normal
+
+	//Waiting state
+	const auto waiting = CompositeComponent::Create();
+	waiting->Add(normalTexture);
+	waiting->Add(TimerComponent::Create(static_cast<float>(index * 2 + 2), EventType::WAKE_UP));
+
+	//Normal state
 	const auto normalComp = CompositeComponent::Create();
 
-	//-> Visual
-	normalComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(textureId)));
-	//-> Movement
+	normalComp->Add(normalTexture);
 	normalComp->Add(GhostMoveComponent::Create(chaseBehavior, pBoardModel));
-	//-> Collision detection
 	const auto collComp = CollisionComponent::Create(EventType::ACTOR_DIED, false, false, tolerance);
 	collComp->AddWatchedObject(pacmanObj);
 	normalComp->Add(collComp);
 
 
-	//Scared 
+	//Scared state
 	const auto scaredComp = CompositeComponent::Create();
-	//-> Visual
 	scaredComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(ScaredGhostTexture)));
-	//-> Movement
 	scaredComp->Add(GhostMoveComponent::Create(FleeBehavior::Create(pBoardModel, pGameState), pBoardModel));
-	//-> Collision detection
 	const auto collComp2 = CollisionComponent::Create(EventType::ENEMY_DIED, true, false, tolerance);
 	collComp2->AddWatchedObject(pacmanObj);
 	scaredComp->Add(collComp2);
 
 	//Returning to home state (after being eaten)
 	const auto rthComp = CompositeComponent::Create();
-	//-> Visual
 	rthComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(EyesTexture)));
-	//-> Movement
 	rthComp->Add(GhostMoveComponent::Create(RthBehavior::Create(pBoardModel, ghostObj, pBoardModel->GetGhostSpawnLocation(index)), pBoardModel));
 
-	//Combine those components in a SwitchingComponent
-	const auto switchingComp = SwitchingComponent::Create();
-	switchingComp->Set(EventType::END_BOOST, normalComp); //also default behavior
-	switchingComp->Set(EventType::BOOST_PICKUP, scaredComp);
-	switchingComp->Set(EventType::ENEMY_DIED, rthComp);
-	switchingComp->Set(EventType::REACHED_HOME, normalComp);
+	//Combine those components in a StateComponent
+	const auto stateComponent = StateComponent::Create();
+	stateComponent->Set(EventType::REACHED_HOME, waiting); //also initial state
+	stateComponent->Set(EventType::END_BOOST, normalComp); 
+	stateComponent->Set(EventType::WAKE_UP, normalComp); 
+	stateComponent->Set(EventType::BOOST_PICKUP, scaredComp);
+	stateComponent->Set(EventType::ENEMY_DIED, rthComp);
 
-	ghostObj->AddComponent(switchingComp);
+	ghostObj->AddComponent(stateComponent);
 	ghostObj->SetPosition(pBoardModel->GetGhostSpawnLocation(index));
 	return ghostObj;
 }
@@ -297,21 +298,21 @@ void SceneFactory::LoadGameScene()
 	//Blinky (RED)
 	if (ghostsCount >= 1)
 	{
-		auto behavior = DelayedBehavior::Create(2.f, ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman()));
+		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman());
 		ghostObjs.emplace_back(BuildGhost(0, BlinkyTexture, behavior, pacmanObj, pBoardModel, pGameState));
 	}
 
 	//Inky (CYAN)
 	if (ghostsCount >= 2)
 	{
-		auto behavior = DelayedBehavior::Create(5.f, ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::InFrontOfPacman()));
+		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::InFrontOfPacman());
 		ghostObjs.emplace_back(BuildGhost(1, InkyTexture, behavior, pacmanObj, pBoardModel, pGameState));
 	}
 
 	//Clyde (ORANGE)
 	if (ghostsCount >= 3)
 	{
-		auto behavior = DelayedBehavior::Create(8.f, ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::BehindPacman()));
+		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::BehindPacman());
 		ghostObjs.emplace_back(BuildGhost(2, ClydeTexture, behavior, pacmanObj, pBoardModel, pGameState));
 	}
 
@@ -325,7 +326,7 @@ void SceneFactory::LoadGameScene()
 	}
 
 	//Timers
-	gameplayObj->AddComponent(TimerComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
+	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
 	pacmanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
 	pScene->Add(backgroundObj);
