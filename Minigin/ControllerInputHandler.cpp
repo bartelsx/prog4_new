@@ -21,7 +21,6 @@ class ControllerInputHandler::ControllerInputHandlerImpl
 	using ControllerKey = std::pair<unsigned, ControllerButton>;
 	using ControllerCommandsMap = std::map<ControllerKey, std::shared_ptr<Command>>;
 	ControllerCommandsMap m_ControllerCommands{};
-
 	XINPUT_STATE* m_CurrentState{};
 	XINPUT_STATE* m_PreviousState{};
 	int* m_ButtonChanges;
@@ -33,21 +32,12 @@ class ControllerInputHandler::ControllerInputHandlerImpl
 	float* m_Acceleration;
 
 public:
+	std::vector<int> m_ControllerIds{};
 	ControllerInputHandlerImpl()
 		:m_CurrentState(new XINPUT_STATE[XUSER_MAX_COUNT]), m_PreviousState(new XINPUT_STATE[XUSER_MAX_COUNT])
 	{
-		SDL_Init(SDL_INIT_JOYSTICK);
-		int numControllers = SDL_NumJoysticks();
-		for (int i = 0; i < numControllers; ++i) {
-			SDL_Joystick* joystick = SDL_JoystickOpen(i);
-			SDL_JoystickID joystickID = SDL_JoystickInstanceID(joystick);
-			joystickID;
-			// Use joystickID or perform further operations with the controller
-
-			// Close the joystick/controller when you're done working with it
-			SDL_JoystickClose(joystick);
-		}
-
+		
+		Init();
 		m_ButtonChanges = new int[XUSER_MAX_COUNT];
 		m_Directions = new glm::vec2[XUSER_MAX_COUNT];
 		m_Speed = new float[XUSER_MAX_COUNT];
@@ -76,7 +66,19 @@ public:
 		delete[] m_Acceleration;
 		m_Acceleration = nullptr;
 	}
+	void Init()
+	{
+		SDL_Init(SDL_INIT_JOYSTICK);
+		int numControllers = SDL_NumJoysticks();
+		for (int i = 0; i < numControllers; ++i) {
+			SDL_Joystick* joystick = SDL_JoystickOpen(i);
+			SDL_JoystickID joystickID = SDL_JoystickInstanceID(joystick);
+			joystickID;
 
+			m_ControllerIds.emplace_back(joystickID);
+			SDL_JoystickClose(joystick);
+		}
+	}
 	void ReadThumb(unsigned int controllerId, XINPUT_STATE& state)
 	{
 		//std::cout << state.dwPacketNumber << std::endl;
@@ -309,6 +311,16 @@ float ControllerInputHandler::GetAcceleration(const unsigned controllerId) const
 ControllerInputHandler::ControllerInputHandler()
 {
 	pControllerImpl = std::make_unique<ControllerInputHandlerImpl>();
+}
+
+int ControllerInputHandler::GetControllerID(int controllerNumber)
+{
+	return pControllerImpl->m_ControllerIds[controllerNumber];
+}
+
+int ControllerInputHandler::GetNumberOfControllers()
+{
+	return static_cast<int>(pControllerImpl->m_ControllerIds.size());
 }
 
 ControllerInputHandler::~ControllerInputHandler()

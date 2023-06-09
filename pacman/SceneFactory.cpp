@@ -35,8 +35,7 @@ using namespace dae;
 #define APP_WIDTH (1024)
 #define APP_HEIGHT (768)
 
-#define PACMAN_CONTROLLER_ID 1
-#define GHOST_CONTROLLER_ID 0
+
 
 std::shared_ptr<SoundPlayer> _pSoundPlayer;
 std::shared_ptr<TextureManager> _pTextureManager;
@@ -48,13 +47,13 @@ MoveParameters GetLeftThumbValuesFromController(unsigned int controllerID)
 	return value;
 }
 
-MoveParameters GetLeftThumbValuesFromPacmanController()
+MoveParameters GetLeftThumbValuesFromPacmanController(int pacmanController)
 {
-	return GetLeftThumbValuesFromController(PACMAN_CONTROLLER_ID);
+	return GetLeftThumbValuesFromController(pacmanController);
 }
 MoveParameters GetLeftThumbValuesFromGhostController()
 {
-	return GetLeftThumbValuesFromController(GHOST_CONTROLLER_ID);
+	return GetLeftThumbValuesFromController(ControllerInputHandler::GetInstance().GetControllerID(0));
 }
 
 MoveParameters GetKeyUpMoveParameters()
@@ -134,8 +133,8 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	//Combine those components in a StateComponent
 	const auto stateComponent = StateComponent::Create();
 	stateComponent->Set(EventType::REACHED_HOME, waitingComp); //also initial state
-	stateComponent->Set(EventType::END_BOOST, normalComp); 
-	stateComponent->Set(EventType::WAKE_UP, normalComp); 
+	stateComponent->Set(EventType::END_BOOST, normalComp);
+	stateComponent->Set(EventType::WAKE_UP, normalComp);
 	stateComponent->Set(EventType::BOOST_PICKUP, scaredComp);
 	stateComponent->Set(EventType::ENEMY_DIED, rthComp);
 	stateComponent->Set(EventType::RESET_LEVEL, resetComp);
@@ -166,6 +165,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	auto& kih = KeyboardInputHandler::GetInstance();
 	auto& cih = ControllerInputHandler::GetInstance();
 
+
+
 	const auto pBoardModel = GameBoardModel::Create();
 	pBoardModel->LoadFromJsonFile("../Data/level.json");
 
@@ -185,7 +186,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	pacmanStateComp->Set(EventType::GAME_OVER, BaseComponent::Empty()); //Stop moving on GAME_OVER
 	pacmanObj->AddComponent(pacmanStateComp);
 
-	std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController);
 	std::shared_ptr<Command> pMoveUpCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
 	std::shared_ptr<Command> pMoveDownCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {0.f,-1.f}, 1.f, 0.f });
 	std::shared_ptr<Command> pMoveLeftCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {-1.f,0.f}, 1.f, 0.f });
@@ -206,13 +206,32 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	//Bind Pacman controls
 	//  Joystick
-	cih.AddCommand(PACMAN_CONTROLLER_ID, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+	if (gameMode == GameMode::SinglePlayer)
+	{
+		if (cih.GetNumberOfControllers() > 0)
+		{
+			m_PacmanControllerId = cih.GetControllerID(0);
+		}
+	}
+	else
+	{
+		if (cih.GetNumberOfControllers() > 1)
+		{
+			m_PacmanControllerId = cih.GetControllerID(1);
+		}
+	}
+	if (m_PacmanControllerId >= 0)
+	{
 
-	//  Controller buttons Pacman
-	cih.AddCommand(PACMAN_CONTROLLER_ID, ControllerButton::ButtonY, pMoveUpCommandPacman);
-	cih.AddCommand(PACMAN_CONTROLLER_ID, ControllerButton::ButtonA, pMoveDownCommandPacman);
-	cih.AddCommand(PACMAN_CONTROLLER_ID, ControllerButton::ButtonX, pMoveLeftCommandPacman);
-	cih.AddCommand(PACMAN_CONTROLLER_ID, ControllerButton::ButtonB, pMoveRightCommandPacman);
+		//std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController(m_PacmanControllerId));
+		//cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+
+		//  Controller buttons Pacman
+		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonY, pMoveUpCommandPacman);
+		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonA, pMoveDownCommandPacman);
+		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonX, pMoveLeftCommandPacman);
+		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonB, pMoveRightCommandPacman);
+	}
 
 	//  Keyboard bindings Pacman
 	kih.AddCommand(SDL_SCANCODE_W, pMoveUpCommandPacman);
@@ -313,22 +332,23 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	//Blinky (RED)
 	if (ghostsCount >= 1)
 	{
-		 std::shared_ptr<ActorMoveComponent> ghostMoveComp{};
+		std::shared_ptr<ActorMoveComponent> ghostMoveComp{};
 
 		if (gameMode == GameMode::Versus)
 		{
 			ghostMoveComp = ActorMoveComponent::Create(pBoardModel);
-			std::shared_ptr<Command> pLeftJoystickCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, GetLeftThumbValuesFromGhostController);
+			//std::shared_ptr<Command> pLeftJoystickCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, GetLeftThumbValuesFromGhostController);
 			std::shared_ptr<Command> pMoveUpCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveDownCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,-1.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveLeftCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {-1.f,0.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveRightCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {1.f,0.f}, 1.f, 0.f }; });
 
 			//  Controller buttons
-			cih.AddCommand(GHOST_CONTROLLER_ID, ControllerButton::ButtonY, pMoveUpCommandGhost);
-			cih.AddCommand(GHOST_CONTROLLER_ID, ControllerButton::ButtonA, pMoveDownCommandGhost);
-			cih.AddCommand(GHOST_CONTROLLER_ID, ControllerButton::ButtonX, pMoveLeftCommandGhost);
-			cih.AddCommand(GHOST_CONTROLLER_ID, ControllerButton::ButtonB, pMoveRightCommandGhost);
+			int ghostControllerId{ cih.GetControllerID(0) };
+			cih.AddCommand(ghostControllerId, ControllerButton::ButtonY, pMoveUpCommandGhost);
+			cih.AddCommand(ghostControllerId, ControllerButton::ButtonA, pMoveDownCommandGhost);
+			cih.AddCommand(ghostControllerId, ControllerButton::ButtonX, pMoveLeftCommandGhost);
+			cih.AddCommand(ghostControllerId, ControllerButton::ButtonB, pMoveRightCommandGhost);
 		}
 
 		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman());

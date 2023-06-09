@@ -33,11 +33,13 @@ namespace dae
 		float GetAcceleration(const unsigned int controllerId) const;
 
 		explicit ControllerInputHandler();
-
-
+		//when 2 controllers are conected,they seem to not always have id's 0 and 1
+		int GetControllerID(int controllerNumber); 
+		int GetNumberOfControllers(); 
 
 	private:
 		class ControllerInputHandlerImpl;
 		std::unique_ptr<ControllerInputHandlerImpl> pControllerImpl;
+		
 	};
 }
