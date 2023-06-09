@@ -36,6 +36,18 @@ public:
 	ControllerInputHandlerImpl()
 		:m_CurrentState(new XINPUT_STATE[XUSER_MAX_COUNT]), m_PreviousState(new XINPUT_STATE[XUSER_MAX_COUNT])
 	{
+		SDL_Init(SDL_INIT_JOYSTICK);
+		int numControllers = SDL_NumJoysticks();
+		for (int i = 0; i < numControllers; ++i) {
+			SDL_Joystick* joystick = SDL_JoystickOpen(i);
+			SDL_JoystickID joystickID = SDL_JoystickInstanceID(joystick);
+			joystickID;
+			// Use joystickID or perform further operations with the controller
+
+			// Close the joystick/controller when you're done working with it
+			SDL_JoystickClose(joystick);
+		}
+
 		m_ButtonChanges = new int[XUSER_MAX_COUNT];
 		m_Directions = new glm::vec2[XUSER_MAX_COUNT];
 		m_Speed = new float[XUSER_MAX_COUNT];
