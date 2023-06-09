@@ -23,7 +23,7 @@ namespace dae
 		void Execute() override;
 		void Release() override;
 	private:
-
+		GameMode m_GameMode;
 	};
 }
 
