@@ -351,6 +351,16 @@ void SceneFactory::LoadGameScene()
 		mapObj->AddChild(pGhostObj);
 	}
 
+	const auto gameOverObj = GameObject::Create();
+	const auto gameOverComp = StateComponent::Create();
+	gameOverObj->AddComponent(gameOverComp);
+	auto gameOverTextComp = std::make_shared<TextComponent>("GAME OVER !!!", font);
+	gameOverTextComp->SetColor({ 255, 0,0 });
+
+	gameOverComp->Set(EventType::GAME_START, BaseComponent::Empty());
+	gameOverComp->Set(EventType::GAME_OVER, gameOverTextComp);
+	gameOverObj->SetPosition(400.f, 350.f);
+
 	pScene->Add(mapObj);
 	pScene->Add(fpsObj);
 	pScene->Add(pointsPacmanObj);
@@ -358,6 +368,7 @@ void SceneFactory::LoadGameScene()
 	pScene->Add(pointsGhostObj);
 	pScene->Add(livesGhostObj);
 	pScene->Add(gameplayObj);
+	pScene->Add(gameOverObj);
 
 	ServiceLocator::RegisterSoundSystem(std::make_shared<logging_sound_system>(std::make_shared<SDLSoundSystem>()));
 	ServiceLocator::GetSoundSystem().InitializeSoundSystem();
