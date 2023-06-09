@@ -20,6 +20,5 @@ public:
 	void LoadGameScene(dae::GameMode gameMode);
 	void LoadMainMenuScene();
 private:
-	int m_PacmanControllerId{ -1 };
 };
 

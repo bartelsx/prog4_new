@@ -77,7 +77,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	const std::shared_ptr<GameObject>& pacmanObj,
 	std::
 	shared_ptr<GameObject>& pacWomanObj,
-	const std::shared_ptr<GameBoardModel>& pBoardModel, 
+	const std::shared_ptr<GameBoardModel>& pBoardModel,
 	const std::shared_ptr<ActorMoveComponent>& pMoveComponent) const
 {
 	const float tolerance = pBoardModel->GetTileSize() * .5f;
@@ -204,31 +204,18 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	//Bind Pacman controls
 	//  Joystick
-	if (gameMode == GameMode::SinglePlayer)
+	int requieredControllers{ gameMode == GameMode::SinglePlayer ? 1 : 2 };
+	if (ControllerInputHandler::GetInstance().GetNumberOfControllers() >= requieredControllers )
 	{
-		if (cih.GetNumberOfControllers() > 0)
-		{
-			m_PacmanControllerId = cih.GetControllerID(0);
-		}
-	}
-	else
-	{
-		if (cih.GetNumberOfControllers() > 1)
-		{
-			m_PacmanControllerId = cih.GetControllerID(0);
-		}
-	}
-
-	if (m_PacmanControllerId >= 0)
-	{
+		auto controllerId = ControllerInputHandler::GetInstance().GetControllerID(0);
 		std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController);
-		cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+		cih.AddCommand(controllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
 
 		//  Controller buttons Pacman
-		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonY, pMoveUpCommandPacman);
-		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonA, pMoveDownCommandPacman);
-		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonX, pMoveLeftCommandPacman);
-		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonB, pMoveRightCommandPacman);
+		cih.AddCommand(controllerId, ControllerButton::ButtonY, pMoveUpCommandPacman);
+		cih.AddCommand(controllerId, ControllerButton::ButtonA, pMoveDownCommandPacman);
+		cih.AddCommand(controllerId, ControllerButton::ButtonX, pMoveLeftCommandPacman);
+		cih.AddCommand(controllerId, ControllerButton::ButtonB, pMoveRightCommandPacman);
 	}
 
 	//PacWoman
@@ -260,8 +247,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		{
 			int pacWomanControllerId = cih.GetControllerID(cih.GetNumberOfControllers() - 1);
 
-			std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromSecondPlayerController);
-			cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+			std::shared_ptr<Command>  pLeftJoystickCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, GetLeftThumbValuesFromSecondPlayerController);
+			cih.AddCommand(pacWomanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacWoman);
 
 			//  Controller buttons Pacman
 			cih.AddCommand(pacWomanControllerId, ControllerButton::ButtonY, pMoveUpCommandPacWoman);
@@ -283,26 +270,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	kih.AddCommand(SDL_SCANCODE_LEFT, pMoveLeftCommandPacman);
 	kih.AddCommand(SDL_SCANCODE_RIGHT, pMoveRightCommandPacman);
 
-	//kih.AddCommand(SDL_SCANCODE_Z, pDiePacman);
-	//kih.AddCommand(SDL_SCANCODE_X, pPickUpFruitPacman);
-	//kih.AddCommand(SDL_SCANCODE_C, pPickUpSmallPacman);
-	//kih.AddCommand(SDL_SCANCODE_V, pPickUpPowerUpPacman);
-	//kih.AddCommand(SDL_SCANCODE_B, pEnemyDeadPacman);
-
-	////ghost
-	//kih.AddCommand(SDL_SCANCODE_Y, pDieGhost);
-	//kih.AddCommand(SDL_SCANCODE_U, pPickUpFruitGhost);
-	//kih.AddCommand(SDL_SCANCODE_I, pPickUpSmallGhost);
-	//kih.AddCommand(SDL_SCANCODE_O, pPickUpPowerUpGhost);
-	//kih.AddCommand(SDL_SCANCODE_P, pEnemyDeadGhost);
-
-
-	//Bind Ghost controls
-	//  Joystick
-	//cih.AddCommand(GHOST_CONTROLLER_ID, ControllerButton::LeftJoystick, pLeftJoystickCommandGhost);
-	//
-
-	//
 	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 
@@ -342,24 +309,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	LivesTextPacman->SetColor({ 255,255,0 });
 	livesPacmanObj->AddComponent(LivesTextPacman);
 
-	//points ghost
-	//auto fontPointsGhost = ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
-	//auto pointsCounterGhost = PointsComponent::Create();
-	//pointsGhostObj->AddComponent(pointsCounterGhost);
-	//auto tpointsGhost = [](std::shared_ptr<PointsComponent> x) {return x->GetScore(); };
-	//auto lpointsGhost = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsComponent>>>(pointsCounterGhost, tpointsGhost);
-	//const auto pointsTextGhost = std::make_shared<TextComponent>(lpointsGhost, fontPointsGhost);
-	//pointsGhostObj->SetPosition(10, 280);
-	//pointsTextGhost->SetColor({ 240,20,230 });
-	//pointsGhostObj->AddComponent(pointsTextGhost);
 
-	//lives ghost
-	//auto tLivesGhost = [](std::shared_ptr<PointsComponent> x) {return x->GetLives(); };
-	//auto lLivesGhost = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsComponent>>>(pointsCounterGhost, tLivesGhost);
-	//const auto LivesTextGhost = std::make_shared<TextComponent>(lLivesGhost, fontPointsGhost);
-	//livesGhostObj->SetPosition(10, 300);
-	//LivesTextGhost->SetColor({ 240,20,230 });
-	//livesGhostObj->AddComponent(LivesTextGhost);
 
 	auto ghostsCount = pBoardModel->GetGhostsCount();
 	std::vector<std::shared_ptr<GameObject>> ghostObjs{};
@@ -373,13 +323,16 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		{
 			ghostMoveComp = ActorMoveComponent::Create(pBoardModel);
 			std::shared_ptr<Command> pLeftJoystickCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, GetLeftThumbValuesFromSecondPlayerController);
+
 			std::shared_ptr<Command> pMoveUpCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveDownCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,-1.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveLeftCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {-1.f,0.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveRightCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {1.f,0.f}, 1.f, 0.f }; });
 
 			//  Controller buttons
-			int ghostControllerId{ cih.GetControllerID(0) };
+			int ghostControllerId{ cih.GetControllerID(cih.GetNumberOfControllers() - 1) };
+
+			cih.AddCommand(ghostControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandGhost);
 			cih.AddCommand(ghostControllerId, ControllerButton::ButtonY, pMoveUpCommandGhost);
 			cih.AddCommand(ghostControllerId, ControllerButton::ButtonA, pMoveDownCommandGhost);
 			cih.AddCommand(ghostControllerId, ControllerButton::ButtonX, pMoveLeftCommandGhost);
@@ -389,7 +342,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		auto behavior = ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::Pacman());
 		ghostObjs.emplace_back(BuildGhost(gameMode, BlinkyTexture, 0, behavior, pacmanObj, pacWomanObj, pBoardModel, ghostMoveComp));
 	}
-	
+
 	//Inky (CYAN)
 	if (ghostsCount >= 2)
 	{
