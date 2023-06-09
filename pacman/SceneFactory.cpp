@@ -124,6 +124,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	stateComponent->Set(EventType::BOOST_PICKUP, scaredComp);
 	stateComponent->Set(EventType::ENEMY_DIED, rthComp);
 	stateComponent->Set(EventType::RESET_LEVEL, resetComp);
+	stateComponent->Set(EventType::GAME_OVER, normalTexture);
 
 	ghostObj->AddComponent(stateComponent);
 	ghostObj->SetPosition(pBoardModel->GetGhostSpawnLocation(index));
@@ -164,7 +165,10 @@ void SceneFactory::LoadGameScene()
 
 	//Commands that control Pacman
 	const auto pacmanMoveComp = ActorMoveComponent::Create(pBoardModel);
-	pacmanObj->AddComponent(pacmanMoveComp);
+	const auto pacmanStateComp = StateComponent::Create();
+	pacmanStateComp->Set(EventType::GAME_START, pacmanMoveComp);
+	pacmanStateComp->Set(EventType::GAME_OVER, BaseComponent::Empty()); //Stop moving on GAME_OVER
+	pacmanObj->AddComponent(pacmanStateComp);
 
 	std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController);
 	std::shared_ptr<Command> pMoveUpCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });

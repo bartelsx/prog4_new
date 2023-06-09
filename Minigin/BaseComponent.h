@@ -22,10 +22,14 @@ namespace dae
 		virtual void SetOwner(const std::shared_ptr<dae::GameObject>& pOwner, bool doAddComponent = true);
 		std::shared_ptr<dae::GameObject> GetOwner() const;
 
+		static std::shared_ptr<BaseComponent> Empty();
+
 	protected:
 		dae::Transform m_Transform{};
 		bool m_NeedsUpdate{ true };
 		std::weak_ptr<dae::GameObject> m_wpOwner;
+
+		static std::shared_ptr<BaseComponent> m_EmptyComponent;
 	};
 }
 

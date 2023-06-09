@@ -43,3 +43,10 @@ std::shared_ptr<dae::GameObject> BaseComponent::GetOwner() const
 {
 	return m_wpOwner.lock();
 }
+
+std::shared_ptr<BaseComponent> BaseComponent::m_EmptyComponent = std::make_shared<BaseComponent>();
+
+std::shared_ptr<BaseComponent> BaseComponent::Empty()
+{
+	return m_EmptyComponent;
+}

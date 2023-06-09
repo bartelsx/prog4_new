@@ -19,5 +19,6 @@ namespace dae
 		inline const static TEventType RESET_LEVEL = 11;
 		inline const static TEventType REACHED_HOME = 12;
 		inline const static TEventType WAKE_UP = 13;
+		inline const static TEventType LEVEL_COMPLETE = 14;
 	};
 }

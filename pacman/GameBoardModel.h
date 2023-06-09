@@ -81,7 +81,8 @@ namespace dae
 		float m_TileSize = 16;
 		int m_Columns{};
 		int m_Rows{};
-
+		int m_PillCount{};
+		
 		std::vector<glm::vec2> m_GhostSpawnLocations{};
 		glm::vec2 m_PacmanSpawnLocation{};
 		std::vector <int> m_Teleports{};

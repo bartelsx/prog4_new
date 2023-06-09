@@ -6,10 +6,15 @@
 #include "TextureComponent.h"
 
 using namespace dae;
+
+inline bool operator ==(const int& lhs, const TileValue& rhs) { return lhs == static_cast<int>(rhs); }
+inline bool operator !=(const int& lhs, const TileValue& rhs) { return !(lhs == rhs); }
+
 void GameBoardModel::LoadFromJsonFile(const std::string& path)
 {
 	ReadJsonFile(path);
 
+	m_PillCount = 0;
 	for (int col = 0; col < m_Columns; ++col)
 	{
 		for (int row = 0; row < m_Rows; ++row)
@@ -26,6 +31,10 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 				object->SetPosition(posX, posY);
 				switch (m_Grid[idx])
 				{
+				case 2:
+				case 3:
+					++m_PillCount;
+					break;
 				case 6:
 					m_GhostSpawnLocations.emplace_back(glm::vec2(posX, posY));
 					m_Grid[idx] = 4;
@@ -50,6 +59,15 @@ void GameBoardModel::LoadFromJsonFile(const std::string& path)
 void GameBoardModel::ChangeTileValue(glm::vec2 position, TileValue newValue)
 {
 	auto idx = GetIdx(position, false);
+	auto oldValue = m_Grid[idx];
+	if ((oldValue == TileValue::Boost || oldValue == TileValue::Pill) && newValue != TileValue::Boost && newValue != TileValue::Pill)
+	{
+		--m_PillCount;
+		if (m_PillCount <= 0)
+		{
+			EventManager::Publish(EventType::GAME_OVER); //TODO: should become LEVEL_COMPLETE
+		}
+	}
 	m_Grid[idx] = int(newValue);
 }
 
