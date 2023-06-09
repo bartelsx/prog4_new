@@ -9,7 +9,6 @@
 #include "FPSCalcComponent.h"
 #include "GameBoardComponent.h"
 #include "GameBoardModel.h"
-#include "GameState.h"
 #include "GhostMoveComponent.h"
 #include "KeyboardInputHandler.h"
 #include "PacmanComponent.h"
@@ -77,7 +76,8 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	const std::shared_ptr<GameObject>& pacmanObj,
 	std::
 	shared_ptr<GameObject>& pacWomanObj,
-	const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<GameState>& pGameState, const std::shared_ptr<ActorMoveComponent>& pMoveComponent) const
+	const std::shared_ptr<GameBoardModel>& pBoardModel, 
+	const std::shared_ptr<ActorMoveComponent>& pMoveComponent) const
 {
 	const float tolerance = pBoardModel->GetTileSize() * .5f;
 
@@ -120,7 +120,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	scaredComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(ScaredGhostTexture)));
 	if (pMoveComponent == nullptr)
 	{
-		scaredComp->Add(GhostMoveComponent::Create(FleeBehavior::Create(pBoardModel, pGameState), pBoardModel));
+		scaredComp->Add(GhostMoveComponent::Create(FleeBehavior::Create(gameMode, pBoardModel, pacmanObj, pacWomanObj), pBoardModel));
 	}
 	else
 	{
@@ -185,10 +185,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	mapObj->AddComponent(pBoardComp);
 	//mapObj->SetPosition(float(boardComp->GetWidth()), float( boardComp->GetHeight()));
 	mapObj->SetPosition((APP_WIDTH - pBoardModel->GetWidth()) * .5f, (APP_HEIGHT - pBoardModel->GetHeight()) * .5f);
-
-	// GameState
-	const auto pGameState = std::make_shared<GameState>();
-	pGameState->SetPacmanObj(pacmanObj);
 
 	//Commands that control Pacman
 	const auto pacmanMoveComp = ActorMoveComponent::Create(pBoardModel);
@@ -391,30 +387,30 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 			cih.AddCommand(ghostControllerId, ControllerButton::ButtonB, pMoveRightCommandGhost);
 		}
 
-		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman());
-		ghostObjs.emplace_back(BuildGhost(gameMode, BlinkyTexture, 0, behavior, pacmanObj, pacWomanObj, pBoardModel, pGameState, ghostMoveComp));
+		auto behavior = ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::Pacman());
+		ghostObjs.emplace_back(BuildGhost(gameMode, BlinkyTexture, 0, behavior, pacmanObj, pacWomanObj, pBoardModel, ghostMoveComp));
 	}
-
+	
 	//Inky (CYAN)
 	if (ghostsCount >= 2)
 	{
-		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::InFrontOfPacman());
-		ghostObjs.emplace_back(BuildGhost(gameMode, InkyTexture, 1, behavior, pacmanObj, pacWomanObj, pBoardModel, pGameState));
+		auto behavior = ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::InFrontOfPacman());
+		ghostObjs.emplace_back(BuildGhost(gameMode, InkyTexture, 1, behavior, pacmanObj, pacWomanObj, pBoardModel));
 	}
 
 	//Clyde (ORANGE)
 	if (ghostsCount >= 3)
 	{
-		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::BehindPacman());
-		ghostObjs.emplace_back(BuildGhost(gameMode, ClydeTexture, 2, behavior, pacmanObj, pacWomanObj, pBoardModel, pGameState));
+		auto behavior = ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::BehindPacman());
+		ghostObjs.emplace_back(BuildGhost(gameMode, ClydeTexture, 2, behavior, pacmanObj, pacWomanObj, pBoardModel));
 	}
 	//Pinky (PINK)
 	if (ghostsCount >= 4)
 	{
 		auto pinkyChaseBehavior = SequentialBehavior::Create();
-		pinkyChaseBehavior->Add(ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman()), 3.f);
-		pinkyChaseBehavior->Add(FleeBehavior::Create(pBoardModel, pGameState), 2.f);
-		ghostObjs.emplace_back(BuildGhost(gameMode, PinkyTexture, 3, pinkyChaseBehavior, pacmanObj, pacWomanObj, pBoardModel, pGameState));
+		pinkyChaseBehavior->Add(ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::Pacman()), 3.f);
+		pinkyChaseBehavior->Add(FleeBehavior::Create(gameMode, pBoardModel, pacmanObj, pacWomanObj), 2.f);
+		ghostObjs.emplace_back(BuildGhost(gameMode, PinkyTexture, 3, pinkyChaseBehavior, pacmanObj, pacWomanObj, pBoardModel));
 	}
 
 	//Timers

@@ -8,9 +8,11 @@ struct PathNode;
 
 using namespace dae;
 
-ChasePacmanBehavior::ChasePacmanBehavior(const std::shared_ptr<GameObject>& pPacmanObj, const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<TargetSelector>& pTargetSelector)
+ChasePacmanBehavior::ChasePacmanBehavior(const GameMode gameMode, const std::shared_ptr<GameObject>& pPacmanObj, const std::shared_ptr<GameObject>& pPacWomanObj, const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<TargetSelector>& pTargetSelector)
 	: GhostMoveBehavior()
+	, m_GameMode(gameMode)
 	, m_pPacmanObj(pPacmanObj)
+	, m_pPacWomanObj(pPacWomanObj)
 	, m_pBoardModel(pBoardModel)
 	, m_pTargetSelector(pTargetSelector)
 
@@ -22,6 +24,17 @@ glm::vec2 ChasePacmanBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float 
 {
 	auto startIdx = m_pBoardModel->GetIdx(currentGhostLoc, true);
 	int pacmanIdx = m_pBoardModel->GetIdx(m_pPacmanObj->GetPosition(), true);
+
+	if (m_GameMode == GameMode::Coop)
+	{
+		const int pacWomanIdx = m_pBoardModel->GetIdx(m_pPacWomanObj->GetPosition(), true);
+
+		if (m_pBoardModel->CalculateDistance(startIdx, pacmanIdx) > m_pBoardModel->CalculateDistance(startIdx, pacWomanIdx))
+		{
+			pacmanIdx = pacWomanIdx;
+		}
+	}
+
 	auto targetIdx = m_pTargetSelector->GetTarget(pacmanIdx, m_pBoardModel);
 
 	auto startIt = std::ranges::find(m_PrevPath, startIdx);

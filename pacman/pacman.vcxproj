@@ -162,8 +162,6 @@
     <ClCompile Include="GameBoardComponent.cpp" />
     <ClCompile Include="GameBoardModel.cpp" />
     <ClCompile Include="GameOverComponent.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="GhostComponent.cpp" />
     <ClCompile Include="GhostMoveBehavior.cpp" />
     <ClCompile Include="GhostMoveComponent.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -188,8 +186,6 @@
     <ClInclude Include="GameBoardComponent.h" />
     <ClInclude Include="GameBoardModel.h" />
     <ClInclude Include="GameOverComponent.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="GhostComponent.h" />
     <ClInclude Include="GhostMoveBehavior.h" />
     <ClInclude Include="GhostMoveComponent.h" />
     <ClInclude Include="PacmanComponent.h" />

@@ -63,12 +63,6 @@
     <ClCompile Include="ActorComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GhostComponent.cpp">
-      <Filter>Source Files\Ghosts</Filter>
-    </ClCompile>
     <ClCompile Include="GhostMoveBehavior.cpp">
       <Filter>Source Files\Ghosts</Filter>
     </ClCompile>
@@ -142,12 +136,6 @@
     </ClInclude>
     <ClInclude Include="ActorType.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GhostComponent.h">
-      <Filter>Header Files\Ghosts</Filter>
     </ClInclude>
     <ClInclude Include="GhostMoveBehavior.h">
       <Filter>Header Files\Ghosts</Filter>

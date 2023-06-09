@@ -1,13 +1,14 @@
 ﻿#include "FleeBehavior.h"
 
 #include "GameBoardModel.h"
-#include "GameState.h"
 
 using namespace dae;
 
-FleeBehavior::FleeBehavior(const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<GameState>& pGameState)
-	: m_pBoardModel{ pBoardModel }
-	, m_pGameState { pGameState }
+FleeBehavior::FleeBehavior(const GameMode gameMode, const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<GameObject>& pPacmanObj, const std::shared_ptr<GameObject>& pPacWomanObj)
+	: m_GameMode(gameMode)
+	, m_pBoardModel{ pBoardModel }
+	, m_pPacmanObj(pPacmanObj)
+	, m_pPacWomanObj(pPacWomanObj)
 {}
 
 int FleeBehavior::CalcDistance(int candidateCol, int candidateRow, int pacmanCol, int pacmanRow) const
@@ -34,8 +35,21 @@ int FleeBehavior::CalcDistance(int candidateCol, int candidateRow, int pacmanCol
 
 glm::vec2 FleeBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float deltaTime)
 {
+	auto startIdx = m_pBoardModel->GetIdx(currentGhostLoc, true);
+	int pacmanIdx = m_pBoardModel->GetIdx(m_pPacmanObj->GetPosition(), true);
+
+	if (m_GameMode == GameMode::Coop)
+	{
+		const int pacWomanIdx = m_pBoardModel->GetIdx(m_pPacWomanObj->GetPosition(), true);
+
+		if (m_pBoardModel->CalculateDistance(startIdx, pacmanIdx) > m_pBoardModel->CalculateDistance(startIdx, pacWomanIdx))
+		{
+			pacmanIdx = pacWomanIdx;
+		}
+	}
+
 	auto crGhost = m_pBoardModel->GetColumnRow(glm::vec2{currentGhostLoc.x+8, currentGhostLoc.y+8});
-	auto crPacman = m_pBoardModel->GetColumnRow(glm::vec2{ m_pGameState->GetPacmanLocation().x + 8, m_pGameState->GetPacmanLocation().y + 8 });
+	auto crPacman = m_pBoardModel->GetColumnRow(pacmanIdx);
 
 	int maxDist = 0;
 	int dist;
