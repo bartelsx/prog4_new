@@ -46,13 +46,14 @@ MoveParameters GetLeftThumbValuesFromController(unsigned int controllerID)
 	return value;
 }
 
-MoveParameters GetLeftThumbValuesFromPacmanController(int pacmanController)
-{
-	return GetLeftThumbValuesFromController(pacmanController);
-}
-MoveParameters GetLeftThumbValuesFromGhostController()
+MoveParameters GetLeftThumbValuesFromPacmanController()
 {
 	return GetLeftThumbValuesFromController(ControllerInputHandler::GetInstance().GetControllerID(0));
+}
+
+MoveParameters GetLeftThumbValuesFromSecondPlayerController()
+{
+	return GetLeftThumbValuesFromController(ControllerInputHandler::GetInstance().GetControllerID(ControllerInputHandler::GetInstance().GetNumberOfControllers() - 1));
 }
 
 MoveParameters GetKeyUpMoveParameters()
@@ -176,8 +177,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	auto& kih = KeyboardInputHandler::GetInstance();
 	auto& cih = ControllerInputHandler::GetInstance();
 
-
-
 	const auto pBoardModel = GameBoardModel::Create();
 	pBoardModel->LoadFromJsonFile("../Data/level.json");
 
@@ -222,8 +221,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	if (m_PacmanControllerId >= 0)
 	{
-		//std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController(m_PacmanControllerId));
-		//cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+		std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController);
+		cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
 
 		//  Controller buttons Pacman
 		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonY, pMoveUpCommandPacman);
@@ -261,8 +260,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		{
 			int pacWomanControllerId = cih.GetControllerID(cih.GetNumberOfControllers() - 1);
 
-			//std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController(m_PacmanControllerId));
-			//cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+			std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromSecondPlayerController);
+			cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
 
 			//  Controller buttons Pacman
 			cih.AddCommand(pacWomanControllerId, ControllerButton::ButtonY, pMoveUpCommandPacWoman);
@@ -373,7 +372,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		if (gameMode == GameMode::Versus)
 		{
 			ghostMoveComp = ActorMoveComponent::Create(pBoardModel);
-			//std::shared_ptr<Command> pLeftJoystickCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, GetLeftThumbValuesFromGhostController);
+			std::shared_ptr<Command> pLeftJoystickCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, GetLeftThumbValuesFromSecondPlayerController);
 			std::shared_ptr<Command> pMoveUpCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveDownCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,-1.f}, 1.f, 0.f }; });
 			std::shared_ptr<Command> pMoveLeftCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {-1.f,0.f}, 1.f, 0.f }; });
