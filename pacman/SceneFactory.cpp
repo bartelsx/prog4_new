@@ -70,13 +70,14 @@ SceneFactory::SceneFactory()
 
 
 std::shared_ptr<GameObject> SceneFactory::BuildGhost(
-	int index,
+	GameMode gameMode,
 	Textures textureId,
+	int index,
 	const std::shared_ptr<GhostMoveBehavior>& chaseBehavior,
 	const std::shared_ptr<GameObject>& pacmanObj,
-	const std::shared_ptr<GameBoardModel>& pBoardModel,
-	const std::shared_ptr<GameState>& pGameState,
-	const std::shared_ptr<ActorMoveComponent>& pMoveComponent)
+	std::
+	shared_ptr<GameObject>& pacWomanObj,
+	const std::shared_ptr<GameBoardModel>& pBoardModel, const std::shared_ptr<GameState>& pGameState, const std::shared_ptr<ActorMoveComponent>& pMoveComponent) const
 {
 	const float tolerance = pBoardModel->GetTileSize() * .5f;
 
@@ -103,6 +104,10 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	}
 	const auto collComp = CollisionComponent::Create(EventType::ACTOR_DIED, false, false, tolerance);
 	collComp->AddWatchedObject(pacmanObj);
+	if (gameMode == GameMode::Coop)
+	{
+		collComp->AddWatchedObject(pacWomanObj);
+	}
 	normalComp->Add(collComp);
 
 	//ResetState
@@ -122,6 +127,11 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 		scaredComp->Add(pMoveComponent);
 	}
 	const auto collComp2 = CollisionComponent::Create(EventType::ENEMY_DIED, true, false, tolerance);
+	if (gameMode == GameMode::Coop)
+	{
+		collComp2->AddWatchedObject(pacWomanObj);
+	}
+
 	collComp2->AddWatchedObject(pacmanObj);
 	scaredComp->Add(collComp2);
 
@@ -154,6 +164,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	auto titleObj{ GameObject::Create() };
 	auto logoObj{ GameObject::Create() };
 	auto pacmanObj{ GameObject::Create() };
+	auto pacWomanObj{ GameObject::Create() };
 	auto fpsObj{ GameObject::Create() };
 	auto pointsPacmanObj{ GameObject::Create() };
 	auto livesPacmanObj{ GameObject::Create() };
@@ -191,18 +202,10 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	std::shared_ptr<Command> pMoveLeftCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {-1.f,0.f}, 1.f, 0.f });
 	std::shared_ptr<Command> pMoveRightCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {1.f,0.f}, 1.f, 0.f });
 
-	//std::shared_ptr<Command> pDiePacman = std::make_shared<DieCommand>(pacmanObj);
-	//std::shared_ptr<Command> pPickUpFruitPacman = std::make_shared<PickUpFruitCommand>(pacmanObj);
-	//std::shared_ptr<Command> pPickUpSmallPacman = std::make_shared<PickUpSmallCommand>(pacmanObj);
-	//std::shared_ptr<Command> pPickUpPowerUpPacman = std::make_shared<PickUpPowerUpCommand>(pacmanObj);
-	//std::shared_ptr<Command> pEnemyDeadPacman = std::make_shared<EnemyDeadCommand>(pacmanObj);
-
-
-	//std::shared_ptr<Command> pDieGhost = std::make_shared<DieCommand>(ghos1tObj);
-	//std::shared_ptr<Command> pPickUpFruitGhost = std::make_shared<PickUpFruitCommand>(ghos1tObj);
-	//std::shared_ptr<Command> pPickUpSmallGhost = std::make_shared<PickUpSmallCommand>(ghos1tObj);
-	//std::shared_ptr<Command> pPickUpPowerUpGhost = std::make_shared<PickUpPowerUpCommand>(ghos1tObj);
-	//std::shared_ptr<Command> pEnemyDeadGhost = std::make_shared<EnemyDeadCommand>(ghos1tObj);
+	const auto pacmanComp = PacmanComponent::Create(pBoardModel);
+	pacmanObj->AddComponent(pacmanComp);
+	pacmanObj->AddComponent(TextureComponent::Create(_pTextureManager->GetTexture(Textures::PacmanTexture)));
+	pacmanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
 	//Bind Pacman controls
 	//  Joystick
@@ -217,12 +220,12 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	{
 		if (cih.GetNumberOfControllers() > 1)
 		{
-			m_PacmanControllerId = cih.GetControllerID(1);
+			m_PacmanControllerId = cih.GetControllerID(0);
 		}
 	}
+
 	if (m_PacmanControllerId >= 0)
 	{
-
 		//std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController(m_PacmanControllerId));
 		//cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
 
@@ -231,6 +234,47 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonA, pMoveDownCommandPacman);
 		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonX, pMoveLeftCommandPacman);
 		cih.AddCommand(m_PacmanControllerId, ControllerButton::ButtonB, pMoveRightCommandPacman);
+	}
+
+	//PacWoman
+	if (gameMode == GameMode::Coop)
+	{
+
+		//Commands that control Pacman
+		const auto pacWomanMoveComp = ActorMoveComponent::Create(pBoardModel);
+		const auto pacWomanStateComp = StateComponent::Create();
+		pacWomanStateComp->Set(EventType::GAME_START, pacWomanMoveComp);
+		pacWomanStateComp->Set(EventType::GAME_OVER, BaseComponent::Empty()); //Stop moving on GAME_OVER
+		pacWomanObj->AddComponent(pacWomanStateComp);
+
+		std::shared_ptr<Command> pMoveUpCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
+		std::shared_ptr<Command> pMoveDownCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {0.f,-1.f}, 1.f, 0.f });
+		std::shared_ptr<Command> pMoveLeftCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {-1.f,0.f}, 1.f, 0.f });
+		std::shared_ptr<Command> pMoveRightCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {1.f,0.f}, 1.f, 0.f });
+
+		const auto pacWomanComp = PacmanComponent::Create(pBoardModel);
+		pacWomanObj->AddComponent(pacWomanComp);
+		pacWomanObj->AddComponent(TextureComponent::Create(_pTextureManager->GetTexture(Textures::MrsPacmanTexture)));
+		pacWomanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
+
+
+		//Bind Pacman controls
+		//  Joystick
+
+		if (cih.GetNumberOfControllers() > 0)
+		{
+			int pacWomanControllerId = cih.GetControllerID(cih.GetNumberOfControllers() - 1);
+
+			//std::shared_ptr<Command>  pLeftJoystickCommandPacMan = std::make_shared<MoveCommand>(pacmanMoveComp, GetLeftThumbValuesFromPacmanController(m_PacmanControllerId));
+			//cih.AddCommand(m_PacmanControllerId, ControllerButton::LeftJoystick, pLeftJoystickCommandPacMan);
+
+			//  Controller buttons Pacman
+			cih.AddCommand(pacWomanControllerId, ControllerButton::ButtonY, pMoveUpCommandPacWoman);
+			cih.AddCommand(pacWomanControllerId, ControllerButton::ButtonA, pMoveDownCommandPacWoman);
+			cih.AddCommand(pacWomanControllerId, ControllerButton::ButtonX, pMoveLeftCommandPacWoman);
+			cih.AddCommand(pacWomanControllerId, ControllerButton::ButtonB, pMoveRightCommandPacWoman);
+		}
+
 	}
 
 	//  Keyboard bindings Pacman
@@ -322,10 +366,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	//LivesTextGhost->SetColor({ 240,20,230 });
 	//livesGhostObj->AddComponent(LivesTextGhost);
 
-	const auto pacmanComp = PacmanComponent::Create(pBoardModel);
-	pacmanObj->AddComponent(pacmanComp);
-	pacmanObj->AddComponent(TextureComponent::Create(_pTextureManager->GetTexture(Textures::PacmanTexture)));
-
 	auto ghostsCount = pBoardModel->GetGhostsCount();
 	std::vector<std::shared_ptr<GameObject>> ghostObjs{};
 
@@ -352,41 +392,40 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		}
 
 		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman());
-		ghostObjs.emplace_back(BuildGhost(0, BlinkyTexture, behavior, pacmanObj, pBoardModel, pGameState, ghostMoveComp));
+		ghostObjs.emplace_back(BuildGhost(gameMode, BlinkyTexture, 0, behavior, pacmanObj, pacWomanObj, pBoardModel, pGameState, ghostMoveComp));
 	}
 
 	//Inky (CYAN)
 	if (ghostsCount >= 2)
 	{
 		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::InFrontOfPacman());
-		ghostObjs.emplace_back(BuildGhost(1, InkyTexture, behavior, pacmanObj, pBoardModel, pGameState));
+		ghostObjs.emplace_back(BuildGhost(gameMode, InkyTexture, 1, behavior, pacmanObj, pacWomanObj, pBoardModel, pGameState));
 	}
 
 	//Clyde (ORANGE)
 	if (ghostsCount >= 3)
 	{
 		auto behavior = ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::BehindPacman());
-		ghostObjs.emplace_back(BuildGhost(2, ClydeTexture, behavior, pacmanObj, pBoardModel, pGameState));
+		ghostObjs.emplace_back(BuildGhost(gameMode, ClydeTexture, 2, behavior, pacmanObj, pacWomanObj, pBoardModel, pGameState));
 	}
-
 	//Pinky (PINK)
 	if (ghostsCount >= 4)
 	{
 		auto pinkyChaseBehavior = SequentialBehavior::Create();
 		pinkyChaseBehavior->Add(ChasePacmanBehavior::Create(pacmanObj, pBoardModel, TargetSelector::Pacman()), 3.f);
 		pinkyChaseBehavior->Add(FleeBehavior::Create(pBoardModel, pGameState), 2.f);
-		ghostObjs.emplace_back(BuildGhost(3, PinkyTexture, pinkyChaseBehavior, pacmanObj, pBoardModel, pGameState));
+		ghostObjs.emplace_back(BuildGhost(gameMode, PinkyTexture, 3, pinkyChaseBehavior, pacmanObj, pacWomanObj, pBoardModel, pGameState));
 	}
 
 	//Timers
 	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
-	pacmanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
 	pScene->Add(backgroundObj);
 	pScene->Add(titleObj);
 	pScene->Add(logoObj);
 
 	mapObj->AddChild(pacmanObj);
+	if (gameMode == GameMode::Coop) mapObj->AddChild(pacWomanObj);
 
 	for (auto& pGhostObj : ghostObjs)
 	{

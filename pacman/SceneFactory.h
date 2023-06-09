@@ -10,12 +10,13 @@ class SceneFactory : public dae::Singleton<SceneFactory>
 public:
 	SceneFactory();
 
-	std::shared_ptr<dae::GameObject> BuildGhost(int index, dae::Textures textureId,
+	std::shared_ptr<dae::GameObject> BuildGhost(dae::GameMode gameMode, dae::Textures textureId,
+	                                            int index,
 	                                            const std::shared_ptr<dae::GhostMoveBehavior>& chaseBehavior,
 	                                            const std::shared_ptr<dae::GameObject>& pacmanObj,
-	                                            const std::shared_ptr<dae::GameBoardModel>& pBoardModel,
-	                                            const std::shared_ptr<dae::GameState>& pGameState, 
-												const std::shared_ptr<dae::ActorMoveComponent>& pMoveComponent = nullptr);
+	                                            std
+	                                            ::shared_ptr<dae::GameObject>& pacWomanObj,
+	                                            const std::shared_ptr<dae::GameBoardModel>& pBoardModel, const std::shared_ptr<dae::GameState>& pGameState, const std::shared_ptr<dae::ActorMoveComponent>& pMoveComponent = nullptr) const;
 
 	void LoadGameScene(dae::GameMode gameMode);
 	void LoadMainMenuScene();
