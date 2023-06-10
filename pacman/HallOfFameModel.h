@@ -18,11 +18,13 @@ namespace dae
 		static std::shared_ptr<HallOfFameModel> Create(const std::shared_ptr<HallOfFameRepository>& pRepository);
 
 		std::vector<std::shared_ptr<HallOfFameEntry>> GetData() ;
+		void Add(const std::string& text, const int score);
 
-		HallOfFameModel(const std::shared_ptr<HallOfFameRepository>& pRepository);
 	private:
+		HallOfFameModel(const std::shared_ptr<HallOfFameRepository>& pRepository);
+		void SortAndPrune();
 
-		const std::shared_ptr<HallOfFameRepository>& m_pRepository;
+		const std::shared_ptr<HallOfFameRepository> m_pRepository;
 		std::vector<std::shared_ptr<HallOfFameEntry>> m_Data{};
 		bool m_IsInitialized{};
 	};

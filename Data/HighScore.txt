@@ -1,20 +1,10 @@
-xander:           4020 points
-jaak:           2304 points
-nena:           2222 points
-ruben:           2003 points
-lieve:           1200 points
-empty :           105 points
-x:           100 points
-s:           50 points
-a:           40 points
-b:           20 points
-c:           0 points
-d:           0 points
-e:           0 points
-f:           0 points
-g:           0 points
-h:           0 points
-i:           0 points
-j:           0 points
-k:           0 points
-l:           0 points
+xander:8790
+jaak:2304
+nena:2222
+ruben:2003
+lieve:1200
+ich bin ein kartoffelsalad:220
+allaho snackbar:70
+jaak:0
+jakkamakka:0
+abracadabra:0

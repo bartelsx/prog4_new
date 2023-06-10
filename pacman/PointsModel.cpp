@@ -37,7 +37,12 @@ void PointsModel::HandleEvent(const Event& event)
 	}
 }
 
-std::string PointsModel::GetScore() const
+int PointsModel::GetScore() const
+{
+	
+	return m_Points;
+}
+std::string PointsModel::GetScoreText() const
 {
 	std::string text{ "Points: " + std::to_string(m_Points) };
 	return text;

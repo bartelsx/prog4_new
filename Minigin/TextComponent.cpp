@@ -52,6 +52,8 @@ void dae::TextComponent::Update(float)
 
 void dae::TextComponent::Render(bool isDirty)
 {
+	if (m_text.empty()) return;
+
 	isDirty |= m_isDirty;
 	if (isDirty)
 	{

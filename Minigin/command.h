@@ -1,8 +1,12 @@
 #pragma once
 #include "GameObject.h"
+#include <string>
+
+#include "../pacman/EditBoxComponent.h"
 
 namespace dae
 {
+	class TextHandler;
 
 	class Command
 	{
@@ -42,4 +46,32 @@ namespace dae
 
 	class GameObjectCommand : public CommandWithOwner<dae::GameObject>
 	{};
-}
+
+
+
+	class TextCommand
+	{
+	public:
+		TextCommand(std::shared_ptr<TextHandler> pTextHandler)
+		  : m_pTextHandler(pTextHandler)
+		{}
+
+		~TextCommand() = default;
+		TextCommand(const TextCommand& other) = delete;
+		TextCommand(TextCommand&& other) = delete;
+		TextCommand& operator=(const TextCommand& other) = delete;
+		TextCommand& operator=(TextCommand&& other) = delete;
+
+		void Execute(std::string& text)
+		{
+			if (m_pTextHandler != nullptr)
+			{
+				m_pTextHandler->HandleText(text);
+			}
+		}
+
+	private:
+		std::shared_ptr<TextHandler> m_pTextHandler;
+	};
+
+};

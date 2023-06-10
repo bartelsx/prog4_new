@@ -3,7 +3,6 @@
 #include <memory>
 #include "SDL_pixels.h"
 #include "GameObject.h"
-#include "Transform.h"
 #include "BaseComponent.h"
 
 namespace dae
@@ -68,7 +67,7 @@ namespace dae
 		void SetTextProvider(const  std::shared_ptr<TextProvider> textProvider);
 		void SetColor(SDL_Color color);
 
-	private:
+	protected:
 		bool m_isDirty;
 		std::string m_text;
 		std::string m_prevText;

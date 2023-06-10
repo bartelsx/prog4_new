@@ -5,6 +5,9 @@
 
 #include <memory>
 #include <SDL.h>
+#include <string>
+
+#include "command.h"
 
 namespace dae
 {
@@ -44,9 +47,11 @@ namespace dae
 		bool ProcessInput() const;
 
 		void AddCommand(const SDL_Scancode key, const std::shared_ptr<Command>& command) const;
+		void SetTextInputCommand(const std::shared_ptr<TextCommand>& pCommand) const;
 		void RemoveCommand(const SDL_Scancode key) const;
 		void Clear() const;
 
+		std::string getName();
 	private:
 		class KeyboardInputHandlerImpl;
 		KeyboardInputHandlerImpl* pKeyboardInputHandlerImpl;

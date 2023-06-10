@@ -7,6 +7,7 @@
 #include "CompositeComponent.h"
 #include "ControllerInputHandler.h"
 #include "DelayedBehavior.h"
+#include "EditBoxComponent.h"
 #include "FleeBehavior.h"
 #include "FPSCalcComponent.h"
 #include "GameBoardComponent.h"
@@ -30,6 +31,7 @@
 #include "FireEventComponent.h"
 #include "GoToComponent.h"
 #include "HallOfFameModel.h"
+#include "HighScoresComponent.h"
 #include "TimerComponent.h"
 
 using namespace dae;
@@ -299,7 +301,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	auto fontPointsPacMan = ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 	const auto pPointsModel = PointsModel::GetInstance();
 
-	auto tpointsPacman = [](std::shared_ptr<PointsModel> x) {return x->GetScore(); };
+	auto tpointsPacman = [](std::shared_ptr<PointsModel> x) {return x->GetScoreText(); };
 	auto lpointsPacman = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsModel>>>(pPointsModel, tpointsPacman);
 
 	const auto pointsTextPacman = std::make_shared<TextComponent>(lpointsPacman, fontPointsPacMan);
@@ -483,10 +485,15 @@ void SceneFactory::LoadMainMenuScene()
 	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<HallOfFameCommand>());
 	kih.AddCommand(SDL_SCANCODE_F10,singlePlayerCommand);
 
+
+
+
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+
+
 	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	const auto textComponent = std::make_shared<dae::TextComponent>("[ F5 ] Single Player ", font);
 	SinglePlayerObj->AddComponent(textComponent);
 	SinglePlayerObj->SetPosition(330, 220);
@@ -500,6 +507,7 @@ void SceneFactory::LoadMainMenuScene()
 	VersusObj->AddComponent(textComponentVersus);
 	VersusObj->SetPosition(330, 340);
 
+	
 
 	pScene->Add(backgroundObj);
 	pScene->Add(SinglePlayerObj);
@@ -518,6 +526,9 @@ void SceneFactory::LoadHighScoreScene()
 	kih.AddCommand(SDL_SCANCODE_F10, std::make_shared<MainMenuCommand>());
 
 	auto backgroundObj{ GameObject::Create() };
+	auto GoodJobObj{ GameObject::Create() };
+	auto EnterbObj{ GameObject::Create() };
+
 
 	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
@@ -525,28 +536,58 @@ void SceneFactory::LoadHighScoreScene()
 
 	auto repo = std::make_shared<HallOfFameTextFileRepository>();
 	auto model = HallOfFameModel::Create(repo);
-	auto vector = model->GetData();
 
-	auto offset{ 32.f };
-	auto locXName{ 230.f }, locXScore{ 730.f }, locY{ 20.F };
-
+	const auto highScoresObj = GameObject::Create();
+	highScoresObj->SetPosition(230.f, 20.f);
 
 	auto fontHighScore = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	highScoresObj->AddComponent(HighScoresComponent::Create(model, fontHighScore));
 
-	for (auto entry : vector)
-	{
-		auto NameObj{ GameObject::Create() };
-		auto NameComp = std::make_shared<dae::TextComponent>(entry->Name, fontHighScore);
-		NameObj->AddComponent(NameComp);
-		NameObj->SetPosition(locXName, locY);
-		pScene->Add(NameObj);
+	//auto vector = model->GetData();
 
-		auto ScoreObj{ GameObject::Create() };
-		auto ScoreComp = std::make_shared<dae::TextComponent>(std::to_string(entry->Score), fontHighScore);
-		ScoreObj->AddComponent(ScoreComp);
-		ScoreObj->SetPosition(locXScore, locY);
-		pScene->Add(ScoreObj);
+	//auto offset{ 32.f };
+	//auto locXName{ 230.f }, locXScore{ 730.f }, locY{ 20.F };
 
-		locY += offset;
-	}
+
+
+	//for (auto entry : vector)
+	//{
+	//	auto NameObj{ GameObject::Create() };
+	//	auto NameComp = std::make_shared<dae::TextComponent>(entry->Name, fontHighScore);
+	//	NameObj->AddComponent(NameComp);
+	//	NameObj->SetPosition(locXName, locY);
+	//	pScene->Add(NameObj);
+
+	//	auto ScoreObj{ GameObject::Create() };
+	//	auto ScoreComp = std::make_shared<dae::TextComponent>(std::to_string(entry->Score), fontHighScore);
+	//	ScoreObj->AddComponent(ScoreComp);
+	//	ScoreObj->SetPosition(locXScore, locY);
+	//	pScene->Add(ScoreObj);
+
+	//	locY += offset;
+	//}
+
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);
+	GoodJobObj->AddComponent(textComponentGoodJob);
+	GoodJobObj->SetPosition(170, 660);
+
+	const auto textComponentEnter = std::make_shared<dae::TextComponent>("Enter your name: ", font);
+	EnterbObj->AddComponent(textComponentEnter);
+	EnterbObj->SetPosition(50, 700);
+
+	auto textProcessor = HallOfFameTextProcessor::Create(model);
+
+	auto editorObj = GameObject::Create();
+	auto editor = std::make_shared<EditBoxComponent>(font, textProcessor);
+	editorObj->AddComponent(editor);
+	editorObj->SetPosition(350, 700);
+
+	auto pTextCommand = std::make_shared<TextCommand>(editor);
+	kih.SetTextInputCommand(pTextCommand);
+
+	pScene->Add(editorObj);
+	pScene->Add(EnterbObj);
+	pScene->Add(GoodJobObj);
+	pScene->Add(highScoresObj);
 }

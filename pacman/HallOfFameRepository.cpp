@@ -1,6 +1,4 @@
 #include "HallOfFameRepository.h"
-
-#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <ostream>
@@ -21,9 +19,11 @@ std::vector<std::shared_ptr<dae::HallOfFameEntry>> dae::HallOfFameTextFileReposi
 	}
 
 	std::string line;
-	while (std::getline(file, line)) {
+	while (std::getline(file, line)) 
+	{
 		size_t separatorPos = line.find(':');
-		if (separatorPos != std::string::npos) {
+		if (separatorPos != std::string::npos) 
+		{
 			std::string name = line.substr(0, separatorPos);
 			auto points = std::stoi(line.substr(separatorPos + 1));
 			auto entry = std::make_shared<HallOfFameEntry>(name, points);
@@ -32,20 +32,23 @@ std::vector<std::shared_ptr<dae::HallOfFameEntry>> dae::HallOfFameTextFileReposi
 	}
 	file.close();
 
-	// Sort the vector in descending order based on points
-	std::sort(data.begin(), data.end(), [](const auto& a, const auto& b) {	return a->Score > b->Score;	});
-
-	// Create a new vector with the highest 20 entries
-	if (data.size() > 20)
-	{
-		data.erase(data.begin() + 20, data.end());
-		data.resize(20);
-		data.shrink_to_fit();
-	}
-
 	return data;
 }
 
-void dae::HallOfFameTextFileRepository::Write(const std::vector<HallOfFameEntry>& /*entries*/)
+void dae::HallOfFameTextFileRepository::Write(const std::vector<std::shared_ptr<HallOfFameEntry>>& entries)
 {
+	const std::string filename = Settings::HighScorePath;
+	std::ofstream outFile(filename);
+	if (outFile.is_open()) 
+	{
+		for (const auto& entry : entries) 
+		{
+			outFile << entry->Name << ":" << entry->Score << std::endl;
+		}
+		outFile.close();
+	}
+	else 
+	{
+		std::cerr << "Error opening file for writing: " << filename << std::endl;
+	}
 }

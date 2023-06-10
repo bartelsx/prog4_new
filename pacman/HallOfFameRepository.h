@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -9,7 +10,7 @@ namespace dae
 	struct HallOfFameEntry
 	{
 	public:
-		HallOfFameEntry(std::string name, int score)
+		HallOfFameEntry(const std::string& name, const int score)
 			: Name{name}
 			, Score{score}
 		{  }
@@ -22,14 +23,17 @@ namespace dae
 	{
 	public:
 		virtual std::vector<std::shared_ptr<HallOfFameEntry>> Read() = 0;
-		virtual void Write(const std::vector<HallOfFameEntry>& entries) = 0;
+		virtual void Write(const std::vector<std::shared_ptr<HallOfFameEntry>>& entries) = 0;
 	};
 
 	class HallOfFameTextFileRepository : public HallOfFameRepository
 	{
 	public:
 		HallOfFameTextFileRepository() = default;
-		~HallOfFameTextFileRepository() = default;
+		~HallOfFameTextFileRepository()
+		{
+			std::cout << "hall of fame destructed\n";
+		};
 		HallOfFameTextFileRepository(const HallOfFameTextFileRepository& other) = delete;
 		HallOfFameTextFileRepository(HallOfFameTextFileRepository&& other) = delete;
 		HallOfFameTextFileRepository& operator=(const HallOfFameTextFileRepository& other) = delete;
@@ -37,7 +41,7 @@ namespace dae
 
 
 		std::vector<std::shared_ptr<HallOfFameEntry>> Read() override;
-		void Write(const std::vector<HallOfFameEntry>& entries) override;
+		void Write(const std::vector<std::shared_ptr<HallOfFameEntry>>& entries) override;
 	};
 }
 

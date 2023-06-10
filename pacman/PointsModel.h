@@ -12,10 +12,11 @@ namespace dae
 	{
 
 	public:
-		std::string GetScore() const;
+		std::string GetScoreText() const;
 		std::string GetLives() const;
 		void Init();
 
+		int GetScore() const;
 		static std::shared_ptr<PointsModel> GetInstance();
 		static std::shared_ptr<PointsModel> Create();
 
