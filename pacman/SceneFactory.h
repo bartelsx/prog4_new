@@ -19,6 +19,7 @@ public:
 
 	void LoadGameScene(dae::GameMode gameMode);
 	void LoadMainMenuScene();
+	void LoadHighScoreScene();
 private:
 };
 

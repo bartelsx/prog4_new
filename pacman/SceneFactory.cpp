@@ -1,5 +1,7 @@
 #include "SceneFactory.h"
 
+#include <fstream>
+
 #include "ActorMoveComponent.h"
 #include "CollisionComponent.h"
 #include "CompositeComponent.h"
@@ -12,7 +14,7 @@
 #include "GhostMoveComponent.h"
 #include "KeyboardInputHandler.h"
 #include "PacmanComponent.h"
-#include "PointsComponent.h"
+#include "PointsModel.h"
 #include "RthBehavior.h"
 #include "Scene.h"
 #include "SceneManager.h"
@@ -27,6 +29,7 @@
 #include "DelayedEventComponent.h"
 #include "FireEventComponent.h"
 #include "GoToComponent.h"
+#include "HallOfFameModel.h"
 #include "TimerComponent.h"
 
 using namespace dae;
@@ -60,7 +63,6 @@ MoveParameters GetKeyUpMoveParameters()
 {
 	return { {0.f,1.f}, 1.f, 0.f };
 }
-
 
 SceneFactory::SceneFactory()
 {
@@ -182,7 +184,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	const auto pBoardComp = std::make_shared<GameBoardComponent>(pBoardModel, _pTextureManager);
 	mapObj->AddComponent(pBoardComp);
-	//mapObj->SetPosition(float(boardComp->GetWidth()), float( boardComp->GetHeight()));
 	mapObj->SetPosition((APP_WIDTH - pBoardModel->GetWidth()) * .5f, (APP_HEIGHT - pBoardModel->GetHeight()) * .5f);
 
 	//Commands that control Pacman
@@ -259,6 +260,10 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	}
 
+	// General keyboard bindings and commands for this scene
+	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<MainMenuCommand>());
+	kih.AddCommand(SDL_SCANCODE_F10, std::make_shared<HallOfFameCommand>());
+
 	//  Keyboard bindings Pacman
 	kih.AddCommand(SDL_SCANCODE_W, pMoveUpCommandPacman);
 	kih.AddCommand(SDL_SCANCODE_S, pMoveDownCommandPacman);
@@ -292,24 +297,24 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	//points pacman
 	auto fontPointsPacMan = ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
-	auto pointsCounterPacMan = PointsComponent::Create();
-	pointsPacmanObj->AddComponent(pointsCounterPacMan);
-	auto tpointsPacman = [](std::shared_ptr<PointsComponent> x) {return x->GetScore(); };
-	auto lpointsPacman = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsComponent>>>(pointsCounterPacMan, tpointsPacman);
+	const auto pPointsModel = PointsModel::GetInstance();
+
+	auto tpointsPacman = [](std::shared_ptr<PointsModel> x) {return x->GetScore(); };
+	auto lpointsPacman = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsModel>>>(pPointsModel, tpointsPacman);
+
 	const auto pointsTextPacman = std::make_shared<TextComponent>(lpointsPacman, fontPointsPacMan);
 	pointsPacmanObj->SetPosition(10, 200);
 	pointsTextPacman->SetColor({ 255,255,0 });
 	pointsPacmanObj->AddComponent(pointsTextPacman);
 
 	//lives pacman
-	auto tLivesPacman = [](std::shared_ptr<PointsComponent> x) {return x->GetLives(); };
-	auto lLivesPacman = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsComponent>>>(pointsCounterPacMan, tLivesPacman);
+	auto tLivesPacman = [](std::shared_ptr<PointsModel> x) {return x->GetLives(); };
+	auto lLivesPacman = std::make_shared<LambdaTextProvider<std::shared_ptr<PointsModel>>>(pPointsModel, tLivesPacman);
 	const auto LivesTextPacman = std::make_shared<TextComponent>(lLivesPacman, fontPointsPacMan);
+
 	livesPacmanObj->SetPosition(10, 230);
 	LivesTextPacman->SetColor({ 255,255,0 });
 	livesPacmanObj->AddComponent(LivesTextPacman);
-
-
 
 	auto ghostsCount = pBoardModel->GetGhostsCount();
 	std::vector<std::shared_ptr<GameObject>> ghostObjs{};
@@ -399,14 +404,60 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	pScene->Add(gameplayObj);
 	pScene->Add(gameOverObj);
 
-	ServiceLocator::RegisterSoundSystem(std::make_shared<logging_sound_system>(std::make_shared<SDLSoundSystem>()));
-	ServiceLocator::GetSoundSystem().InitializeSoundSystem();
-	ServiceLocator::GetSoundSystem().RegisterSound(Sound::BEGINNING, "../Data/pacman_beginning.wav");
-	ServiceLocator::GetSoundSystem().RegisterSound(Sound::PACMAN_CHOMP, "../Data/munch_1.wav");
-	ServiceLocator::GetSoundSystem().RegisterSound(Sound::DEATH, "../Data/pacman_death.wav");
-	ServiceLocator::GetSoundSystem().RegisterSound(Sound::EATGHOST, "../Data/pacman_eatghost.wav");
-	ServiceLocator::GetSoundSystem().RegisterSound(Sound::PACMAN_POWERUP, "../Data/power_pellet.wav");
 }
+
+std::vector<std::string> readFile(const std::string& filename) {
+	std::vector<std::string> data;
+	std::ifstream file(filename);
+
+	if (file.is_open()) {
+		std::string line;
+		while (std::getline(file, line)) {
+			size_t separatorPos = line.find(':');
+			if (separatorPos != std::string::npos) {
+				std::string name = line.substr(0, separatorPos);
+				std::string points = line.substr(separatorPos + 1);
+				std::string entry = name + ": " + points;
+				data.push_back(entry);
+			}
+		}
+		file.close();
+	}
+	else {
+		std::cerr << "Error opening file: " << filename << std::endl;
+		return data; // Return empty vector if file cannot be opened
+	}
+
+	// Sort the vector in descending order based on points
+	std::sort(data.begin(), data.end(), [](const auto& a, const auto& b) {
+		int pointsA = std::stoi(a.substr(a.find(':') + 1));
+	int pointsB = std::stoi(b.substr(b.find(':') + 1));
+	return pointsA > pointsB;
+		});
+
+	// Create a new vector with the highest 20 entries
+	std::vector<std::string> top20;
+	auto end = data.begin() + std::min(20, static_cast<int>(data.size()));
+	std::copy(data.begin(), end, std::back_inserter(top20));
+
+	// Write the top 20 entries back to the file
+	std::ofstream outFile(filename);
+	if (outFile.is_open()) {
+		for (const auto& entry : top20) {
+			outFile << entry << std::endl;
+		}
+		outFile.close();
+		std::cout << "Top 20 entries have been written to the file: " << filename << std::endl;
+	}
+	else {
+		std::cerr << "Error opening file for writing: " << filename << std::endl;
+	}
+
+	return top20;
+}
+
+
+
 
 void SceneFactory::LoadMainMenuScene()
 {
@@ -418,6 +469,7 @@ void SceneFactory::LoadMainMenuScene()
 	auto SinglePlayerObj{ GameObject::Create() };
 	auto CoopObj{ GameObject::Create() };
 	auto VersusObj{ GameObject::Create() };
+	
 
 	std::shared_ptr<Command> singlePlayerCommand = std::make_shared<StartGameCommand>(GameMode::SinglePlayer);
 	std::shared_ptr<Command> coopCommand = std::make_shared<StartGameCommand>(GameMode::Coop);
@@ -426,6 +478,10 @@ void SceneFactory::LoadMainMenuScene()
 	kih.AddCommand(SDL_SCANCODE_F5, singlePlayerCommand);
 	kih.AddCommand(SDL_SCANCODE_F6, coopCommand);
 	kih.AddCommand(SDL_SCANCODE_F7, versusCommand);
+
+	// General keyboard bindings and commands for this scene
+	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<HallOfFameCommand>());
+	kih.AddCommand(SDL_SCANCODE_F10,singlePlayerCommand);
 
 	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
@@ -444,8 +500,53 @@ void SceneFactory::LoadMainMenuScene()
 	VersusObj->AddComponent(textComponentVersus);
 	VersusObj->SetPosition(330, 340);
 
+
 	pScene->Add(backgroundObj);
 	pScene->Add(SinglePlayerObj);
 	pScene->Add(CoopObj);
 	pScene->Add(VersusObj);
+	
+}
+
+void SceneFactory::LoadHighScoreScene()
+{
+	const auto pScene = &SceneManager::GetInstance().CreateScene("Hall Of Fame");
+
+	const auto& kih = KeyboardInputHandler::GetInstance();
+
+	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<StartGameCommand>(GameMode::SinglePlayer));
+	kih.AddCommand(SDL_SCANCODE_F10, std::make_shared<MainMenuCommand>());
+
+	auto backgroundObj{ GameObject::Create() };
+
+	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
+	backgroundObj->AddComponent(background);
+	pScene->Add(backgroundObj);
+
+	auto repo = std::make_shared<HallOfFameTextFileRepository>();
+	auto model = HallOfFameModel::Create(repo);
+	auto vector = model->GetData();
+
+	auto offset{ 32.f };
+	auto locXName{ 230.f }, locXScore{ 730.f }, locY{ 20.F };
+
+
+	auto fontHighScore = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+
+	for (auto entry : vector)
+	{
+		auto NameObj{ GameObject::Create() };
+		auto NameComp = std::make_shared<dae::TextComponent>(entry->Name, fontHighScore);
+		NameObj->AddComponent(NameComp);
+		NameObj->SetPosition(locXName, locY);
+		pScene->Add(NameObj);
+
+		auto ScoreObj{ GameObject::Create() };
+		auto ScoreComp = std::make_shared<dae::TextComponent>(std::to_string(entry->Score), fontHighScore);
+		ScoreObj->AddComponent(ScoreComp);
+		ScoreObj->SetPosition(locXScore, locY);
+		pScene->Add(ScoreObj);
+
+		locY += offset;
+	}
 }

@@ -11,12 +11,6 @@ namespace dae
 	class Command;
 	class ControllerInputHandler;
 
-	struct ControllerInput
-	{
-		unsigned int id;
-		bool pressed;
-	};
-
 	enum class ControllerButton
 	{
 		DpadUp = 0x0001,
@@ -49,8 +43,9 @@ namespace dae
 
 		bool ProcessInput() const;
 
-		void AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command) const;
+		void AddCommand(const SDL_Scancode key, const std::shared_ptr<Command>& command) const;
 		void RemoveCommand(const SDL_Scancode key) const;
+		void Clear() const;
 
 	private:
 		class KeyboardInputHandlerImpl;

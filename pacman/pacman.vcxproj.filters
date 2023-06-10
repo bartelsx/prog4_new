@@ -42,9 +42,6 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointsComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="PacmanComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -99,6 +96,15 @@
     <ClCompile Include="SceneFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HallOfFameModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="HallOfFameRepository.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="PointsModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -106,9 +112,6 @@
     </ClInclude>
     <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PointsComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="PacmanComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -175,6 +178,18 @@
     </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HallOfFameModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="HallOfFameRepository.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointsModel.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

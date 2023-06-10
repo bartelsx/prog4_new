@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="ActorMoveComponent.cpp" />
+    <ClCompile Include="HallOfFameModel.cpp" />
+    <ClCompile Include="HallOfFameRepository.cpp" />
     <ClCompile Include="RthBehavior.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SequentialBehavior.cpp" />
@@ -167,7 +169,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PacmanComponent.cpp" />
     <ClCompile Include="PathFinder.cpp" />
-    <ClCompile Include="PointsComponent.cpp" />
+    <ClCompile Include="PointsModel.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
     <ClCompile Include="TargetSelector.cpp" />
@@ -176,6 +178,8 @@
   <ItemGroup>
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="ActorMoveComponent.h" />
+    <ClInclude Include="HallOfFameModel.h" />
+    <ClInclude Include="HallOfFameRepository.h" />
     <ClInclude Include="RthBehavior.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SequentialBehavior.h" />
@@ -191,9 +195,10 @@
     <ClInclude Include="PacmanComponent.h" />
     <ClInclude Include="ActorType.h" />
     <ClInclude Include="PathFinder.h" />
-    <ClInclude Include="PointsComponent.h" />
+    <ClInclude Include="PointsModel.h" />
     <ClInclude Include="SceneId.h" />
     <ClInclude Include="ServiceLocator.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="StartGameCommand.h" />

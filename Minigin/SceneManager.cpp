@@ -2,23 +2,25 @@
 #include "Scene.h"
 using namespace dae;
 
-void SceneManager::SetCurrentScene(int idx)
-{
-	if(m_scenes.size()<= idx)
-	{
-		throw "invalid scene selected";
-	}
-	m_pCurrentScene = m_scenes[idx];
-}
 void dae::SceneManager::Update(float deltaT)
 {
-	m_pCurrentScene->Update(deltaT);
+	for (auto& pScene : m_scenes )
+	{
+		pScene->Update(deltaT);
+	}
 }
 
 void dae::SceneManager::Render()
 {
-	m_pCurrentScene->Render();
-	
+	for (auto& pScene : m_scenes)
+	{
+		pScene->Render();
+	}
+}
+
+void SceneManager::Clear()
+{
+	m_scenes.clear();
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)

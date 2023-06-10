@@ -1,4 +1,4 @@
-#include "PointsComponent.h"
+#include "PointsModel.h"
 
 #include <string>
 
@@ -7,23 +7,8 @@
 #include "SoundSystem.h"
 using namespace dae;
 
-std::shared_ptr<PointsComponent> PointsComponent::Create()
-{
-	auto ptr = std::shared_ptr<PointsComponent>(new PointsComponent());
 
-	EventManager::Subscribe(EventType::ACTOR_DIED, ptr);
-	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
-	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
-	EventManager::Subscribe(EventType::FRUIT_PICKUP, ptr);
-	EventManager::Subscribe(EventType::ENEMY_DIED, ptr);
-
-	return ptr;
-}
-
-void PointsComponent::Update(float)
-{}
-
-void PointsComponent::HandleEvent(const Event& event)
+void PointsModel::HandleEvent(const Event& event)
 {
 	switch (event.GetType()) {
 	case EventType::ACTOR_DIED:
@@ -52,13 +37,31 @@ void PointsComponent::HandleEvent(const Event& event)
 	}
 }
 
-std::string PointsComponent::GetScore()
+std::string PointsModel::GetScore() const
 {
 	std::string text{ "Points: " + std::to_string(m_Points) };
 	return text;
 }
-std::string PointsComponent::GetLives()
+std::string PointsModel::GetLives() const
 {
 	std::string text{ "lives: " + std::to_string(m_Lives) };
 	return text;
+}
+
+
+std::shared_ptr<PointsModel> PointsModel::GetInstance()
+{
+	static std::shared_ptr<PointsModel> instance{ Create() };
+	return instance;
+}
+
+std::shared_ptr<PointsModel> PointsModel::Create()
+{
+	auto ptr = std::shared_ptr<PointsModel>(new PointsModel());
+	EventManager::Subscribe(EventType::ACTOR_DIED, ptr);
+	EventManager::Subscribe(EventType::PILL_PICKUP, ptr);
+	EventManager::Subscribe(EventType::BOOST_PICKUP, ptr);
+	EventManager::Subscribe(EventType::FRUIT_PICKUP, ptr);
+	EventManager::Subscribe(EventType::ENEMY_DIED, ptr);
+	return ptr;
 }

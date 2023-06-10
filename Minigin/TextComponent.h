@@ -52,6 +52,7 @@ namespace dae
 	public:
 		TextComponent() : m_isDirty(true){}
 		TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		//TextComponent(const std::vector<std::string>& text, std::shared_ptr<Font> font);
 		TextComponent(const  std::shared_ptr<TextProvider> textProvider, std::shared_ptr<Font> font);
 
 		virtual ~TextComponent() = default;
@@ -70,11 +71,12 @@ namespace dae
 	private:
 		bool m_isDirty;
 		std::string m_text;
+		std::string m_prevText;
 		std::shared_ptr<TextProvider> m_textProvider{ nullptr };
 		std::shared_ptr<Font> m_font;
 		std::shared_ptr<Texture2D> m_textTexture;
 		SDL_Color m_color{ 255,255,255 };
-
+		std::vector<std::string> m_textVector;
 	};
 
 }

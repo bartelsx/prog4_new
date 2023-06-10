@@ -236,7 +236,7 @@ public:
 		m_ControllerCommands[std::make_pair(id, button)] = nullptr;
 	}
 
-	void RemoveCommands()
+	void Clear()
 	{
 		m_ControllerCommands.clear();
 	}
@@ -288,9 +288,9 @@ void ControllerInputHandler::RemoveCommand(unsigned int id, const ControllerButt
 	pControllerImpl->RemoveCommand(id, button);
 }
 
-void ControllerInputHandler::RemoveAllCommands() const
+void ControllerInputHandler::Clear() const
 {
-	pControllerImpl->RemoveCommands();
+	pControllerImpl->Clear();
 }
 
 glm::vec2 ControllerInputHandler::GetDirection(const unsigned controllerId) const

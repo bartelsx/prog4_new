@@ -65,6 +65,11 @@ public:
         m_KeyboardCommands[key] = nullptr;
     }
 
+    void Clear()
+    {
+        m_KeyboardCommands.clear();
+    }
+
 private:
     using KeyBoardCommandsMap = std::map<SDL_Scancode, std::shared_ptr<Command>>;
     KeyBoardCommandsMap m_KeyboardCommands{};
@@ -87,7 +92,7 @@ bool KeyboardInputHandler::ProcessInput() const
     return pKeyboardInputHandlerImpl->ProcessInput();
 }
 
-void KeyboardInputHandler::AddCommand(const SDL_Scancode key, std::shared_ptr<Command>& command) const
+void KeyboardInputHandler::AddCommand(const SDL_Scancode key, const std::shared_ptr<Command>& command) const
 {
     pKeyboardInputHandlerImpl->AddCommand(key, command);
 }
@@ -95,6 +100,11 @@ void KeyboardInputHandler::AddCommand(const SDL_Scancode key, std::shared_ptr<Co
 void KeyboardInputHandler::RemoveCommand(const SDL_Scancode key) const
 {
     pKeyboardInputHandlerImpl->RemoveCommand(key);
+}
+
+void KeyboardInputHandler::Clear() const
+{
+    pKeyboardInputHandlerImpl->Clear();
 }
 
 

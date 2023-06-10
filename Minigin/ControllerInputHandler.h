@@ -13,11 +13,11 @@ namespace dae
 	enum class ControllerButton;
 
 
-	class ControllerInputHandler : public dae::Singleton<ControllerInputHandler>
+	class ControllerInputHandler : public Singleton<ControllerInputHandler>
 	{
 	public:
 
-		~ControllerInputHandler();
+		~ControllerInputHandler() override;
 
 		void ProcessInput() const;
 		bool IsPressed(const std::pair<unsigned, ControllerButton>& controllerButton) const;
@@ -26,15 +26,17 @@ namespace dae
 
 		void AddCommand(unsigned id, ControllerButton controllerButton, std::shared_ptr<Command> command) const;
 		void RemoveCommand(unsigned int id, const ControllerButton& button) const;
-		void RemoveAllCommands() const;
+		void Clear() const;
 
 		glm::vec2 GetDirection(const unsigned int controllerId) const;
 		float GetSpeed(const unsigned int controllerId) const;
 		float GetAcceleration(const unsigned int controllerId) const;
 
 		explicit ControllerInputHandler();
-		//when 2 controllers are conected,they seem to not always have id's 0 and 1
+
+		//when 2 controllers are connected,they seem to not always have id's 0 and 1
 		int GetControllerID(int controllerNumber); 
+
 		int GetNumberOfControllers(); 
 
 	private:
