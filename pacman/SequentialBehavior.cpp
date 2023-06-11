@@ -20,7 +20,7 @@ glm::vec2 SequentialBehavior::GetNextLocation(glm::vec2 currentGhostLoc, float d
 		if (m_RemainingTime <= 0.f)
 		{
 			++m_BehaviorIdx;
-			if (m_BehaviorIdx >= m_Behaviors.size())
+			if (m_BehaviorIdx >= static_cast<int>( m_Behaviors.size()))
 			{
 				m_BehaviorIdx = 0;
 			}

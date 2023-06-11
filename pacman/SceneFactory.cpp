@@ -27,6 +27,7 @@
 #include "FireEventComponent.h"
 #include "GoToComponent.h"
 #include "HallOfFameModel.h"
+#include "HallOfFameTextProcessor.h"
 #include "HighScoresComponent.h"
 #include "Settings.h"
 #include "TimerComponent.h"
@@ -34,8 +35,8 @@
 
 using namespace dae;
 
-#define APP_WIDTH (1024)
-#define APP_HEIGHT (768)
+
+
 
 
 
@@ -184,7 +185,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 
 	const auto pBoardComp = std::make_shared<GameBoardComponent>(pBoardModel, m_pTextureManager);
 	mapObj->AddComponent(pBoardComp);
-	mapObj->SetPosition((APP_WIDTH - pBoardModel->GetWidth()) * .5f, (APP_HEIGHT - pBoardModel->GetHeight()) * .5f);
+	mapObj->SetPosition((Settings::AppWidth - pBoardModel->GetWidth()) * .5f, (Settings::AppHeight - pBoardModel->GetHeight()) * .5f);
 
 	//Commands that control Pacman
 	const auto pacmanMoveComp = ActorMoveComponent::Create(pBoardModel);
@@ -193,10 +194,10 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	pacmanStateComp->Set(EventType::GAME_OVER, BaseComponent::Empty()); //Stop moving on GAME_OVER
 	pacmanObj->AddComponent(pacmanStateComp);
 
-	std::shared_ptr<Command> pMoveUpCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
-	std::shared_ptr<Command> pMoveDownCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {0.f,-1.f}, 1.f, 0.f });
-	std::shared_ptr<Command> pMoveLeftCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {-1.f,0.f}, 1.f, 0.f });
-	std::shared_ptr<Command> pMoveRightCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {1.f,0.f}, 1.f, 0.f });
+	std::shared_ptr<Command> pMoveUpCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, []() {return MoveParameters{ {0.f,1.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration }; });
+	std::shared_ptr<Command> pMoveDownCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {0.f,-1.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration });
+	std::shared_ptr<Command> pMoveLeftCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {-1.f,0.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration });
+	std::shared_ptr<Command> pMoveRightCommandPacman = std::make_shared<MoveCommand>(pacmanMoveComp, MoveParameters{ {1.f,0.f}, Settings::PlayerSpeed, Settings::PlayerAcceleration });
 
 	const auto pacmanComp = PacmanComponent::Create(pBoardModel);
 	pacmanObj->AddComponent(pacmanComp);
@@ -229,10 +230,10 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 		pacWomanStateComp->Set(EventType::GAME_OVER, BaseComponent::Empty()); //Stop moving on GAME_OVER
 		pacWomanObj->AddComponent(pacWomanStateComp);
 
-		std::shared_ptr<Command> pMoveUpCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
-		std::shared_ptr<Command> pMoveDownCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {0.f,-1.f}, 1.f, 0.f });
-		std::shared_ptr<Command> pMoveLeftCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {-1.f,0.f}, 1.f, 0.f });
-		std::shared_ptr<Command> pMoveRightCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {1.f,0.f}, 1.f, 0.f });
+		std::shared_ptr<Command> pMoveUpCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, []() {return MoveParameters{ {0.f,1.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration }; });
+		std::shared_ptr<Command> pMoveDownCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {0.f,-1.f}, Settings::PlayerSpeed, Settings::PlayerAcceleration });
+		std::shared_ptr<Command> pMoveLeftCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {-1.f,0.f}, Settings::PlayerSpeed, Settings::PlayerAcceleration });
+		std::shared_ptr<Command> pMoveRightCommandPacWoman = std::make_shared<MoveCommand>(pacWomanMoveComp, MoveParameters{ {1.f,0.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration });
 
 		const auto pacWomanComp = PacmanComponent::Create(pBoardModel);
 		pacWomanObj->AddComponent(pacWomanComp);
@@ -282,12 +283,12 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	logoObj->AddComponent(logo);
 	logoObj->SetPosition(80, 70);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::TitleFont);
 	const auto textComponent = std::make_shared<TextComponent>("Programming 4 Assignment", font);
 	titleObj->AddComponent(textComponent);
 	titleObj->SetPosition(80, 20);
 
-	auto fontFPS = ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
+	auto fontFPS = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::FPSFont);
 	auto fpsCounter = std::make_shared<FPSCalcComponent>();
 	fpsObj->AddComponent(fpsCounter);
 	const auto fpsText = std::make_shared<TextComponent>(fpsCounter, fontFPS);
@@ -296,7 +297,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	fpsObj->AddComponent(fpsText);
 
 	//points pacman
-	auto fontPointsPacMan = ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
+	auto fontPointsPacMan = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::LivesAndPointsFont);
 	const auto pPointsModel = PointsModel::GetInstance();
 
 	auto tpointsPacman = [](std::shared_ptr<PointsModel> x) {return x->GetScoreText(); };
@@ -329,10 +330,10 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 			ghostMoveComp = ActorMoveComponent::Create(pBoardModel);
 			std::shared_ptr<Command> pLeftJoystickCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, GetLeftThumbValuesFromSecondPlayerController);
 
-			std::shared_ptr<Command> pMoveUpCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,1.f}, 1.f, 0.f }; });
-			std::shared_ptr<Command> pMoveDownCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,-1.f}, 1.f, 0.f }; });
-			std::shared_ptr<Command> pMoveLeftCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {-1.f,0.f}, 1.f, 0.f }; });
-			std::shared_ptr<Command> pMoveRightCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {1.f,0.f}, 1.f, 0.f }; });
+			std::shared_ptr<Command> pMoveUpCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,1.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration }; });
+			std::shared_ptr<Command> pMoveDownCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {0.f,-1.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration }; });
+			std::shared_ptr<Command> pMoveLeftCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {-1.f,0.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration }; });
+			std::shared_ptr<Command> pMoveRightCommandGhost = std::make_shared<MoveCommand>(ghostMoveComp, []() {return MoveParameters{ {1.f,0.f},  Settings::PlayerSpeed, Settings::PlayerAcceleration }; });
 
 			//  Controller buttons
 			int ghostControllerId{ cih.GetControllerID(cih.GetNumberOfControllers() - 1) };
@@ -365,8 +366,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	if (ghostsCount >= 4)
 	{
 		auto pinkyChaseBehavior = SequentialBehavior::Create();
-		pinkyChaseBehavior->Add(ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::Pacman()), 3.f);
-		pinkyChaseBehavior->Add(FleeBehavior::Create(gameMode, pBoardModel, pacmanObj, pacWomanObj), 2.f);
+		pinkyChaseBehavior->Add(ChasePacmanBehavior::Create(gameMode, pacmanObj, pacWomanObj, pBoardModel, TargetSelector::Pacman()), Settings::ChaseDuration);
+		pinkyChaseBehavior->Add(FleeBehavior::Create(gameMode, pBoardModel, pacmanObj, pacWomanObj), Settings::FleeDuration);
 		ghostObjs.emplace_back(BuildGhost(gameMode, PinkyTexture, 3, pinkyChaseBehavior, pacmanObj, pacWomanObj, pBoardModel));
 	}
 
@@ -394,9 +395,9 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	fruitObj->AddComponent(fruitStateComp);
 
 	//Timers & triggers
-	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
-	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::GAME_OVER, EventType::CLOSE_SCENE_REQUEST, 3.f));
-	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::ENABLE_FRUIT, EventType::DISABLE_FRUIT, 5.f));
+	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, Settings::PowerUpDuration ));
+	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::GAME_OVER, EventType::CLOSE_SCENE_REQUEST, Settings::CloseSceneDuration));
+	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::ENABLE_FRUIT, EventType::DISABLE_FRUIT, Settings::DisableFruitDuration));
 
 	gameplayObj->AddComponent(TriggerComponent::Create(EventType::CLOSE_SCENE_REQUEST, gotoHallOfFameCommand));
 	gameplayObj->AddComponent(TriggerComponent::Create(EventType::LEVEL_COMPLETE, startNextLevelCommand));
@@ -457,7 +458,7 @@ void SceneFactory::LoadMainMenuScene()
 	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<HallOfFameCommand>());
 	kih.AddCommand(SDL_SCANCODE_F10, singlePlayerCommand);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::TitleFont);
 
 	const auto background = TextureComponent::Create(m_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
@@ -503,7 +504,7 @@ void SceneFactory::LoadHighScoreScene()
 	const auto highScoresObj = GameObject::Create();
 	highScoresObj->SetPosition(230.f, 20.f);
 
-	auto fontHighScore = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	auto fontHighScore = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::HighScoreFont);
 	highScoresObj->AddComponent(HighScoresComponent::Create(model, fontHighScore));
 	pScene->Add(highScoresObj);
 
@@ -514,11 +515,12 @@ void SceneFactory::LoadHighScoreScene()
 		auto enterbObj{ GameObject::Create() };
 		auto editorObj = GameObject::Create();
 
-		auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+
 		const auto yourScoreComp = std::make_shared<dae::TextComponent>("Your score : " + std::to_string(PointsModel::GetInstance()->GetScore()), font);
 		yourScoreObj->AddComponent(yourScoreComp);
 		yourScoreObj->SetPosition(170, 600);
 
+		auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::TitleFont);
 		const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);
 		goodJobObj->AddComponent(textComponentGoodJob);
 		goodJobObj->SetPosition(170, 660);

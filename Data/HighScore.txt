@@ -16,3 +16,4 @@ allaho snackbar:70
 jaak:0
 jakkamakka:0
 abracadabra:0
+gf:0

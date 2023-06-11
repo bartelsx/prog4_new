@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include <string>
 
-#include "../pacman/EditBoxComponent.h"
+#include "EditBoxComponent.h"
 
 namespace dae
 {

@@ -57,9 +57,6 @@
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GhostMoveBehavior.cpp">
-      <Filter>Source Files\Ghosts</Filter>
-    </ClCompile>
     <ClCompile Include="GhostMoveComponent.cpp">
       <Filter>Source Files\Ghosts</Filter>
     </ClCompile>
@@ -190,9 +187,6 @@
     </ClInclude>
     <ClInclude Include="PointsModel.h">
       <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="EditBoxComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="KeyBoardCommand.h">
       <Filter>Header Files\Components</Filter>

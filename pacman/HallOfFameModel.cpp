@@ -5,6 +5,7 @@
 #include "Events.h"
 #include "EventType.h"
 #include "HallOfFameRepository.h"
+#include "Settings.h"
 
 using namespace dae;
 
@@ -50,9 +51,9 @@ void HallOfFameModel::SortAndPrune()
 	std::sort(m_Data.begin(), m_Data.end(), [](const auto& a, const auto& b) {	return a->Score > b->Score;	});
 
 	// Create a new vector with the highest 20 entries
-	if (m_Data.size() > 20)
+	if (m_Data.size() > Settings::HighScoreNumberOfNames)
 	{
-		m_Data.erase(m_Data.begin() + 20, m_Data.end());
+		m_Data.erase(m_Data.begin() + Settings::HighScoreNumberOfNames, m_Data.end());
 		m_Data.resize(20);
 	}
 

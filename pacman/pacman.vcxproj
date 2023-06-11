@@ -163,7 +163,6 @@
     <ClCompile Include="FleeBehavior.cpp" />
     <ClCompile Include="GameBoardComponent.cpp" />
     <ClCompile Include="GameBoardModel.cpp" />
-    <ClCompile Include="GhostMoveBehavior.cpp" />
     <ClCompile Include="GhostMoveComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PacmanComponent.cpp" />
@@ -180,7 +179,6 @@
     <ClInclude Include="ActorMoveComponent.h" />
     <ClInclude Include="HallOfFameModel.h" />
     <ClInclude Include="HallOfFameRepository.h" />
-    <ClInclude Include="EditBoxComponent.h" />
     <ClInclude Include="HighScoresComponent.h" />
     <ClInclude Include="KeyBoardCommand.h" />
     <ClInclude Include="RthBehavior.h" />

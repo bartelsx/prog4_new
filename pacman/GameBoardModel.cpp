@@ -243,7 +243,7 @@ int GameBoardModel::GetPairedTeleport(int cellIdx) const
 	{
 		int thisTeleportIdx = static_cast<int>( std::distance(m_Teleports.begin(), it));
 		int otherTeleportIdx = thisTeleportIdx ^ 1; //flip low order bit
-		if (otherTeleportIdx < m_Teleports.size())
+		if (otherTeleportIdx < static_cast<int>( m_Teleports.size()))
 		{
 			return m_Teleports[otherTeleportIdx];
 		}
