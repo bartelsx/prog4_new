@@ -369,9 +369,34 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 		ghostObjs.emplace_back(BuildGhost(gameMode, PinkyTexture, 3, pinkyChaseBehavior, pacmanObj, pacWomanObj, pBoardModel));
 	}
 
-	//Timers
+	//Fruit pickup
+	auto fruitObj = GameObject::Create();
+	fruitObj->SetPosition(pBoardModel->GetPlayerSpawnLocation());
+
+	//... when active
+	auto activeFruitComp = CompositeComponent::Create();
+	activeFruitComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(Textures::FruitTexture)));
+	auto collComp = CollisionComponent::Create(EventType::FRUIT_PICKUP, false, false, Settings::CollisionTolerance);
+	collComp->AddWatchedObject(pacmanObj);
+	if (gameMode == GameMode::Coop)
+	{
+		collComp->AddWatchedObject(pacWomanObj);
+	}
+	activeFruitComp->Add(collComp);
+
+	//Combine in StateComp
+	auto fruitStateComp = StateComponent::Create();
+	fruitStateComp->Set(EventType::DISABLE_FRUIT, BaseComponent::Empty()); //nothing to show
+	fruitStateComp->Set(EventType::ENABLE_FRUIT, activeFruitComp);
+	fruitStateComp->Set(EventType::FRUIT_PICKUP, BaseComponent::Empty());
+
+	fruitObj->AddComponent(fruitStateComp);
+
+	//Timers & triggers
 	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
 	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::GAME_OVER, EventType::CLOSE_SCENE_REQUEST, 3.f));
+	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::ENABLE_FRUIT, EventType::DISABLE_FRUIT, 5.f));
+
 	gameplayObj->AddComponent(TriggerComponent::Create(EventType::CLOSE_SCENE_REQUEST, gotoHallOfFameCommand));
 	gameplayObj->AddComponent(TriggerComponent::Create(EventType::LEVEL_COMPLETE, startNextLevelCommand));
 
@@ -379,6 +404,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	pScene->Add(titleObj);
 	pScene->Add(logoObj);
 
+	mapObj->AddChild(fruitObj);
 	mapObj->AddChild(pacmanObj);
 	if (gameMode == GameMode::Coop) mapObj->AddChild(pacWomanObj);
 

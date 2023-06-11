@@ -8,7 +8,9 @@ namespace dae
 
 	enum Textures
 	{
-		WallTexture, PillTexture, BoostTexture, PacmanTexture, MrsPacmanTexture, BlinkyTexture, InkyTexture, ClydeTexture, PinkyTexture, ScaredGhostTexture, EyesTexture, BackgroundTexture, LogoTexture, PathTexture
+		WallTexture, PillTexture, BoostTexture, PacmanTexture, MrsPacmanTexture,
+		BlinkyTexture, InkyTexture, ClydeTexture, PinkyTexture, ScaredGhostTexture,
+		EyesTexture, BackgroundTexture, LogoTexture, PathTexture, FruitTexture
 	};
 
 	class TextureManager

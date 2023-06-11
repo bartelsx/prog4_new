@@ -26,13 +26,28 @@ void PointsModel::HandleEvent(const Event& event)
 		break;
 
 	case EventType::BOOST_PICKUP:
+		AddPickups(1);
 		m_Points += Settings::BoostScore;
 		m_ScoreIdx = 0;
 		break;
 
 	case EventType::PILL_PICKUP:
+		AddPickups(1);
 		m_Points += Settings::PillScore;
 		break;
+	}
+}
+
+void PointsModel::AddPickups(int n)
+{
+	const int oldTier = m_Pickups / Settings::EnableFruitInterval;
+	m_Pickups += n;
+	const int newTier = m_Pickups / Settings::EnableFruitInterval;
+
+	if (newTier != oldTier)
+	{
+		std::cout << "Firing ENABLE_FRUIT " << EventType::ENABLE_FRUIT << "\n";
+		EventManager::Publish(EventType::ENABLE_FRUIT);
 	}
 }
 

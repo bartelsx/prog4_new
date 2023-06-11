@@ -1,5 +1,7 @@
 #include "DelayedEventComponent.h"
 
+#include <iostream>
+
 using namespace dae;
 
 DelayedEventComponent::DelayedEventComponent(TEventType triggerEvent, TEventType timedEvent, float delay)

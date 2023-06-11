@@ -59,7 +59,7 @@ namespace dae
 		{
 			GetInstance().SubscribeImpl(type, pObserver);
 		}
-
+		
 		static void Publish(const TEventType type)
 		{
 			auto pEvent = std::make_shared<Event>(type);

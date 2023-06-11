@@ -20,5 +20,7 @@ namespace dae
 		inline static constexpr int BoostScore{50};
 		inline static constexpr int PillScore{10};
 		inline static constexpr int FruitScore{100};
+		inline static constexpr int EnableFruitInterval{40};
+		inline static constexpr float CollisionTolerance{8.f};
 	};
 }

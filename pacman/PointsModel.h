@@ -32,10 +32,11 @@ namespace dae
 		PointsModel();
 
 		void HandleEvent(const Event& event) override;
+		void AddPickups(int n);
 
 		int m_Points{};
 		int m_Lives{};
-
+		int m_Pickups{};
 
 		int m_ScoreIdx{ 0 };
 		

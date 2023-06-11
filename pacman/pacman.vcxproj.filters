@@ -197,11 +197,11 @@
     <ClInclude Include="KeyBoardCommand.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="HallOfFameTextProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HighScoresComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HallOfFameTextProcessor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
