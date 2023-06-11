@@ -14,6 +14,7 @@ namespace dae
 		inline static const std::string Level1Map{ "../Data/level1.json" };
 		inline static const std::string Level2Map{ "../Data/level2.json" };
 		inline static const std::string Level3Map{ "../Data/level3.json" };
+		inline static constexpr std::string FontPath{ "../Data/Lingua.otf" };
 		inline static constexpr int NumberOfLevels{ 3 };
 		inline static constexpr int PacmanLives{ 4 };
 		inline static constexpr int KillEnemyScores[] = { 200,400,800,1600 };
@@ -30,11 +31,11 @@ namespace dae
 		inline static constexpr float PowerUpDuration{10.f};
 		inline static constexpr float CloseSceneDuration{3.f};
 		inline static constexpr float DisableFruitDuration{5.f};
-		inline static constexpr unsigned TitleFont {36};
-		inline static constexpr unsigned FPSFont{18};
-		inline static constexpr unsigned LivesAndPointsFont{18};
-		inline static constexpr unsigned HighScoreFont{20};
 		inline static constexpr float ChaseDuration{3.f};
 		inline static constexpr float FleeDuration{2.f};
+		inline static constexpr unsigned TitleFontSize {36};
+		inline static constexpr unsigned FPSFontSize{18};
+		inline static constexpr unsigned LivesAndPointsFontSize{18};
+		inline static constexpr unsigned HighScoreFontSize{20};
 	};
 }
