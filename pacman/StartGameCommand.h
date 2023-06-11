@@ -3,6 +3,7 @@
 
 namespace dae
 {
+	class SoundPlayer;
 	class GameBoardModel;
 
 	enum GameMode
@@ -55,7 +56,24 @@ namespace dae
 		HallOfFameCommand& operator=(HallOfFameCommand&& other) = delete;
 
 		void Execute() override;
-		void Release() override {};
+		void Release() override {}
+	};
+
+	class ToggleMuteCommand : public Command
+	{
+	public:
+		ToggleMuteCommand(const std::shared_ptr<SoundPlayer>& pSoundPlayer);
+		~ToggleMuteCommand() override = default;
+		ToggleMuteCommand(const ToggleMuteCommand& other) = delete;
+		ToggleMuteCommand(ToggleMuteCommand&& other) = delete;
+		ToggleMuteCommand& operator=(const ToggleMuteCommand& other) = delete;
+		ToggleMuteCommand& operator=(ToggleMuteCommand&& other) = delete;
+
+		void Execute() override;
+		void Release() override {}
+
+	private:
+		const std::shared_ptr<SoundPlayer> m_pSoundPlayer;
 	};
 
 }

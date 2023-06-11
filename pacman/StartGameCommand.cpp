@@ -1,11 +1,10 @@
 #include "StartGameCommand.h"
-
 #include "EventType.h"
 #include "KeyboardInputHandler.h"
 #include "ControllerInputHandler.h"
 #include "SceneFactory.h"
 #include "SceneManager.h"
-#include "Settings.h"
+#include "SoundPlayer.h"
 
 dae::StartGameCommand::StartGameCommand(GameMode gameMode, int level)
 	: m_GameMode(gameMode)
@@ -40,4 +39,14 @@ void dae::HallOfFameCommand::Execute()
 	ControllerInputHandler::GetInstance().Clear();
 	SceneManager::GetInstance().Clear();
 	SceneFactory::GetInstance().LoadHighScoreScene();
+}
+
+dae::ToggleMuteCommand::ToggleMuteCommand(const std::shared_ptr<SoundPlayer>& pSoundPlayer)
+	: m_pSoundPlayer(pSoundPlayer)
+{
+}
+
+void dae::ToggleMuteCommand::Execute()
+{
+	m_pSoundPlayer->ToggleMuted();
 }

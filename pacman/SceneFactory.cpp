@@ -39,8 +39,8 @@ using namespace dae;
 
 
 
-std::shared_ptr<SoundPlayer> _pSoundPlayer;
-std::shared_ptr<TextureManager> _pTextureManager;
+std::shared_ptr<SoundPlayer> m_pSoundPlayer;
+std::shared_ptr<TextureManager> m_pTextureManager;
 
 MoveParameters GetLeftThumbValuesFromController(unsigned int controllerID)
 {
@@ -66,8 +66,8 @@ MoveParameters GetKeyUpMoveParameters()
 
 SceneFactory::SceneFactory()
 {
-	_pSoundPlayer = SoundPlayer::Create();
-	_pTextureManager = std::make_shared<TextureManager>();
+	m_pSoundPlayer = SoundPlayer::Create();
+	m_pTextureManager = std::make_shared<TextureManager>();
 }
 
 
@@ -85,7 +85,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 	const float tolerance = pBoardModel->GetTileSize() * .5f;
 
 	auto ghostObj = GameObject::Create();
-	auto normalTexture = TextureComponent::Create(_pTextureManager->GetTexture(textureId));
+	auto normalTexture = TextureComponent::Create(m_pTextureManager->GetTexture(textureId));
 
 
 	//Waiting state
@@ -120,7 +120,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 
 	//Scared state
 	const auto scaredComp = CompositeComponent::Create();
-	scaredComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(ScaredGhostTexture)));
+	scaredComp->Add(TextureComponent::Create(m_pTextureManager->GetTexture(ScaredGhostTexture)));
 	if (pMoveComponent == nullptr)
 	{
 		scaredComp->Add(GhostMoveComponent::Create(FleeBehavior::Create(gameMode, pBoardModel, pacmanObj, pacWomanObj), pBoardModel));
@@ -140,7 +140,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 
 	//Returning to home state (after being eaten)
 	const auto rthComp = CompositeComponent::Create();
-	rthComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(EyesTexture)));
+	rthComp->Add(TextureComponent::Create(m_pTextureManager->GetTexture(EyesTexture)));
 	rthComp->Add(GhostMoveComponent::Create(RthBehavior::Create(pBoardModel, ghostObj, pBoardModel->GetGhostSpawnLocation(index)), pBoardModel));
 
 	//Combine those components in a StateComponent
@@ -182,7 +182,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	const auto pBoardModel = GameBoardModel::Create();
 	pBoardModel->Load(level);
 
-	const auto pBoardComp = std::make_shared<GameBoardComponent>(pBoardModel, _pTextureManager);
+	const auto pBoardComp = std::make_shared<GameBoardComponent>(pBoardModel, m_pTextureManager);
 	mapObj->AddComponent(pBoardComp);
 	mapObj->SetPosition((APP_WIDTH - pBoardModel->GetWidth()) * .5f, (APP_HEIGHT - pBoardModel->GetHeight()) * .5f);
 
@@ -200,7 +200,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 
 	const auto pacmanComp = PacmanComponent::Create(pBoardModel);
 	pacmanObj->AddComponent(pacmanComp);
-	pacmanObj->AddComponent(TextureComponent::Create(_pTextureManager->GetTexture(Textures::PacmanTexture)));
+	pacmanObj->AddComponent(TextureComponent::Create(m_pTextureManager->GetTexture(Textures::PacmanTexture)));
 	pacmanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
 	//Bind Pacman controls
@@ -236,7 +236,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 
 		const auto pacWomanComp = PacmanComponent::Create(pBoardModel);
 		pacWomanObj->AddComponent(pacWomanComp);
-		pacWomanObj->AddComponent(TextureComponent::Create(_pTextureManager->GetTexture(Textures::MrsPacmanTexture)));
+		pacWomanObj->AddComponent(TextureComponent::Create(m_pTextureManager->GetTexture(Textures::MrsPacmanTexture)));
 		pacWomanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
 		//Bind controls
@@ -262,6 +262,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	kih.AddCommand(SDL_SCANCODE_F10, gotoHallOfFameCommand);
 	auto startNextLevelCommand = std::make_shared<StartGameCommand>(gameMode, (level+1) % Settings::NumberOfLevels);
 	kih.AddCommand(SDL_SCANCODE_F8, startNextLevelCommand);
+	kih.AddCommand(SDL_SCANCODE_M, std::make_shared<ToggleMuteCommand>(m_pSoundPlayer));
 
 	//  Keyboard bindings Pacman
 	kih.AddCommand(SDL_SCANCODE_W, pMoveUpCommandPacman);
@@ -274,10 +275,10 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	kih.AddCommand(SDL_SCANCODE_LEFT, pMoveLeftCommandPacman);
 	kih.AddCommand(SDL_SCANCODE_RIGHT, pMoveRightCommandPacman);
 
-	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
+	const auto background = TextureComponent::Create(m_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 
-	const auto logo = TextureComponent::Create(_pTextureManager->GetTexture(LogoTexture));
+	const auto logo = TextureComponent::Create(m_pTextureManager->GetTexture(LogoTexture));
 	logoObj->AddComponent(logo);
 	logoObj->SetPosition(80, 70);
 
@@ -375,7 +376,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 
 	//... when active
 	auto activeFruitComp = CompositeComponent::Create();
-	activeFruitComp->Add(TextureComponent::Create(_pTextureManager->GetTexture(Textures::FruitTexture)));
+	activeFruitComp->Add(TextureComponent::Create(m_pTextureManager->GetTexture(Textures::FruitTexture)));
 	auto collComp = CollisionComponent::Create(EventType::FRUIT_PICKUP, false, false, Settings::CollisionTolerance);
 	collComp->AddWatchedObject(pacmanObj);
 	if (gameMode == GameMode::Coop)
@@ -458,7 +459,7 @@ void SceneFactory::LoadMainMenuScene()
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
-	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
+	const auto background = TextureComponent::Create(m_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 
 	const auto textComponent = std::make_shared<dae::TextComponent>("[ F5 ] Single Player ", font);
@@ -492,7 +493,7 @@ void SceneFactory::LoadHighScoreScene()
 	auto backgroundObj{ GameObject::Create() };
 
 
-	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
+	const auto background = TextureComponent::Create(m_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 	pScene->Add(backgroundObj);
 

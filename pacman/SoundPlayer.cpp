@@ -23,19 +23,44 @@ void SoundPlayer::HandleEvent(const Event& event)
 	switch (event.GetType())
 	{
 	case EventType::GAME_START:
-		ServiceLocator::GetSoundSystem().Play(Sound::BEGINNING, .5f);
+		Play(Sound::BEGINNING, .5f);
 		break;
 	case EventType::PILL_PICKUP:
-		ServiceLocator::GetSoundSystem().Play(Sound::PACMAN_CHOMP, .5f);
+		Play(Sound::PACMAN_CHOMP, .5f);
 		break;
 	case EventType::BOOST_PICKUP:
-		ServiceLocator::GetSoundSystem().Play(Sound::PACMAN_POWERUP, .5f);
+		Play(Sound::PACMAN_POWERUP, .5f);
 		break;
 	case EventType::ACTOR_DIED:
-		ServiceLocator::GetSoundSystem().Play(Sound::DEATH, .5f);
+		Play(Sound::DEATH, .5f);
 		break;
 	case EventType::ENEMY_DIED:
-		ServiceLocator::GetSoundSystem().Play(Sound::EATGHOST, .5f);
+		Play(Sound::EATGHOST, .5f);
 		break;
 	}
 }
+
+
+void SoundPlayer::SetMuted(bool muted)
+{
+	m_Muted = muted;
+}
+
+bool SoundPlayer::GetMuted() const
+{
+	return m_Muted;
+}
+
+void SoundPlayer::ToggleMuted()
+{
+	m_Muted = !m_Muted;
+}
+
+void SoundPlayer::Play(const Sound_id id, const float volume)
+{
+	if (!m_Muted)
+	{
+		ServiceLocator::GetSoundSystem().Play(id, volume);
+	}
+}
+
