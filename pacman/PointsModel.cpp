@@ -46,7 +46,6 @@ void PointsModel::AddPickups(int n)
 
 	if (newTier != oldTier)
 	{
-		std::cout << "Firing ENABLE_FRUIT " << EventType::ENABLE_FRUIT << "\n";
 		EventManager::Publish(EventType::ENABLE_FRUIT);
 	}
 }

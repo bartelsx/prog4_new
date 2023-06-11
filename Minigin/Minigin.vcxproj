@@ -210,7 +210,6 @@
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="imgui_plot.h" />
-    <ClInclude Include="IMoveLimiter.h" />
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />

@@ -129,9 +129,6 @@
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="IMoveLimiter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveCommand.h">
       <Filter>Header Files\command</Filter>
     </ClInclude>
