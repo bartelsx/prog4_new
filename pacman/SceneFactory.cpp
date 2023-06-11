@@ -283,12 +283,12 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	logoObj->AddComponent(logo);
 	logoObj->SetPosition(80, 70);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::TitleFontSize);
+	auto font = ResourceManager::GetInstance().LoadFont(Settings::FontPath, Settings::TitleFontSize);
 	const auto textComponent = std::make_shared<TextComponent>("Programming 4 Assignment", font);
 	titleObj->AddComponent(textComponent);
 	titleObj->SetPosition(80, 20);
 
-	auto fontFPS = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::FPSFontSize);
+	auto fontFPS = ResourceManager::GetInstance().LoadFont(Settings::FontPath, Settings::FPSFontSize);
 	auto fpsCounter = std::make_shared<FPSCalcComponent>();
 	fpsObj->AddComponent(fpsCounter);
 	const auto fpsText = std::make_shared<TextComponent>(fpsCounter, fontFPS);
@@ -297,7 +297,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	fpsObj->AddComponent(fpsText);
 
 	//points pacman
-	auto fontPointsPacMan = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::LivesAndPointsFontSize);
+	auto fontPointsPacMan = ResourceManager::GetInstance().LoadFont(Settings::FontPath, Settings::LivesAndPointsFontSize);
 	const auto pPointsModel = PointsModel::GetInstance();
 
 	auto tpointsPacman = [](std::shared_ptr<PointsModel> x) {return x->GetScoreText(); };
@@ -458,7 +458,7 @@ void SceneFactory::LoadMainMenuScene()
 	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<HallOfFameCommand>());
 	kih.AddCommand(SDL_SCANCODE_F10, singlePlayerCommand);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::TitleFontSize);
+	auto font = ResourceManager::GetInstance().LoadFont(Settings::FontPath, Settings::TitleFontSize);
 
 	const auto background = TextureComponent::Create(m_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
@@ -504,7 +504,7 @@ void SceneFactory::LoadHighScoreScene()
 	const auto highScoresObj = GameObject::Create();
 	highScoresObj->SetPosition(230.f, 20.f);
 
-	auto fontHighScore = ResourceManager::GetInstance().LoadFont("Lingua.otf", Settings::HighScoreFontSize);
+	auto fontHighScore = ResourceManager::GetInstance().LoadFont(Settings::FontPath, Settings::HighScoreFontSize);
 	highScoresObj->AddComponent(HighScoresComponent::Create(model, fontHighScore));
 	pScene->Add(highScoresObj);
 
