@@ -15,20 +15,20 @@ void TextureManager::LoadTextures()
 {
 	auto& rm = dae::ResourceManager::GetInstance();
 
-	m_Textures[Textures::BackgroundTexture] = rm.LoadTexture("../Data/background.png");
-	m_Textures[Textures::LogoTexture] = rm.LoadTexture("../Data/logo.png");
-	m_Textures[Textures::BoostTexture] = rm.LoadTexture("../Data/boost.png");
-	m_Textures[Textures::PillTexture] = rm.LoadTexture("../Data/pill.png");
-	m_Textures[Textures::PathTexture] = rm.LoadTexture("../Data/path.png");
-	m_Textures[Textures::WallTexture] = rm.LoadTexture("../Data/wall.png");
-	m_Textures[Textures::PacmanTexture] = rm.LoadTexture("../Data/pacman.png");
-	m_Textures[Textures::MrsPacmanTexture] = rm.LoadTexture("../Data/mspacman.png");
-	m_Textures[Textures::BlinkyTexture] = rm.LoadTexture("../Data/ghost1.png");
-	m_Textures[Textures::InkyTexture] = rm.LoadTexture("../Data/ghost2.png");
-	m_Textures[Textures::ClydeTexture] = rm.LoadTexture("../Data/ghost3.png");
-	m_Textures[Textures::PinkyTexture] = rm.LoadTexture("../Data/ghost-pink.png");
-	m_Textures[Textures::ScaredGhostTexture] = rm.LoadTexture("../Data/scaredghost.png");
-	m_Textures[Textures::EyesTexture] = rm.LoadTexture("../Data/eyes.png");
-	m_Textures[Textures::FruitTexture] = rm.LoadTexture("../Data/fruit.png");
+	m_Textures[Textures::BackgroundTexture] = rm.LoadTexture("background.png");
+	m_Textures[Textures::LogoTexture] = rm.LoadTexture("logo.png");
+	m_Textures[Textures::BoostTexture] = rm.LoadTexture("boost.png");
+	m_Textures[Textures::PillTexture] = rm.LoadTexture("pill.png");
+	m_Textures[Textures::PathTexture] = rm.LoadTexture("path.png");
+	m_Textures[Textures::WallTexture] = rm.LoadTexture("wall.png");
+	m_Textures[Textures::PacmanTexture] = rm.LoadTexture("pacman.png");
+	m_Textures[Textures::MrsPacmanTexture] = rm.LoadTexture("mspacman.png");
+	m_Textures[Textures::BlinkyTexture] = rm.LoadTexture("ghost1.png");
+	m_Textures[Textures::InkyTexture] = rm.LoadTexture("ghost2.png");
+	m_Textures[Textures::ClydeTexture] = rm.LoadTexture("ghost3.png");
+	m_Textures[Textures::PinkyTexture] = rm.LoadTexture("ghost-pink.png");
+	m_Textures[Textures::ScaredGhostTexture] = rm.LoadTexture("scaredghost.png");
+	m_Textures[Textures::EyesTexture] = rm.LoadTexture("eyes.png");
+	m_Textures[Textures::FruitTexture] = rm.LoadTexture("fruit.png");
 
 }

@@ -16,3 +16,46 @@ Minigin is, despite perhaps the suggestion in its name, not a game engine. It is
 # Use
 
 Download the latest release of this project and compile/run in visual studio. Since students need to have their work on github too, they can use this repository as a template.
+
+# Extensions I made to the engine
+
+I added: 
+- Components 
+- Commands
+- GameObjects
+- Event queue
+- Observers
+- State
+
+# Design goals
+
+I strived for maximum reusability of the added components. Therefore, there are a lot of small components that do a small task, but can be combined to build complex behavior without the need of adding new classes or even changing existing classes.
+
+For instance, in the Pacman game, there is a bonus pickup that appears at some point and stays on the screen for a few seconds. When on visible, collisions between pacman and the fruit pickup should be detected. This can be accomplished by first building a CompositeComponent that holds the fruit's behavior when it's active: 
+
+```
+	//... when active
+	auto activeFruitComp = CompositeComponent::Create();
+	activeFruitComp->Add(TextureComponent::Create(m_pTextureManager->GetTexture(Textures::FruitTexture)));
+	auto collComp = CollisionComponent::Create(EventType::FRUIT_PICKUP, false, false, Settings::CollisionTolerance);
+	collComp->AddWatchedObject(pacmanObj);
+	activeFruitComp->Add(collComp);
+
+```
+
+This CompositeComponent holds a standard TextureComponent that will render the fruit and a standard CollisionComponent that will fire the FRUIT_PICKUP event when the watched object (pacmanObj) comes too close.
+
+When the fruit bonus is not active, it should not show on screen and should not detect collisions. In fact, it shouldn't do anything. At that moment, an 'empty' component (delivered by BaseComponent::Empty()) should be active.
+
+The active state and the inactive (empty) state can be used to build a StateComponent, that will switch states when certain Events are received:
+
+```
+	//Combine in StateComp
+	auto fruitStateComp = StateComponent::Create();
+	fruitStateComp->Set(EventType::DISABLE_FRUIT, BaseComponent::Empty()); //nothing to show
+	fruitStateComp->Set(EventType::ENABLE_FRUIT, activeFruitComp);
+	fruitStateComp->Set(EventType::FRUIT_PICKUP, BaseComponent::Empty());
+
+```
+
+This sets up a 'mini' state machine that will switch to desired state when Events are received.

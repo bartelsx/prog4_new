@@ -6,6 +6,8 @@
 #endif
 
 #include <SDL.h>
+#include <SDL_syswm.h>
+
 
 #include "Minigin.h"
 #include "SceneManager.h"
@@ -34,6 +36,7 @@ void Load()
 
 	//Load first scene
 	SceneFactory::GetInstance().LoadMainMenuScene();
+
 
 
 	//Instructions
