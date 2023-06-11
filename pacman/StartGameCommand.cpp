@@ -4,11 +4,12 @@
 #include "KeyboardInputHandler.h"
 #include "ControllerInputHandler.h"
 #include "SceneFactory.h"
-#include "SceneId.h"
 #include "SceneManager.h"
+#include "Settings.h"
 
-dae::StartGameCommand::StartGameCommand(GameMode gameMode)
+dae::StartGameCommand::StartGameCommand(GameMode gameMode, int level)
 	: m_GameMode(gameMode)
+	, m_Level(level)
 {}
 
 void dae::StartGameCommand::Execute()
@@ -16,7 +17,7 @@ void dae::StartGameCommand::Execute()
 	KeyboardInputHandler::GetInstance().Clear();
 	ControllerInputHandler::GetInstance().Clear();
 	SceneManager::GetInstance().Clear();
-	SceneFactory::GetInstance().LoadGameScene(m_GameMode);
+	SceneFactory::GetInstance().LoadGameScene(m_GameMode, m_Level);
 	EventManager::Publish(EventType::GAME_START);
 }
 

@@ -27,6 +27,9 @@ namespace dae
 		GameBoardModel& operator=(const GameBoardModel& other) = delete;
 		GameBoardModel& operator=(GameBoardModel&& other) = delete;
 
+		void Load(const int level);
+		int GetLevel() const;
+
 		void ReadJsonFile(const std::string& filename);
 		int GetIdx(int col, int row) const;
 		int GetIdx(const glm::vec2 location, bool applyCenterOffset) const;
@@ -82,10 +85,12 @@ namespace dae
 		int m_Columns{};
 		int m_Rows{};
 		int m_PillCount{};
+		int m_CurrentLevel{0};
 		
 		std::vector<glm::vec2> m_GhostSpawnLocations{};
 		glm::vec2 m_PacmanSpawnLocation{};
 		std::vector <int> m_Teleports{};
 		
 	};
+
 }

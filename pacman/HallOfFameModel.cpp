@@ -34,6 +34,11 @@ void HallOfFameModel::Add(const std::string& text, const int score)
 	EventManager::Publish(EventType::HIGHSCORES_CHANGED);
 }
 
+bool HallOfFameModel::CanEnterHallOfFame(int points) const
+{
+	return (m_Data.size() < 20) || (m_Data[19]->Score <= points);
+}
+
 HallOfFameModel::HallOfFameModel(const std::shared_ptr<HallOfFameRepository>& pRepository)
 	: m_pRepository(pRepository)
 {}

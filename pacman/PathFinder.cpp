@@ -145,7 +145,6 @@ std::vector<int> PathFinder::FindPath(int startCellId, int targetCellId, std::in
 		delete cell;
 	}
 	// No path found
-	std::cout << "No path found!" << std::endl;
 	return std::vector<int>();
 }
 

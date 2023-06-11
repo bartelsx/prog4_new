@@ -1,6 +1,7 @@
 #pragma once
 #include <xstring>
 #include "BaseComponent.h"
+#include "Settings.h"
 #include "TextComponent.h"
 
 namespace dae
@@ -26,10 +27,10 @@ namespace dae
 		void HandleEvent(const Event& event) override;
 
 		int m_Points{};
-		int m_Lives{ 3 };
+		int m_Lives{ Settings::PacmanLives};
 
 
 		int m_ScoreIdx{ 0 };
-		inline static constexpr int m_KillEnemyScores[] =  {200,400,800,1600} ;
+		
 	};
 }

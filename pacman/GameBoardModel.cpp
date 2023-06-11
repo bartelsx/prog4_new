@@ -3,7 +3,7 @@
 #include <iostream>
 #include <glm/vec2.hpp>
 #include <rapidjson/document.h>
-#include "TextureComponent.h"
+#include "Settings.h"
 
 using namespace dae;
 
@@ -65,7 +65,7 @@ void GameBoardModel::ChangeTileValue(glm::vec2 position, TileValue newValue)
 		--m_PillCount;
 		if (m_PillCount <= 0)
 		{
-			EventManager::Publish(EventType::GAME_OVER); //TODO: should become LEVEL_COMPLETE
+			EventManager::Publish(EventType::LEVEL_COMPLETE); 
 		}
 	}
 	m_Grid[idx] = int(newValue);
@@ -111,6 +111,17 @@ std::vector<int> GameBoardModel::GetAdjacentAccessibleCells(int cellId) const
 	return result;
 }
 
+void GameBoardModel::Load(const int level)
+{
+	LoadFromJsonFile(level == 0 ? Settings::Level1Map : level == 1 ? Settings::Level2Map : Settings::Level3Map);
+	m_CurrentLevel = level;
+}
+
+int GameBoardModel::GetLevel() const
+{
+	return m_CurrentLevel;
+}
+
 void GameBoardModel::ReadJsonFile(const std::string& filename)
 {
 	std::ifstream ifs(filename);
@@ -135,15 +146,13 @@ void GameBoardModel::ReadJsonFile(const std::string& filename)
 	const rapidjson::Value& grid = doc["grid"];
 
 	// Print the values
-	//std::cout << "Width: " << m_Width << std::endl;
-	//std::cout << "Height: " << m_Height << std::endl;
-	//std::cout << "Grid:" << std::endl;
+	
 	for (rapidjson::SizeType i = 0; i < grid.Size(); i++) {
 		for (rapidjson::SizeType j = 0; j < grid[i].Size(); j++) {
 			//std::cout << grid[i][j].GetInt() << " ";
 			m_Grid.emplace_back(grid[i][j].GetInt());
 		}
-		//std::cout << std::endl;
+		
 	}
 }
 

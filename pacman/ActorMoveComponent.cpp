@@ -29,7 +29,6 @@ void ActorMoveComponent::Update(float deltaTime)
 	{
 		auto teleportedCell = m_pBoardModel->GetPairedTeleport(newCellIdx);
 		pOwner->SetPosition(m_pBoardModel->GetOffset(teleportedCell));
-		std::cout << "Teleported from " << newCellIdx << " to " << teleportedCell << "\n";
 		return;
 	}
 

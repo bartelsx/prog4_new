@@ -1,5 +1,7 @@
 #include "SceneFactory.h"
 
+#include <fstream>
+
 #include "ActorMoveComponent.h"
 #include "CollisionComponent.h"
 #include "CompositeComponent.h"
@@ -18,6 +20,8 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "SequentialBehavior.h"
+#include "ServiceLocator.h"
+#include "Sound.h"
 #include "SoundPlayer.h"
 #include "StartGameCommand.h"
 #include "StateComponent.h"
@@ -28,7 +32,6 @@
 #include "GoToComponent.h"
 #include "HallOfFameModel.h"
 #include "HighScoresComponent.h"
-#include "Settings.h"
 #include "TimerComponent.h"
 #include "TriggerComponent.h"
 
@@ -159,7 +162,7 @@ std::shared_ptr<GameObject> SceneFactory::BuildGhost(
 }
 
 
-void SceneFactory::LoadGameScene(GameMode gameMode, int level)
+void SceneFactory::LoadGameScene(GameMode gameMode)
 {
 	const auto pScene = &SceneManager::GetInstance().CreateScene("Game Board");
 
@@ -180,7 +183,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	auto& cih = ControllerInputHandler::GetInstance();
 
 	const auto pBoardModel = GameBoardModel::Create();
-	pBoardModel->Load(level);
+	pBoardModel->LoadFromJsonFile("../Data/level.json");
 
 	const auto pBoardComp = std::make_shared<GameBoardComponent>(pBoardModel, _pTextureManager);
 	mapObj->AddComponent(pBoardComp);
@@ -260,8 +263,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<MainMenuCommand>());
 	auto gotoHallOfFameCommand = std::make_shared<HallOfFameCommand>();
 	kih.AddCommand(SDL_SCANCODE_F10, gotoHallOfFameCommand);
-	auto startNextLevelCommand = std::make_shared<StartGameCommand>(gameMode, (level+1) % Settings::NumberOfLevels);
-	kih.AddCommand(SDL_SCANCODE_F8, startNextLevelCommand);
 
 	//  Keyboard bindings Pacman
 	kih.AddCommand(SDL_SCANCODE_W, pMoveUpCommandPacman);
@@ -373,7 +374,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode, int level)
 	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
 	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::GAME_OVER, EventType::CLOSE_SCENE_REQUEST, 3.f));
 	gameplayObj->AddComponent(TriggerComponent::Create(EventType::CLOSE_SCENE_REQUEST, gotoHallOfFameCommand));
-	gameplayObj->AddComponent(TriggerComponent::Create(EventType::LEVEL_COMPLETE, startNextLevelCommand));
 
 	pScene->Add(backgroundObj);
 	pScene->Add(titleObj);
@@ -417,10 +417,14 @@ void SceneFactory::LoadMainMenuScene()
 	auto SinglePlayerObj{ GameObject::Create() };
 	auto CoopObj{ GameObject::Create() };
 	auto VersusObj{ GameObject::Create() };
+<<<<<<< Updated upstream
+=======
 
-	std::shared_ptr<Command> singlePlayerCommand = std::make_shared<StartGameCommand>(GameMode::SinglePlayer, 0);
-	std::shared_ptr<Command> coopCommand = std::make_shared<StartGameCommand>(GameMode::Coop, 0);
-	std::shared_ptr<Command> versusCommand = std::make_shared<StartGameCommand>(GameMode::Versus, 0);
+>>>>>>> Stashed changes
+
+	std::shared_ptr<Command> singlePlayerCommand = std::make_shared<StartGameCommand>(GameMode::SinglePlayer);
+	std::shared_ptr<Command> coopCommand = std::make_shared<StartGameCommand>(GameMode::Coop);
+	std::shared_ptr<Command> versusCommand = std::make_shared<StartGameCommand>(GameMode::Versus);
 
 	kih.AddCommand(SDL_SCANCODE_F5, singlePlayerCommand);
 	kih.AddCommand(SDL_SCANCODE_F6, coopCommand);
@@ -431,7 +435,7 @@ void SceneFactory::LoadMainMenuScene()
 	kih.AddCommand(SDL_SCANCODE_F10, singlePlayerCommand);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
+	
 	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 
@@ -447,6 +451,11 @@ void SceneFactory::LoadMainMenuScene()
 	VersusObj->AddComponent(textComponentVersus);
 	VersusObj->SetPosition(330, 340);
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 	pScene->Add(backgroundObj);
 	pScene->Add(SinglePlayerObj);
 	pScene->Add(CoopObj);
@@ -460,7 +469,7 @@ void SceneFactory::LoadHighScoreScene()
 
 	const auto& kih = KeyboardInputHandler::GetInstance();
 
-	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<StartGameCommand>(GameMode::SinglePlayer, 0));
+	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<StartGameCommand>(GameMode::SinglePlayer));
 	kih.AddCommand(SDL_SCANCODE_F10, std::make_shared<MainMenuCommand>());
 
 	auto backgroundObj{ GameObject::Create() };
@@ -480,12 +489,17 @@ void SceneFactory::LoadHighScoreScene()
 	highScoresObj->AddComponent(HighScoresComponent::Create(model, fontHighScore));
 	pScene->Add(highScoresObj);
 
+<<<<<<< Updated upstream
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);
+	GoodJobObj->AddComponent(textComponentGoodJob);
+	GoodJobObj->SetPosition(170, 660);
+=======
 	if (model->CanEnterHallOfFame(PointsModel::GetInstance()->GetScore()))
 	{
 		auto GoodJobObj{ GameObject::Create() };
 		auto EnterbObj{ GameObject::Create() };
 		auto editorObj = GameObject::Create();
-
 
 		auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 		const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);
@@ -495,6 +509,7 @@ void SceneFactory::LoadHighScoreScene()
 		const auto textComponentEnter = std::make_shared<dae::TextComponent>("Enter your name: ", font);
 		EnterbObj->AddComponent(textComponentEnter);
 		EnterbObj->SetPosition(50, 700);
+>>>>>>> Stashed changes
 
 		auto textProcessor = HallOfFameTextProcessor::Create(model);
 

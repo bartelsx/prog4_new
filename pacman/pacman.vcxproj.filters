@@ -57,9 +57,6 @@
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActorComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="GhostMoveBehavior.cpp">
       <Filter>Source Files\Ghosts</Filter>
     </ClCompile>

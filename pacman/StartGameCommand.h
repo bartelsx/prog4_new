@@ -3,6 +3,8 @@
 
 namespace dae
 {
+	class GameBoardModel;
+
 	enum GameMode
 	{
 		SinglePlayer,
@@ -14,16 +16,18 @@ namespace dae
 		public Command
 	{
 	public:
-		StartGameCommand(GameMode gameMode);
+		StartGameCommand(GameMode gameMode, int level);
 		~StartGameCommand() override = default;
 		StartGameCommand(const StartGameCommand& other) = delete;
 		StartGameCommand(StartGameCommand&& other) = delete;
 		StartGameCommand& operator=(const StartGameCommand& other) = delete;
 		StartGameCommand& operator=(StartGameCommand&& other) = delete;
+
 		void Execute() override;
 		void Release() override;
 	private:
-		GameMode m_GameMode;
+		const GameMode m_GameMode;
+		int m_Level;
 	};
 
 	class MainMenuCommand : public Command
@@ -53,5 +57,6 @@ namespace dae
 		void Execute() override;
 		void Release() override {};
 	};
+
 }
 

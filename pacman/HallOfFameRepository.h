@@ -22,6 +22,13 @@ namespace dae
 	class HallOfFameRepository
 	{
 	public:
+		HallOfFameRepository() = default;
+		virtual ~HallOfFameRepository() = default;
+		HallOfFameRepository(const HallOfFameRepository& other) = delete;
+		HallOfFameRepository(HallOfFameRepository&& other) = delete;
+		HallOfFameRepository& operator=(const HallOfFameRepository& other) = delete;
+		HallOfFameRepository& operator=(HallOfFameRepository&& other) = delete;
+
 		virtual std::vector<std::shared_ptr<HallOfFameEntry>> Read() = 0;
 		virtual void Write(const std::vector<std::shared_ptr<HallOfFameEntry>>& entries) = 0;
 	};
@@ -30,10 +37,7 @@ namespace dae
 	{
 	public:
 		HallOfFameTextFileRepository() = default;
-		~HallOfFameTextFileRepository()
-		{
-			std::cout << "hall of fame destructed\n";
-		};
+		~HallOfFameTextFileRepository() override = default;
 		HallOfFameTextFileRepository(const HallOfFameTextFileRepository& other) = delete;
 		HallOfFameTextFileRepository(HallOfFameTextFileRepository&& other) = delete;
 		HallOfFameTextFileRepository& operator=(const HallOfFameTextFileRepository& other) = delete;

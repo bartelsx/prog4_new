@@ -50,7 +50,6 @@ int NextToPacmanSelector::GetTarget(const int pacmanIdx, const std::shared_ptr<G
 
 		if (pBoardModel->IsTileAccessible(col, row))
 		{
-			//std::cout << "GetTarget selected (" << col << ", " << row << "), pacmanLoc = (" << pacmanCR.x << ", " << pacmanCR.y << ")\n";
 			return pBoardModel->GetIdx(col, row);
 		}
     }

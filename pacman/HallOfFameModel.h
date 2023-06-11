@@ -17,8 +17,10 @@ namespace dae
 
 		static std::shared_ptr<HallOfFameModel> Create(const std::shared_ptr<HallOfFameRepository>& pRepository);
 
-		std::vector<std::shared_ptr<HallOfFameEntry>> GetData() ;
+		std::vector<std::shared_ptr<HallOfFameEntry>> GetData();
 		void Add(const std::string& text, const int score);
+
+		bool CanEnterHallOfFame(int points) const;
 
 	private:
 		HallOfFameModel(const std::shared_ptr<HallOfFameRepository>& pRepository);

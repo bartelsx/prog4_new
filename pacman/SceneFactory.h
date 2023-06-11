@@ -17,7 +17,7 @@ public:
 		const std::shared_ptr<dae::GameBoardModel>& pBoardModel,
 		const std::shared_ptr<dae::ActorMoveComponent>& pMoveComponent = nullptr) const;
 
-	void LoadGameScene(dae::GameMode gameMode);
+	void LoadGameScene(dae::GameMode gameMode, int level);
 	void LoadMainMenuScene();
 	void LoadHighScoreScene();
 private:

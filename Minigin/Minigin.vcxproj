@@ -191,7 +191,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\SDL2_mixer\include\SDL_mixer.h" />
-    <ClInclude Include="Achievement.h" />
     <ClInclude Include="AudioClip.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CollisionComponent.h" />

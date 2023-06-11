@@ -117,9 +117,6 @@
     <ClInclude Include="Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Achievement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SoundSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
