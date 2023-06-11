@@ -58,7 +58,6 @@ namespace dae
 		}
 		void Play(const Sound_id id, const float volume) override {
 			_real_ss->Play(id, volume);
-			//std::cout << "playing " << id << " at volume " << volume << std::endl;
 		}
 	};
 

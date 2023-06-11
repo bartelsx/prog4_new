@@ -96,7 +96,6 @@ public:
 		float normalizedLY = LY / magnitude;
 		auto direction = glm::vec2{ normalizedLX,normalizedLY };
 
-		//std::cout << " Y " << LY << std::endl;
 		float normalizedMagnitude = 0;
 
 		//check if the controller is outside a circular dead zone

@@ -66,9 +66,6 @@
     <ClCompile Include="StartGameCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameOverComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ChasePacmanBehavior.cpp">
       <Filter>Source Files\Ghosts</Filter>
     </ClCompile>
@@ -98,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="HallOfFameRepository.cpp">
       <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="EditBoxComponent.cpp">
-      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="PointsModel.cpp">
       <Filter>Source Files\Model</Filter>

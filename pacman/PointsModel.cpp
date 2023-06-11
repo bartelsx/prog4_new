@@ -69,3 +69,8 @@ std::shared_ptr<PointsModel> PointsModel::Create()
 	EventManager::Subscribe(EventType::ENEMY_DIED, ptr);
 	return ptr;
 }
+
+PointsModel::PointsModel()
+{
+	m_Lives = Settings::PacmanLives;
+}
