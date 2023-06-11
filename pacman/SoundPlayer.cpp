@@ -1,6 +1,7 @@
 #include "SoundPlayer.h"
 #include "EventType.h"
 #include "ServiceLocator.h"
+#include "Settings.h"
 #include "Sound.h"
 
 using namespace dae;
@@ -23,19 +24,19 @@ void SoundPlayer::HandleEvent(const Event& event)
 	switch (event.GetType())
 	{
 	case EventType::GAME_START:
-		Play(Sound::BEGINNING, .5f);
+		Play(Sound::BEGINNING, Settings::SoundVolume);
 		break;
 	case EventType::PILL_PICKUP:
-		Play(Sound::PACMAN_CHOMP, .5f);
+		Play(Sound::PACMAN_CHOMP, Settings::SoundVolume);
 		break;
 	case EventType::BOOST_PICKUP:
-		Play(Sound::PACMAN_POWERUP, .5f);
+		Play(Sound::PACMAN_POWERUP, Settings::SoundVolume);
 		break;
 	case EventType::ACTOR_DIED:
-		Play(Sound::DEATH, .5f);
+		Play(Sound::DEATH, Settings::SoundVolume);
 		break;
 	case EventType::ENEMY_DIED:
-		Play(Sound::EATGHOST, .5f);
+		Play(Sound::EATGHOST, Settings::SoundVolume);
 		break;
 	}
 }

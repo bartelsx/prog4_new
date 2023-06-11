@@ -518,7 +518,7 @@ void SceneFactory::LoadHighScoreScene()
 		auto font = ResourceManager::GetInstance().LoadFont(Settings::FontPath, Settings::TitleFontSize);
 		const auto yourScoreComp = std::make_shared<dae::TextComponent>("Your score : " + std::to_string(PointsModel::GetInstance()->GetScore()), font);
 		yourScoreObj->AddComponent(yourScoreComp);
-		yourScoreObj->SetPosition(170, 600);
+		yourScoreObj->SetPosition(370, 600);
 
 		const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);
 		goodJobObj->AddComponent(textComponentGoodJob);

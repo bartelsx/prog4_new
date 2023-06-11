@@ -15,12 +15,8 @@
 #include "SceneFactory.h"
 #include "SceneId.h"
 #include "ServiceLocator.h"
+#include "Settings.h"
 #include "Sound.h"
-
-#define APP_WIDTH (1024)
-#define APP_HEIGHT (768)
-
-
 
 using namespace dae;
 
@@ -68,7 +64,7 @@ void Load()
 // 1 wall  2 pickupsmall   3 powerup    4 empty tile     5 gate      6 spawn ghost      7 spawn pacman
 
 int main(int, char* []) {
-	Minigin engine("Pacman", APP_WIDTH, APP_HEIGHT, "../Data/");
+	Minigin engine("Pacman", Settings::AppWidth, Settings::AppHeight, "../Data/");
 	engine.Run(Load);
 	return 0;
 }

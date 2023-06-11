@@ -37,5 +37,6 @@ namespace dae
 		inline static constexpr unsigned FPSFontSize{18};
 		inline static constexpr unsigned LivesAndPointsFontSize{18};
 		inline static constexpr unsigned HighScoreFontSize{20};
+		inline static constexpr float SoundVolume{.5f};
 	};
 }
