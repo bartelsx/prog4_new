@@ -4,6 +4,7 @@ jaak:7400
 jaak:6790
 jaak:6460
 jaak:5330
+jaak:4940
 haha:4470
 jaak:2304
 nena:2222

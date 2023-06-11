@@ -508,19 +508,23 @@ void SceneFactory::LoadHighScoreScene()
 
 	if (model->CanEnterHallOfFame(PointsModel::GetInstance()->GetScore()))
 	{
-		auto GoodJobObj{ GameObject::Create() };
-		auto EnterbObj{ GameObject::Create() };
+		auto yourScoreObj{ GameObject::Create() };
+		auto goodJobObj{ GameObject::Create() };
+		auto enterbObj{ GameObject::Create() };
 		auto editorObj = GameObject::Create();
 
-
 		auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+		const auto yourScoreComp = std::make_shared<dae::TextComponent>("Your score : " + std::to_string(PointsModel::GetInstance()->GetScore()), font);
+		yourScoreObj->AddComponent(yourScoreComp);
+		yourScoreObj->SetPosition(170, 600);
+
 		const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);
-		GoodJobObj->AddComponent(textComponentGoodJob);
-		GoodJobObj->SetPosition(170, 660);
+		goodJobObj->AddComponent(textComponentGoodJob);
+		goodJobObj->SetPosition(170, 660);
 
 		const auto textComponentEnter = std::make_shared<dae::TextComponent>("Enter your name: ", font);
-		EnterbObj->AddComponent(textComponentEnter);
-		EnterbObj->SetPosition(50, 700);
+		enterbObj->AddComponent(textComponentEnter);
+		enterbObj->SetPosition(50, 700);
 
 		auto textProcessor = HallOfFameTextProcessor::Create(model);
 
@@ -531,8 +535,9 @@ void SceneFactory::LoadHighScoreScene()
 		auto pTextCommand = std::make_shared<TextCommand>(editor);
 		kih.SetTextInputCommand(pTextCommand);
 
-		pScene->Add(GoodJobObj);
-		pScene->Add(EnterbObj);
+		pScene->Add(goodJobObj);
+		pScene->Add(yourScoreObj);
+		pScene->Add(enterbObj);
 		pScene->Add(editorObj);
 	}
 }
