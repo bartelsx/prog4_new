@@ -31,9 +31,11 @@ I added:
 
 I strived for maximum reusability of the added components. Therefore, there are a lot of small components that do a small task, but can be combined to build complex behavior without the need of adding new classes or even changing existing classes.
 
-For instance, in the Pacman game, there is a bonus pickup that appears at some point and stays on the screen for a few seconds. When on visible, collisions between pacman and the fruit pickup should be detected. This can be accomplished by first building a CompositeComponent that holds the fruit's behavior when it's active: 
+Hence, the _augmented reusability_ is realized by prefering _composition over inheritance_.
 
-```
+For instance, in the Pacman game, there is a bonus pickup that appears at some point and stays on the screen for a few seconds. When visible, collisions between pacman and the fruit pickup should be detected. This can be accomplished by first building a CompositeComponent that holds the fruit's behavior when it's active: 
+
+```cpp
 	//... when active
 	auto activeFruitComp = CompositeComponent::Create();
 	activeFruitComp->Add(TextureComponent::Create(m_pTextureManager->GetTexture(Textures::FruitTexture)));
@@ -49,7 +51,7 @@ When the fruit bonus is not active, it should not show on screen and should not 
 
 The active state and the inactive (empty) state can be used to build a StateComponent, that will switch states when certain Events are received:
 
-```
+```cpp
 	//Combine in StateComp
 	auto fruitStateComp = StateComponent::Create();
 	fruitStateComp->Set(EventType::DISABLE_FRUIT, BaseComponent::Empty()); //nothing to show
@@ -59,3 +61,86 @@ The active state and the inactive (empty) state can be used to build a StateComp
 ```
 
 This sets up a 'mini' state machine that will switch to desired state when Events are received.
+
+# Some important classes in (this extended version of) Minigin
+
+## GameObject
+
+This is the basis for each (independent) element on the scene. A GameObject has a location, calculates transformations and can be part of an hierarchy by adding child GameObjects. 
+
+GameObjects can hold other GameObjects that are positioned relative to their parent.
+
+GameObjects can also hold Components that help in the Update() and Render() cycles and thus determine the behavior of the GameObject.
+
+The GameObject is final, so other objects can't inherit from GameObject. Different behavior can be accomplished by adding different components to a GameObject.
+
+## BaseComponent
+
+This is a base class for other Component implementations.
+
+Components help in the Update() and Render() cycle and can, when correctly combined, give relatively complex behavior to GameObjects.
+
+All components hold a (shared) pointer to the GameObject that owns them.
+
+## StateComponent
+
+As described above, this class switches the active Component when it receives an Event. The Update() and Render() calls are only relayed to the active component. The non-active components do not receive those calls
+
+## Collision component
+
+The collision component will detect a collision between its owner (a GameObject) and one of its 'watched' objects. When the two object collide, a given Event will be fired.
+
+## Texture component
+
+The TextureComponent will render a given Texture at the location of its owner.
+
+## DelayedEventComponent
+
+The DelayedEventComponent will listen (being an Observer) for a given Event, and will then publish another event after a configured delay.
+
+## MoveComponent
+
+Given a speed and direction, the MoveComponent will calculate the next position of its owner in each Update() cycle.
+
+## TextComponent
+
+The TextComponent renders text on the Scene. Text, Font and Color can be set.
+
+## GoToComponent
+
+The GoToComponent immediately changes the position of its owner, not taking speed or direction into account. (e.g. in Pacman, the ghost revert to their spawn location each time pacman is hit)
+
+## EditBoxComponent
+
+EditBoxComponent allows the user to type some text (e.g. the users name for highscore list)
+
+## TriggerComponent
+
+The TriggerComponent will Execute() a command when a given Event is published.
+
+## Command
+
+The command is a baseclass for other commands. Each command has an Execute() and a Release() method, typically executed when a key is pressed (Execute) or released (Release).
+
+But Commands are also used to bind Controller buttons or thumb sticks to certain actions.
+
+A command can be considered the Object Oriented Equivalent of a callback function.
+
+## MoveCommand
+
+The MoveCommand will set the speed and direction of the MoveComponent it is bound to, when a key is pressed or a controller input is received.
+
+## ControllerInputHandler and KeyboardInputHandler
+
+These classes (Singleton) can be used to bind Keyboard events or Controller events to Commands.
+
+## EventManager / Event / EventWithPayload<T>
+
+The EventManager holds a queue of events that will be Processed after the current Update() and Render() cycles. Events can be published from anywhere in the code by use of one of the Publish overloads.
+
+Events can cary some data (see the templated EventWithPayload class), e.g. a pointer to the owning GameObject of the Component that Published the event.
+
+## SoundSystem
+
+The SoundSystem class can play AudioClips on a separate Thread.
+
