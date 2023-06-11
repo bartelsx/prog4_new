@@ -21,5 +21,6 @@ namespace dae
 		inline const static TEventType WAKE_UP = 13;
 		inline const static TEventType LEVEL_COMPLETE = 14;
 		inline const static TEventType HIGHSCORES_CHANGED = 15;
+		inline const static TEventType CLOSE_SCENE_REQUEST = 16;
 	};
 }

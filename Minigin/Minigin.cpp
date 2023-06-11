@@ -120,6 +120,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag = 0;
 		renderer.Render();
 
+		EventManager::GetInstance().ProcessQueue();
+
 		const auto sleepTime = currentTime + std::chrono::milliseconds(frameTimeMs) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleepTime);
 	}

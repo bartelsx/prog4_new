@@ -33,6 +33,6 @@ namespace dae
 		TEventType m_TimedEvent;
 		float m_Delay;
 		float m_CountDown{};
-		std::unique_ptr<Event> m_pEventToPublish{};
+		std::shared_ptr<Event> m_pEventToPublish{};
 	};
 }

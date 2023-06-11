@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
 
-
 namespace dae
 {
 	class TimerComponent : public BaseComponent

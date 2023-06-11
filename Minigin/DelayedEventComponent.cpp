@@ -15,7 +15,7 @@ void DelayedEventComponent::HandleEvent(const Event& event)
 	{
 		m_CountDown += m_Delay;
 
-		m_pEventToPublish = std::unique_ptr<Event>(event.Clone());
+		m_pEventToPublish = std::shared_ptr<Event>(event.Clone());
 		m_pEventToPublish->SetType(m_TimedEvent);
 	}
 }
@@ -28,7 +28,7 @@ void DelayedEventComponent::Update(float deltaTime)
 
 		if (m_CountDown <= 0.f)
 		{
-			EventManager::Publish(*std::move(m_pEventToPublish));
+			EventManager::Publish(m_pEventToPublish);
 		}
 	}
 }

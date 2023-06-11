@@ -33,6 +33,7 @@
 #include "HallOfFameModel.h"
 #include "HighScoresComponent.h"
 #include "TimerComponent.h"
+#include "TriggerComponent.h"
 
 using namespace dae;
 
@@ -206,7 +207,6 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	pacmanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
 	//Bind Pacman controls
-	//  Joystick
 	int requieredControllers{ gameMode == GameMode::SinglePlayer ? 1 : 2 };
 	if (ControllerInputHandler::GetInstance().GetNumberOfControllers() >= requieredControllers )
 	{
@@ -242,10 +242,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 		pacWomanObj->AddComponent(TextureComponent::Create(_pTextureManager->GetTexture(Textures::MrsPacmanTexture)));
 		pacWomanComp->SetSpawnLocation(pBoardModel->GetPlayerSpawnLocation());
 
-
-		//Bind Pacman controls
-		//  Joystick
-
+		//Bind controls
 		if (cih.GetNumberOfControllers() > 0)
 		{
 			int pacWomanControllerId = cih.GetControllerID(cih.GetNumberOfControllers() - 1);
@@ -264,7 +261,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	// General keyboard bindings and commands for this scene
 	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<MainMenuCommand>());
-	kih.AddCommand(SDL_SCANCODE_F10, std::make_shared<HallOfFameCommand>());
+	auto gotoHallOfFameCommand = std::make_shared<HallOfFameCommand>();
+	kih.AddCommand(SDL_SCANCODE_F10, gotoHallOfFameCommand);
 
 	//  Keyboard bindings Pacman
 	kih.AddCommand(SDL_SCANCODE_W, pMoveUpCommandPacman);
@@ -374,6 +372,8 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 
 	//Timers
 	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::BOOST_PICKUP, EventType::END_BOOST, 10.f));
+	gameplayObj->AddComponent(DelayedEventComponent::Create(EventType::GAME_OVER, EventType::CLOSE_SCENE_REQUEST, 3.f));
+	gameplayObj->AddComponent(TriggerComponent::Create(EventType::CLOSE_SCENE_REQUEST, gotoHallOfFameCommand));
 
 	pScene->Add(backgroundObj);
 	pScene->Add(titleObj);
@@ -405,61 +405,7 @@ void SceneFactory::LoadGameScene(GameMode gameMode)
 	pScene->Add(livesGhostObj);
 	pScene->Add(gameplayObj);
 	pScene->Add(gameOverObj);
-
 }
-
-std::vector<std::string> readFile(const std::string& filename) {
-	std::vector<std::string> data;
-	std::ifstream file(filename);
-
-	if (file.is_open()) {
-		std::string line;
-		while (std::getline(file, line)) {
-			size_t separatorPos = line.find(':');
-			if (separatorPos != std::string::npos) {
-				std::string name = line.substr(0, separatorPos);
-				std::string points = line.substr(separatorPos + 1);
-				std::string entry = name + ": " + points;
-				data.push_back(entry);
-			}
-		}
-		file.close();
-	}
-	else {
-		std::cerr << "Error opening file: " << filename << std::endl;
-		return data; // Return empty vector if file cannot be opened
-	}
-
-	// Sort the vector in descending order based on points
-	std::sort(data.begin(), data.end(), [](const auto& a, const auto& b) {
-		int pointsA = std::stoi(a.substr(a.find(':') + 1));
-	int pointsB = std::stoi(b.substr(b.find(':') + 1));
-	return pointsA > pointsB;
-		});
-
-	// Create a new vector with the highest 20 entries
-	std::vector<std::string> top20;
-	auto end = data.begin() + std::min(20, static_cast<int>(data.size()));
-	std::copy(data.begin(), end, std::back_inserter(top20));
-
-	// Write the top 20 entries back to the file
-	std::ofstream outFile(filename);
-	if (outFile.is_open()) {
-		for (const auto& entry : top20) {
-			outFile << entry << std::endl;
-		}
-		outFile.close();
-		std::cout << "Top 20 entries have been written to the file: " << filename << std::endl;
-	}
-	else {
-		std::cerr << "Error opening file for writing: " << filename << std::endl;
-	}
-
-	return top20;
-}
-
-
-
 
 void SceneFactory::LoadMainMenuScene()
 {
@@ -471,7 +417,6 @@ void SceneFactory::LoadMainMenuScene()
 	auto SinglePlayerObj{ GameObject::Create() };
 	auto CoopObj{ GameObject::Create() };
 	auto VersusObj{ GameObject::Create() };
-	
 
 	std::shared_ptr<Command> singlePlayerCommand = std::make_shared<StartGameCommand>(GameMode::SinglePlayer);
 	std::shared_ptr<Command> coopCommand = std::make_shared<StartGameCommand>(GameMode::Coop);
@@ -485,19 +430,14 @@ void SceneFactory::LoadMainMenuScene()
 	kih.AddCommand(SDL_SCANCODE_F9, std::make_shared<HallOfFameCommand>());
 	kih.AddCommand(SDL_SCANCODE_F10,singlePlayerCommand);
 
-
-
-
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
-
+	
 	const auto background = TextureComponent::Create(_pTextureManager->GetTexture(BackgroundTexture));
 	backgroundObj->AddComponent(background);
 
 	const auto textComponent = std::make_shared<dae::TextComponent>("[ F5 ] Single Player ", font);
 	SinglePlayerObj->AddComponent(textComponent);
 	SinglePlayerObj->SetPosition(330, 220);
-
 
 	const auto textComponentCoop = std::make_shared<dae::TextComponent>("[ F6 ] COOP ", font);
 	CoopObj->AddComponent(textComponentCoop);
@@ -506,8 +446,6 @@ void SceneFactory::LoadMainMenuScene()
 	const auto textComponentVersus = std::make_shared<dae::TextComponent>("[ F7 ] Versus ", font);
 	VersusObj->AddComponent(textComponentVersus);
 	VersusObj->SetPosition(330, 340);
-
-	
 
 	pScene->Add(backgroundObj);
 	pScene->Add(SinglePlayerObj);
@@ -542,30 +480,6 @@ void SceneFactory::LoadHighScoreScene()
 
 	auto fontHighScore = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	highScoresObj->AddComponent(HighScoresComponent::Create(model, fontHighScore));
-
-	//auto vector = model->GetData();
-
-	//auto offset{ 32.f };
-	//auto locXName{ 230.f }, locXScore{ 730.f }, locY{ 20.F };
-
-
-
-	//for (auto entry : vector)
-	//{
-	//	auto NameObj{ GameObject::Create() };
-	//	auto NameComp = std::make_shared<dae::TextComponent>(entry->Name, fontHighScore);
-	//	NameObj->AddComponent(NameComp);
-	//	NameObj->SetPosition(locXName, locY);
-	//	pScene->Add(NameObj);
-
-	//	auto ScoreObj{ GameObject::Create() };
-	//	auto ScoreComp = std::make_shared<dae::TextComponent>(std::to_string(entry->Score), fontHighScore);
-	//	ScoreObj->AddComponent(ScoreComp);
-	//	ScoreObj->SetPosition(locXScore, locY);
-	//	pScene->Add(ScoreObj);
-
-	//	locY += offset;
-	//}
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	const auto textComponentGoodJob = std::make_shared<dae::TextComponent>("Good job! You entered the Hall Of Fame ", font);

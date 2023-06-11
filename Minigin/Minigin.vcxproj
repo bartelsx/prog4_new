@@ -233,6 +233,7 @@
     <ClInclude Include="DelayedEventComponent.h" />
     <ClInclude Include="TimerComponent.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TriggerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioClip.cpp" />
@@ -269,6 +270,7 @@
     <ClCompile Include="DelayedEventComponent.cpp" />
     <ClCompile Include="TimerComponent.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TriggerComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
