@@ -2,16 +2,12 @@
 #include <memory>
 #include <string>
 
+#include "EditBoxComponent.h"
 #include "HallOfFameModel.h"
 
 namespace dae
 {
-	class TextProcessor
-	{
-	public:
-		virtual void Process(std::string text) = 0;
-	};
-
+	
 	class HallOfFameTextProcessor : public TextProcessor
 	{
 	public:

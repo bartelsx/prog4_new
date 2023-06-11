@@ -197,6 +197,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="CompositeComponent.h" />
     <ClInclude Include="ControllerInputHandler.h" />
+    <ClInclude Include="EditBoxComponent.h" />
     <ClInclude Include="EllipticalMoveComponent.h" />
     <ClInclude Include="FireEventComponent.h" />
     <ClInclude Include="Font.h" />

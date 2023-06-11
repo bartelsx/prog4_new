@@ -1,11 +1,18 @@
 #pragma once
 #include <SDL_ttf.h>
 
-#include "HallOfFameTextProcessor.h"
+
 #include "TextComponent.h"
 
 namespace dae
 {
+	
+	class TextProcessor
+	{
+	public:
+		virtual void Process(std::string text) = 0;
+	};
+
 	class TextHandler
 	{
 	public:

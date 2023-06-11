@@ -159,6 +159,9 @@
     <ClInclude Include="TriggerComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="EditBoxComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
