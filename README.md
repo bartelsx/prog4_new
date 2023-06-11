@@ -33,7 +33,7 @@ I strived for maximum reusability of the added components. Therefore, there are 
 
 For instance, in the Pacman game, there is a bonus pickup that appears at some point and stays on the screen for a few seconds. When on visible, collisions between pacman and the fruit pickup should be detected. This can be accomplished by first building a CompositeComponent that holds the fruit's behavior when it's active: 
 
-```
+```cpp
 	//... when active
 	auto activeFruitComp = CompositeComponent::Create();
 	activeFruitComp->Add(TextureComponent::Create(m_pTextureManager->GetTexture(Textures::FruitTexture)));
@@ -49,7 +49,7 @@ When the fruit bonus is not active, it should not show on screen and should not 
 
 The active state and the inactive (empty) state can be used to build a StateComponent, that will switch states when certain Events are received:
 
-```
+```cpp
 	//Combine in StateComp
 	auto fruitStateComp = StateComponent::Create();
 	fruitStateComp->Set(EventType::DISABLE_FRUIT, BaseComponent::Empty()); //nothing to show
