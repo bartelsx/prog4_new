@@ -155,6 +155,7 @@
     <ClCompile Include="HallOfFameModel.cpp" />
     <ClCompile Include="HallOfFameRepository.cpp" />
     <ClCompile Include="HighScoresComponent.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="RthBehavior.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SequentialBehavior.cpp" />
@@ -165,7 +166,6 @@
     <ClCompile Include="GameBoardModel.cpp" />
     <ClCompile Include="GhostMoveBehavior.cpp" />
     <ClCompile Include="GhostMoveComponent.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="PacmanComponent.cpp" />
     <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="PointsModel.cpp" />
